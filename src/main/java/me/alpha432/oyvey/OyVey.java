@@ -19,10 +19,10 @@ import org.lwjgl.opengl.Display;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 
-@Mod(modid = "bopis.club", name = "bopis.club", version = "1.7.3")
+@Mod(modid = "bopis", name = "bopis", version = "1.7.3")
 public class OyVey {
-    public static final String MODID = "bopis.club";
-    public static final String MODNAME = "bopis.club";
+    public static final String MODID = "bopis";
+    public static final String MODNAME = "bopis";
     public static final String MODVER = "1.7.3";
     public static final Logger LOGGER = LogManager.getLogger("bopis");
     public static TimerManager timerManager;
@@ -110,7 +110,7 @@ public class OyVey {
         inventoryManager = null;
         moduleManager = null;
         textManager = null;
-        LOGGER.info("bopis.club unloaded!\n");
+        LOGGER.info("bopis unloaded!\n");
     }
 
     public static void reload() {
