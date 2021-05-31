@@ -1,0 +1,17 @@
+[
+  {
+    "modid": "bopis.club",
+    "name": "bopis.club",
+    "description": "bopis is hot",
+    "version": "1.7.3",
+    "mcversion": "1.12.2",
+    "logoFile": "Zori.png",
+    "url": "https://manatee.zopac.repl.co",
+    "updateUrl": "",
+    "authorList": [
+      "Novola, PR2CE, Alpha432, 3911"
+    ],
+    "screenshots": [],
+    "dependencies": []
+  }
+]
