@@ -8,7 +8,8 @@ public class Title {
     int ticks = 0;
     int bruh = 0;
     int breakTimer = 0;
-    String bruh1 = "zori.club | 1.2.2";
+    String mogus = "bopis.club | ";
+    String bruh1 = mogus + "1.7.3";
     boolean qwerty = false;
     @SubscribeEvent
     public void onTick(TickEvent.ClientTickEvent event) {

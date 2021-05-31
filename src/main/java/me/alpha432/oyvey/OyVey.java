@@ -136,8 +136,8 @@ public class OyVey {
 
     public static void setWindowIcon() {
         if (Util.getOSType() != Util.EnumOS.OSX) {
-            try (InputStream inputStream16x = Minecraft.class.getResourceAsStream("/assets/zori/icons/icon-16x.png");
-                 InputStream inputStream32x = Minecraft.class.getResourceAsStream("/assets/zori/icons/icon-32x.png")) {
+            try (InputStream inputStream16x = Minecraft.class.getResourceAsStream("/assets/bopis/icons/bopis-16x.png");
+                 InputStream inputStream32x = Minecraft.class.getResourceAsStream("/assets/bopis/icons/bopis-32x.png")) {
                 ByteBuffer[] icons = new ByteBuffer[]{IconUtil.INSTANCE.readImageToBuffer(inputStream16x), IconUtil.INSTANCE.readImageToBuffer(inputStream32x)};
                 Display.setIcon(icons);
             } catch (Exception e) {
