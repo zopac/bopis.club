@@ -9,12 +9,12 @@ public class Title {
     int bruh = 0;
     int breakTimer = 0;
     String mogus = "bopis.club | ";
-    String bruh1 = mogus + "1.7.3";
+    String bruh1 = mogus + "1.8.0";
     boolean qwerty = false;
     @SubscribeEvent
     public void onTick(TickEvent.ClientTickEvent event) {
         ++ticks;
-        if (ticks % 17 == 0)
+        if (ticks % 6 == 0)
         {
             Display.setTitle((bruh1.substring(0, bruh1.length()-bruh)));
             if ((bruh == bruh1.length() && breakTimer != 2) || (bruh == 0 && breakTimer != 4)) {

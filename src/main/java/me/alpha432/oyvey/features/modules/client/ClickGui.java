@@ -10,6 +10,8 @@ import me.alpha432.oyvey.features.setting.Setting;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import java.awt.*;
+
 public class ClickGui extends Module {
     private static ClickGui INSTANCE = new ClickGui();
     public Setting<String> prefix = register(new Setting<String>("Prefix", "."));
@@ -30,6 +32,7 @@ public class ClickGui extends Module {
     public Setting<Float> rainbowBrightness = register(new Setting<Object>("Brightness ", Float.valueOf(150.0f), Float.valueOf(1.0f), Float.valueOf(255.0f), v -> rainbow.getValue()));
     public Setting<Float> rainbowSaturation = register(new Setting<Object>("Saturation", Float.valueOf(150.0f), Float.valueOf(1.0f), Float.valueOf(255.0f), v -> rainbow.getValue()));
     private OyVeyGui click;
+    public float hue;
 
     public ClickGui() {
         super("ClickGui", "Opens the ClickGui", Module.Category.CLIENT, true, false, false);
@@ -52,6 +55,13 @@ public class ClickGui extends Module {
         if (customFov.getValue().booleanValue()) {
             ClickGui.mc.gameSettings.setOptionFloatValue(GameSettings.Options.FOV, fov.getValue().floatValue());
         }
+    }
+
+    public Color getCurrentColor() {
+        if (this.rainbow.getValue().booleanValue()) {
+            return Color.getHSBColor(this.hue, (float)this.rainbowSaturation.getValue().intValue() / 255.0f, (float)this.rainbowBrightness.getValue().intValue() / 255.0f);
+        }
+        return new Color(this.red.getValue(), this.green.getValue(), this.blue.getValue(), this.alpha.getValue());
     }
 
     @SubscribeEvent

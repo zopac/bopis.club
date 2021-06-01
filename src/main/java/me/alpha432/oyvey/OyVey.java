@@ -19,11 +19,11 @@ import org.lwjgl.opengl.Display;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 
-@Mod(modid = "bopis", name = "bopis", version = "1.7.3")
+@Mod(modid = "bopis", name = "bopis", version = "1.8.0")
 public class OyVey {
     public static final String MODID = "bopis";
     public static final String MODNAME = "bopis";
-    public static final String MODVER = "1.7.3";
+    public static final String MODVER = "1.8.0";
     public static final Logger LOGGER = LogManager.getLogger("bopis");
     public static TimerManager timerManager;
     public static CommandManager commandManager;

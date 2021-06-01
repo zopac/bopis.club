@@ -21,10 +21,9 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.entity.EnumCreatureAttribute;
 import java.util.Iterator;
 
-public class auto32kaura extends Module {
-
-    public auto32kaura() {
-        super("auto32kaura", "Puts Armor on for you.", Module.Category.COMBAT, true, false, false);
+public class Auto32kAura extends Module {
+    public Auto32kAura() {
+        super("Auto32kAura", "idk something", Module.Category.COMBAT, true, false, false);
     }
 
     private final Setting<Integer> waitTick = this.register(new Setting<Integer>("Delay", 0, 0, 100));

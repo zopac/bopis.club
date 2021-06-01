@@ -48,7 +48,7 @@ public class ModuleManager
         this.modules.add(new BlockHighlight());
         this.modules.add(new HoleESP());
         this.modules.add(new Skeleton());
-        this.modules.add(new Wireframe());
+        this.modules.add(new Chams());
         this.modules.add(new SmallShield());
         this.modules.add(new HandChams());
         this.modules.add(new Trajectories());
@@ -62,6 +62,7 @@ public class ModuleManager
         this.modules.add(new TestNameTags());
         this.modules.add(new TexturedChams());
         this.modules.add(new HitMarkers());
+        this.modules.add(new CrystalModifier());
         //COMBAT
         this.modules.add(new Offhand());
         this.modules.add(new Surround());
@@ -81,7 +82,7 @@ public class ModuleManager
         this.modules.add(new InstantSelfFill());
         this.modules.add(new Anti32k());
         this.modules.add(new Auto32k());
-        this.modules.add(new auto32kaura());
+        this.modules.add(new Auto32kAura());
         //PLAYER
         this.modules.add(new FakeKick());
         this.modules.add(new Freecam());

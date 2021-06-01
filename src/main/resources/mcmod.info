@@ -3,9 +3,9 @@
     "modid": "bopis.club",
     "name": "bopis.club",
     "description": "bopis is hot",
-    "version": "1.7.3",
+    "version": "1.8.0",
     "mcversion": "1.12.2",
-    "logoFile": "Zori.png",
+    "logoFile": "bopis.png",
     "url": "https://manatee.zopac.repl.co",
     "updateUrl": "",
     "authorList": [
