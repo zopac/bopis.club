@@ -32,7 +32,7 @@ public class HoleFillUtil
             final BlockPos neighbor = pos.offset(side);
             final EnumFacing side2 = side.getOpposite();
             if (canBeClicked(neighbor)) {
-                final Vec3d hitVec = (Vec3i)neighbor.add(0.5, 0.5, 0.5).add(new Vec3d(side2.getDirectionVec()).scale(0.5);
+                final Vec3d hitVec = new Vec3d((Vec3i)neighbor).add(0.5, 0.5, 0.5).add(new Vec3d(side2.getDirectionVec()).scale(0.5));
                 if (eyesPos.squareDistanceTo(hitVec) <= 18.0625) {
                     faceVectorPacketInstant(hitVec);
                     processRightClickBlock(neighbor, side2, hitVec);
