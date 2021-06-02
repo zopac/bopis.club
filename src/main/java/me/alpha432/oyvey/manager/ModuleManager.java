@@ -84,6 +84,7 @@ public class ModuleManager
         this.modules.add(new Anti32k());
         this.modules.add(new Auto32k());
         this.modules.add(new Auto32kAura());
+        this.modules.add(new BedAura());
         //PLAYER
         this.modules.add(new FakeKick());
         this.modules.add(new Freecam());

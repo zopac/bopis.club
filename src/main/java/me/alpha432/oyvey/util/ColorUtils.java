@@ -3,20 +3,8 @@ package me.alpha432.oyvey.util;
 import java.awt.*;
 import java.util.ArrayList;
 
-/**
- * Java Code to get a color name from rgb/hex value/awt color
- *
- * The part of looking up a color name from the rgb values is edited from
- * https://gist.github.com/nightlark/6482130#file-gistfile1-java (that has some errors) by Ryan Mast (nightlark)
- *
- * @author Xiaoxiao Li
- *
- */
 public class ColorUtils {
 
-    /**
-     * Initialize the color list that we have.
-     */
     private ArrayList<ColorName> initColorList() {
         ArrayList<ColorName> colorList = new ArrayList<ColorName>();
         colorList.add(new ColorName("AliceBlue", 0xF0, 0xF8, 0xFF));
@@ -162,24 +150,10 @@ public class ColorUtils {
         return colorList;
     }
 
-    /**
-     * SubClass of ColorUtilss. In order to lookup color name
-     *
-     * @author Xiaoxiao Li
-     *
-     */
     public static int toRGBA(double r, double g, double b, double a) {
         return toRGBA((float) r, (float) g, (float) b, (float) a);
     }
 
-    /**
-     * Get the closest color name from our list
-     *
-     * @param r
-     * @param g
-     * @param b
-     * @return
-     */
     public String getColorNameFromRgb(int r, int g, int b) {
         ArrayList<ColorName> colorList = initColorList();
         ColorName closestMatch = null;
@@ -200,12 +174,17 @@ public class ColorUtils {
         }
     }
 
-    /**
-     * Convert hexColor to rgb, then call getColorNameFromRgb(r, g, b)
-     *
-     * @param hexColor
-     * @return
-     */
+    public static int GenRainbow() {
+        int color;
+        float[] hue = new float[]{(float) (System.currentTimeMillis() % 11520L) / 11520.0f};
+        int rgb = Color.HSBtoRGB(hue[0], 1.0f, 1.0f);
+        int red = rgb >> 16 & 255;
+        int green = rgb >> 8 & 255;
+        int blue = rgb & 255;
+        color = toRGBA(red, green, blue, 255);
+        return color;
+    }
+
     public String getColorNameFromHex(int hexColor) {
         int r = (hexColor & 0xFF0000) >> 16;
         int g = (hexColor & 0xFF00) >> 8;
@@ -295,8 +274,8 @@ public class ColorUtils {
     }
 
     public static final int changeAlpha(int origColor, int userInputedAlpha) {
-        origColor = origColor & 0x00ffffff; //drop the previous alpha value
-        return (userInputedAlpha << 24) | origColor; //add the one the user inputted
+        origColor = origColor & 0x00ffffff;
+        return (userInputedAlpha << 24) | origColor;
     }
 
 }
