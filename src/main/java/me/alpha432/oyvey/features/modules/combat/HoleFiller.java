@@ -45,7 +45,7 @@ public class HoleFiller extends Module {
         super("HoleFill", "Fills holes around you.", Category.COMBAT, true, false, true);
         range = (Setting<Integer>) register(new Setting("PlaceRange", 8, 0, 10));
         delay = (Setting<Integer>) register(new Setting("Delay", 50, 0, 250));
-        blocksPerTick = (Setting<Integer>) register(new Setting("BlocksPerTick", 20, 8, 30));
+        blocksPerTick = (Setting<Integer>) register(new Setting("BlocksPerTick", 4, 1, 30));
         rotate = (Setting<Boolean>) register(new Setting("Rotate", true));
         offTimer = new Timer();
         timer = new Timer();
