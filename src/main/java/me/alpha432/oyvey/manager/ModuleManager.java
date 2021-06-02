@@ -128,6 +128,7 @@ public class ModuleManager
         this.modules.add(new Flight());
         this.modules.add(new Scaffold());
         this.modules.add(new NoSlowDown());
+        this.modules.add(new NoSlowBypass());
     }
 
     public Module getModuleByName(String name) {
