@@ -31,16 +31,15 @@ public class HUD extends Module {
     private final Setting<Boolean> waterMark = register(new Setting("Watermark", Boolean.valueOf(false), "displays watermark"));
     private final Setting<Boolean> bopiswatermark = register(new Setting("bopiswatermark", Boolean.valueOf(false), "displays watermark"));
     private final Setting<Boolean> slolwatermark = register(new Setting("slolwatermark", Boolean.valueOf(false), "displays watermark"));
-    public Setting<Integer> waterMarkY = register(new Setting("WatermarkPosY", Integer.valueOf(2), Integer.valueOf(0), Integer.valueOf(20), v -> ((Boolean)waterMark.getValue()).booleanValue()));
-    public Setting<Integer> bopiswatermarkY = register(new Setting("bopiswatermarkY", Integer.valueOf(2), Integer.valueOf(0), Integer.valueOf(20), v -> ((Boolean)bopiswatermark.getValue()).booleanValue()));
-    public Setting<Integer> slolwatermarkY = register(new Setting("slolwatermarkY", Integer.valueOf(2), Integer.valueOf(0), Integer.valueOf(100), v -> ((Boolean)slolwatermark.getValue()).booleanValue()));
+    public Setting<Integer> waterMarkY = register(new Setting("WatermarkPosY", 2, 0, 20, v -> ((Boolean)waterMark.getValue()).booleanValue()));
+    public Setting<Integer> bopiswatermarkY = register(new Setting("bopiswatermarkY", 2, 0, 20, v -> ((Boolean)bopiswatermark.getValue()).booleanValue()));
+    public Setting<Integer> slolwatermarkY = register(new Setting("slolwatermarkY", 2, 0, 100, v -> ((Boolean)slolwatermark.getValue()).booleanValue()));
     private final Setting<Boolean> arrayList = register(new Setting("ActiveModules", Boolean.valueOf(false), "Lists the active modules."));
     private final Setting<Boolean> pvp = register(new Setting("PvpInfo", true));
     private final Setting<Boolean> coords = register(new Setting("Coords", Boolean.valueOf(false), "Your current coordinates"));
     private final Setting<Boolean> direction = register(new Setting("Direction", Boolean.valueOf(false), "The Direction you are facing."));
     private final Setting<Boolean> armor = register(new Setting("Armor", Boolean.valueOf(false), "ArmorHUD"));
     private final Setting<Boolean> totems = register(new Setting("Totems", Boolean.valueOf(false), "TotemHUD"));
-    private final Setting<Boolean> Crystal  = register(new Setting("Crystals", Boolean.valueOf(false), "Crystal Counter yes?"));
     private final Setting<Boolean> greeter = register(new Setting("Welcomer", Boolean.valueOf(false), "The time"));
     private final Setting<Boolean> speed = register(new Setting("Speed", Boolean.valueOf(false), "Your Speed"));
     private final Setting<Boolean> potions = register(new Setting("Potions", Boolean.valueOf(false), "Your Speed"));
@@ -100,7 +99,7 @@ public class HUD extends Module {
         int height = renderer.scaledHeight;
         color = ColorUtil.toRGBA(((Integer)(ClickGui.getInstance()).red.getValue()).intValue(), ((Integer)(ClickGui.getInstance()).green.getValue()).intValue(), ((Integer)(ClickGui.getInstance()).blue.getValue()).intValue());
         if (((Boolean)waterMark.getValue()).booleanValue()) {
-            String string = (String)command.getPlannedValue() + " v1.8.0";
+            String string = (String)command.getPlannedValue() + " v1.8.3";
             if (((Boolean)(ClickGui.getInstance()).rainbow.getValue()).booleanValue()) {
                 if ((ClickGui.getInstance()).rainbowModeHud.getValue() == ClickGui.rainbowMode.Static) {
                     renderer.drawString(string, 2.0F, ((Integer)waterMarkY.getValue()).intValue(), ColorUtil.rainbow(((Integer)(ClickGui.getInstance()).rainbowHue.getValue()).intValue()).getRGB(), true);

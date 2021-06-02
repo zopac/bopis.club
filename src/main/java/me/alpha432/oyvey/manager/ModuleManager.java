@@ -63,6 +63,7 @@ public class ModuleManager
         this.modules.add(new TexturedChams());
         this.modules.add(new HitMarkers());
         this.modules.add(new CrystalModifier());
+        this.modules.add(new StorageESP());
         //COMBAT
         this.modules.add(new Offhand());
         this.modules.add(new Surround());

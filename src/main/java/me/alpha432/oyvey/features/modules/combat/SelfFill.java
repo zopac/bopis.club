@@ -1,5 +1,6 @@
 package me.alpha432.oyvey.features.modules.combat;
 
+import jdk.nashorn.internal.ir.Block;
 import me.alpha432.oyvey.OyVey;
 import me.alpha432.oyvey.event.events.PlayerJumpEvent;
 import me.alpha432.oyvey.features.modules.movement.ReverseStep;
@@ -17,6 +18,14 @@ public class SelfFill extends Module {
     private BlockPos playerPos;
     private final Setting<Boolean> timerfill = register(new Setting("TimerFill", false));
     private final Setting<Boolean> toggleRStep = register(new Setting("ToggleRStep", true));
+    public Setting<BLOCK> block = this.register(new Setting<Object>("Block", BLOCK.Obsidian));
+
+    public enum BLOCK {
+        Obsidian,
+        Enderchest,
+        Anvil
+
+    }
 
     public SelfFill() {
         super("SelfFill", "SelfFills yourself in a hole.", Module.Category.COMBAT, true, false, true);
@@ -34,7 +43,21 @@ public class SelfFill extends Module {
             }
         }
         playerPos = new BlockPos(mc.player.posX, mc.player.posY, mc.player.posZ);
-        if (mc.world.getBlockState(playerPos).getBlock().equals(Blocks.OBSIDIAN)) {
+        if (block.equals(BLOCK.Obsidian)) {
+            WorldUtil.placeBlock(playerPos, InventoryUtil.findHotbarBlock(Blocks.OBSIDIAN));
+        } else if (block.equals(BLOCK.Enderchest)) {
+            WorldUtil.placeBlock(playerPos, InventoryUtil.findHotbarBlock(Blocks.ENDER_CHEST));
+        } else if (block.equals(BLOCK.Anvil)) {
+            WorldUtil.placeBlock(playerPos, InventoryUtil.findHotbarBlock(Blocks.ANVIL));
+        }
+
+        if (block.equals(BLOCK.Obsidian) && mc.world.getBlockState(playerPos).getBlock().equals(Blocks.OBSIDIAN)) {
+            disable();
+            return;
+        } else if (block.equals(BLOCK.Enderchest) && mc.world.getBlockState(playerPos).getBlock().equals(Blocks.ENDER_CHEST)) {
+            disable();
+            return;
+        } else if (block.equals(BLOCK.Anvil) && mc.world.getBlockState(playerPos).getBlock().equals(Blocks.ANVIL)) {
             disable();
             return;
         }
@@ -57,7 +80,13 @@ public class SelfFill extends Module {
             return;
         }
         if (mc.player.posY > playerPos.getY() + 1.04) {
-            WorldUtil.placeBlock(playerPos, InventoryUtil.findHotbarBlock(Blocks.OBSIDIAN));
+             if (block.equals(BLOCK.Obsidian)) {
+                 WorldUtil.placeBlock(playerPos, InventoryUtil.findHotbarBlock(Blocks.OBSIDIAN));
+             } else if (block.equals(BLOCK.Enderchest)) {
+                 WorldUtil.placeBlock(playerPos, InventoryUtil.findHotbarBlock(Blocks.ENDER_CHEST));
+             } else if (block.equals(BLOCK.Anvil)) {
+                 WorldUtil.placeBlock(playerPos, InventoryUtil.findHotbarBlock(Blocks.ANVIL));
+             }
             mc.player.jump();
             disable();
         }

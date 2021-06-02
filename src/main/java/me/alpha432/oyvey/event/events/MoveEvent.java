@@ -8,9 +8,8 @@ import net.minecraftforge.fml.common.eventhandler.Cancelable;
 public class MoveEvent
         extends EventStage {
     private MoverType type;
-    private double x;
-    private double y;
-    private double z;
+
+    private double x, y, z;
 
     public MoveEvent(int stage, MoverType type, double x, double y, double z) {
         super(stage);
@@ -28,28 +27,29 @@ public class MoveEvent
         this.type = type;
     }
 
-    public double getX() {
-        return this.x;
-    }
-
     public void setX(double x) {
         this.x = x;
-    }
-
-    public double getY() {
-        return this.y;
     }
 
     public void setY(double y) {
         this.y = y;
     }
 
+    public void setZ(double z) {
+        this.z = z;
+    }
+
+    public double getX() {
+        return this.x;
+    }
+
+    public double getY() {
+        return this.y;
+    }
+
     public double getZ() {
         return this.z;
     }
 
-    public void setZ(double z) {
-        this.z = z;
-    }
 }
 
