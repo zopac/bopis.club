@@ -1,7 +1,7 @@
 package me.alpha432.oyvey.manager;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
-import me.alpha432.oyvey.OyVey;
+import me.alpha432.oyvey.bopis;
 import me.alpha432.oyvey.event.events.Render2DEvent;
 import me.alpha432.oyvey.event.events.Render3DEvent;
 import me.alpha432.oyvey.features.Feature;
@@ -64,6 +64,7 @@ public class ModuleManager
         this.modules.add(new HitMarkers());
         this.modules.add(new CrystalModifier());
         this.modules.add(new StorageESP());
+        this.modules.add(new NoFog());
         //COMBAT
         this.modules.add(new Offhand());
         this.modules.add(new Surround());
@@ -73,14 +74,13 @@ public class ModuleManager
         this.modules.add(new AutoCrystal());
         this.modules.add(new Killaura());
         this.modules.add(new Criticals());
-        this.modules.add(new HoleFiller());
+        this.modules.add(new HoleFill());
         this.modules.add(new AutoArmor());
         this.modules.add(new Selftrap());
         this.modules.add(new SelfWeb());
         this.modules.add(new Quiver());
         this.modules.add(new AutoMinecart());
-        this.modules.add(new SelfFill());
-        this.modules.add(new InstantSelfFill());
+        this.modules.add(new Burrow());
         this.modules.add(new Anti32k());
         this.modules.add(new Auto32k());
         this.modules.add(new Auto32kAura());
@@ -117,7 +117,7 @@ public class ModuleManager
         this.modules.add(new NarratorTweaks());
         this.modules.add(new GhastNotifier());
         this.modules.add(new XCarry());
-        this.modules.add(new bopis());
+        this.modules.add(new me.alpha432.oyvey.features.modules.misc.bopis());
         //MOVEMENT
         this.modules.add(new PacketFly());
         this.modules.add(new Speed());
@@ -324,7 +324,7 @@ public class ModuleManager
                 }
             } else {
                 for (String e : ModuleManager.this.sortedModulesABC) {
-                    Module module = OyVey.moduleManager.getModuleByName(e);
+                    Module module = bopis.moduleManager.getModuleByName(e);
                     String text = module.getDisplayName() + ChatFormatting.GRAY + (module.getDisplayInfo() != null ? " [" + ChatFormatting.WHITE + module.getDisplayInfo() + ChatFormatting.GRAY + "]" : "");
                     module.offset = (float) ModuleManager.this.renderer.getStringWidth(text) / HUD.getInstance().animationHorizontalTime.getValue().floatValue();
                     module.vOffset = (float) ModuleManager.this.renderer.getFontHeight() / HUD.getInstance().animationVerticalTime.getValue().floatValue();

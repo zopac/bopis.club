@@ -1,7 +1,7 @@
 package me.alpha432.oyvey.features.modules.combat;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
-import me.alpha432.oyvey.OyVey;
+import me.alpha432.oyvey.bopis;
 import me.alpha432.oyvey.features.command.Command;
 import me.alpha432.oyvey.features.modules.Module;
 import me.alpha432.oyvey.features.setting.Setting;
@@ -54,7 +54,7 @@ public class Anti32k extends Module {
                 if(once>0){return;}
                 once++;
                 if(LogOut.getValue()) {
-                    if(!OyVey.friendManager.isFriend(player.getName())){
+                    if(!bopis.friendManager.isFriend(player.getName())){
                         if(Distanc < 8){
                             Minecraft.getMinecraft().getConnection().handleDisconnect(new SPacketDisconnect(new TextComponentString(ChatFormatting.RED + "[32k Detect] Detected 32k near you")));
                         }

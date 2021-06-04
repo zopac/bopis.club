@@ -1,5 +1,6 @@
 package me.alpha432.oyvey.util;
 
+import me.alpha432.oyvey.bopis;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.EXTFramebufferObject;
 import net.minecraft.client.shader.Framebuffer;
@@ -12,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import org.lwjgl.util.glu.Disk;
-import net.minecraft.util.ResourceLocation;
 import org.lwjgl.util.glu.Sphere;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,7 +28,6 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.math.AxisAlignedBB;
-import me.alpha432.oyvey.OyVey;
 import net.minecraft.client.renderer.GlStateManager;
 import java.awt.Color;
 import net.minecraft.util.math.BlockPos;
@@ -1105,8 +1104,8 @@ public class RenderUtil implements Util
         GlStateManager.pushMatrix();
         glBillboardDistanceScaled(pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f, (EntityPlayer)RenderUtil.mc.player, 1.0f);
         GlStateManager.disableDepth();
-        GlStateManager.translate(-(OyVey.textManager.getStringWidth(text) / 2.0), 0.0, 0.0);
-        OyVey.textManager.drawStringWithShadow(text, 0.0f, 0.0f, -5592406);
+        GlStateManager.translate(-(bopis.textManager.getStringWidth(text) / 2.0), 0.0, 0.0);
+        bopis.textManager.drawStringWithShadow(text, 0.0f, 0.0f, -5592406);
         GlStateManager.popMatrix();
     }
 

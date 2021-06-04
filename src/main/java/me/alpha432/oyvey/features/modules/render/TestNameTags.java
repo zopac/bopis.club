@@ -2,7 +2,7 @@ package me.alpha432.oyvey.features.modules.render;
 
 import java.awt.Color;
 import java.util.Objects;
-import me.alpha432.oyvey.OyVey;
+import me.alpha432.oyvey.bopis;
 import me.alpha432.oyvey.event.events.Render3DEvent;
 import me.alpha432.oyvey.features.modules.Module;
 import me.alpha432.oyvey.features.setting.Setting;
@@ -418,7 +418,7 @@ public class TestNameTags extends Module {
         if (this.whiter.getValue().booleanValue()) {
             colour = -1;
         }
-        if (OyVey.friendManager.isFriend(player)) {
+        if (bopis.friendManager.isFriend(player)) {
             return -11157267;
         }
         if (player.isInvisible()) {

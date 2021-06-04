@@ -1,6 +1,6 @@
 package me.alpha432.oyvey.features.modules.render;
 
-import me.alpha432.oyvey.OyVey;
+import me.alpha432.oyvey.bopis;
 import me.alpha432.oyvey.event.events.Render3DEvent;
 import me.alpha432.oyvey.features.modules.Module;
 import me.alpha432.oyvey.features.setting.Setting;
@@ -23,12 +23,6 @@ import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.util.*;
-
-/**
- * @Author Novola & zopac
- * @Version v1.0.4/b4
- * @Date 28/1/2021 (1/28/2021)
- */
 
 public class NameTags extends Module {
 
@@ -242,7 +236,7 @@ public class NameTags extends Module {
 
     private int getDisplayColor(EntityPlayer player) {
         int displaycolor = ColorHolder.toHex(NCred.getValue(), NCgreen.getValue(), NCblue.getValue());
-        if (OyVey.friendManager.isFriend(player) ) {
+        if (bopis.friendManager.isFriend(player) ) {
             return ColorHolder.toHex(FCred.getValue(), FCgreen.getValue(), FCblue.getValue());
         } else if (player.isInvisible() && invisibles.getValue()) {
             displaycolor = ColorHolder.toHex(ICred.getValue(), ICgreen.getValue(), ICblue.getValue());
@@ -254,7 +248,7 @@ public class NameTags extends Module {
 
     private int getOutlineColor(EntityPlayer player) {
         int outlinecolor = ColorHolder.toHex(Ored.getValue(), Ogreen.getValue(), Oblue.getValue());
-        if (OyVey.friendManager.isFriend(player)) {
+        if (bopis.friendManager.isFriend(player)) {
             outlinecolor = ColorHolder.toHex(FOred.getValue(), FOgreen.getValue(), FOblue.getValue());
         } else if (player.isInvisible() && invisibles.getValue()) {
             outlinecolor = ColorHolder.toHex(IOred.getValue(), IOgreen.getValue(), IOblue.getValue());

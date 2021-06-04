@@ -1,7 +1,7 @@
 package me.alpha432.oyvey.features.modules.client;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
-import me.alpha432.oyvey.OyVey;
+import me.alpha432.oyvey.bopis;
 import me.alpha432.oyvey.event.events.ClientEvent;
 import me.alpha432.oyvey.event.events.Render2DEvent;
 import me.alpha432.oyvey.features.modules.Module;
@@ -166,15 +166,15 @@ public class HUD extends Module {
         if (arrayList.getValue().booleanValue())
             if (renderingUp.getValue().booleanValue()) {
                 if (renderingMode.getValue() == RenderingMode.ABC) {
-                    for (int k = 0; k < OyVey.moduleManager.sortedModulesABC.size(); k++) {
-                        String str = OyVey.moduleManager.sortedModulesABC.get(k);
+                    for (int k = 0; k < bopis.moduleManager.sortedModulesABC.size(); k++) {
+                        String str = bopis.moduleManager.sortedModulesABC.get(k);
                         renderer.drawString(str, (width - 2 - renderer.getStringWidth(str)), (2 + j * 10), (ClickGui.getInstance()).rainbow.getValue().booleanValue() ? (((ClickGui.getInstance()).rainbowModeA.getValue() == ClickGui.rainbowModeArray.Up) ? ColorUtil.rainbow(counter1[0] * (ClickGui.getInstance()).rainbowHue.getValue().intValue()).getRGB() : ColorUtil.rainbow((ClickGui.getInstance()).rainbowHue.getValue().intValue()).getRGB()) : color, true);
                         j++;
                         counter1[0] = counter1[0] + 1;
                     }
                 } else {
-                    for (int k = 0; k < OyVey.moduleManager.sortedModules.size(); k++) {
-                        Module module = OyVey.moduleManager.sortedModules.get(k);
+                    for (int k = 0; k < bopis.moduleManager.sortedModules.size(); k++) {
+                        Module module = bopis.moduleManager.sortedModules.get(k);
                         String str = module.getDisplayName() + ChatFormatting.GRAY + ((module.getDisplayInfo() != null) ? (" [" + ChatFormatting.WHITE + module.getDisplayInfo() + ChatFormatting.GRAY + "]") : "");
                         renderer.drawString(str, (width - 2 - renderer.getStringWidth(str)), (2 + j * 10), (ClickGui.getInstance()).rainbow.getValue().booleanValue() ? (((ClickGui.getInstance()).rainbowModeA.getValue() == ClickGui.rainbowModeArray.Up) ? ColorUtil.rainbow(counter1[0] * (ClickGui.getInstance()).rainbowHue.getValue().intValue()).getRGB() : ColorUtil.rainbow((ClickGui.getInstance()).rainbowHue.getValue().intValue()).getRGB()) : color, true);
                         j++;
@@ -182,15 +182,15 @@ public class HUD extends Module {
                     }
                 }
             } else if (renderingMode.getValue() == RenderingMode.ABC) {
-                for (int k = 0; k < OyVey.moduleManager.sortedModulesABC.size(); k++) {
-                    String str = OyVey.moduleManager.sortedModulesABC.get(k);
+                for (int k = 0; k < bopis.moduleManager.sortedModulesABC.size(); k++) {
+                    String str = bopis.moduleManager.sortedModulesABC.get(k);
                     j += 10;
                     renderer.drawString(str, (width - 2 - renderer.getStringWidth(str)), (height - j), (ClickGui.getInstance()).rainbow.getValue().booleanValue() ? (((ClickGui.getInstance()).rainbowModeA.getValue() == ClickGui.rainbowModeArray.Up) ? ColorUtil.rainbow(counter1[0] * (ClickGui.getInstance()).rainbowHue.getValue().intValue()).getRGB() : ColorUtil.rainbow((ClickGui.getInstance()).rainbowHue.getValue().intValue()).getRGB()) : color, true);
                     counter1[0] = counter1[0] + 1;
                 }
             } else {
-                for (int k = 0; k < OyVey.moduleManager.sortedModules.size(); k++) {
-                    Module module = OyVey.moduleManager.sortedModules.get(k);
+                for (int k = 0; k < bopis.moduleManager.sortedModules.size(); k++) {
+                    Module module = bopis.moduleManager.sortedModules.get(k);
                     String str = module.getDisplayName() + ChatFormatting.GRAY + ((module.getDisplayInfo() != null) ? (" [" + ChatFormatting.WHITE + module.getDisplayInfo() + ChatFormatting.GRAY + "]") : "");
                     j += 10;
                     renderer.drawString(str, (width - 2 - renderer.getStringWidth(str)), (height - j), (ClickGui.getInstance()).rainbow.getValue().booleanValue() ? (((ClickGui.getInstance()).rainbowModeA.getValue() == ClickGui.rainbowModeArray.Up) ? ColorUtil.rainbow(counter1[0] * (ClickGui.getInstance()).rainbowHue.getValue().intValue()).getRGB() : ColorUtil.rainbow((ClickGui.getInstance()).rainbowHue.getValue().intValue()).getRGB()) : color, true);
@@ -203,13 +203,13 @@ public class HUD extends Module {
             if (potions.getValue().booleanValue()) {
                 List<PotionEffect> effects = new ArrayList<>((Minecraft.getMinecraft()).player.getActivePotionEffects());
                 for (PotionEffect potionEffect : effects) {
-                    String str = OyVey.potionManager.getColoredPotionString(potionEffect);
+                    String str = bopis.potionManager.getColoredPotionString(potionEffect);
                     i += 10;
                     renderer.drawString(str, (width - renderer.getStringWidth(str) - 2), (height - 2 - i), potionEffect.getPotion().getLiquidColor(), true);
                 }
             }
             if (speed.getValue().booleanValue()) {
-                String str = grayString + "Speed " + ChatFormatting.WHITE + OyVey.speedManager.getSpeedKpH() + " km/h";
+                String str = grayString + "Speed " + ChatFormatting.WHITE + bopis.speedManager.getSpeedKpH() + " km/h";
                 i += 10;
                 renderer.drawString(str, (width - renderer.getStringWidth(str) - 2), (height - 2 - i), (ClickGui.getInstance()).rainbow.getValue().booleanValue() ? (((ClickGui.getInstance()).rainbowModeA.getValue() == ClickGui.rainbowModeArray.Up) ? ColorUtil.rainbow(counter1[0] * (ClickGui.getInstance()).rainbowHue.getValue().intValue()).getRGB() : ColorUtil.rainbow((ClickGui.getInstance()).rainbowHue.getValue().intValue()).getRGB()) : color, true);
                 counter1[0] = counter1[0] + 1;
@@ -221,13 +221,13 @@ public class HUD extends Module {
                 counter1[0] = counter1[0] + 1;
             }
             if (tps.getValue().booleanValue()) {
-                String str = grayString + "TPS " + ChatFormatting.WHITE + OyVey.serverManager.getTPS();
+                String str = grayString + "TPS " + ChatFormatting.WHITE + bopis.serverManager.getTPS();
                 i += 10;
                 renderer.drawString(str, (width - renderer.getStringWidth(str) - 2), (height - 2 - i), (ClickGui.getInstance()).rainbow.getValue().booleanValue() ? (((ClickGui.getInstance()).rainbowModeA.getValue() == ClickGui.rainbowModeArray.Up) ? ColorUtil.rainbow(counter1[0] * (ClickGui.getInstance()).rainbowHue.getValue().intValue()).getRGB() : ColorUtil.rainbow((ClickGui.getInstance()).rainbowHue.getValue().intValue()).getRGB()) : color, true);
                 counter1[0] = counter1[0] + 1;
             }
             String fpsText = grayString + "FPS " + ChatFormatting.WHITE + Minecraft.debugFPS;
-            String str1 = grayString + "Ping " + ChatFormatting.WHITE + OyVey.serverManager.getPing();
+            String str1 = grayString + "Ping " + ChatFormatting.WHITE + bopis.serverManager.getPing();
             if (renderer.getStringWidth(str1) > renderer.getStringWidth(fpsText)) {
                 if (ping.getValue().booleanValue()) {
                     i += 10;
@@ -255,12 +255,12 @@ public class HUD extends Module {
             if (potions.getValue().booleanValue()) {
                 List<PotionEffect> effects = new ArrayList<>((Minecraft.getMinecraft()).player.getActivePotionEffects());
                 for (PotionEffect potionEffect : effects) {
-                    String str = OyVey.potionManager.getColoredPotionString(potionEffect);
+                    String str = bopis.potionManager.getColoredPotionString(potionEffect);
                     renderer.drawString(str, (width - renderer.getStringWidth(str) - 2), (2 + i++ * 10), potionEffect.getPotion().getLiquidColor(), true);
                 }
             }
             if (speed.getValue().booleanValue()) {
-                String str = grayString + "Speed " + ChatFormatting.WHITE + OyVey.speedManager.getSpeedKpH() + " km/h";
+                String str = grayString + "Speed " + ChatFormatting.WHITE + bopis.speedManager.getSpeedKpH() + " km/h";
                 renderer.drawString(str, (width - renderer.getStringWidth(str) - 2), (2 + i++ * 10), (ClickGui.getInstance()).rainbow.getValue().booleanValue() ? (((ClickGui.getInstance()).rainbowModeA.getValue() == ClickGui.rainbowModeArray.Up) ? ColorUtil.rainbow(counter1[0] * (ClickGui.getInstance()).rainbowHue.getValue().intValue()).getRGB() : ColorUtil.rainbow((ClickGui.getInstance()).rainbowHue.getValue().intValue()).getRGB()) : color, true);
                 counter1[0] = counter1[0] + 1;
             }
@@ -270,12 +270,12 @@ public class HUD extends Module {
                 counter1[0] = counter1[0] + 1;
             }
             if (tps.getValue().booleanValue()) {
-                String str = grayString + "TPS " + ChatFormatting.WHITE + OyVey.serverManager.getTPS();
+                String str = grayString + "TPS " + ChatFormatting.WHITE + bopis.serverManager.getTPS();
                 renderer.drawString(str, (width - renderer.getStringWidth(str) - 2), (2 + i++ * 10), (ClickGui.getInstance()).rainbow.getValue().booleanValue() ? (((ClickGui.getInstance()).rainbowModeA.getValue() == ClickGui.rainbowModeArray.Up) ? ColorUtil.rainbow(counter1[0] * (ClickGui.getInstance()).rainbowHue.getValue().intValue()).getRGB() : ColorUtil.rainbow((ClickGui.getInstance()).rainbowHue.getValue().intValue()).getRGB()) : color, true);
                 counter1[0] = counter1[0] + 1;
             }
             String fpsText = grayString + "FPS " + ChatFormatting.WHITE + Minecraft.debugFPS;
-            String str1 = grayString + "Ping " + ChatFormatting.WHITE + OyVey.serverManager.getPing();
+            String str1 = grayString + "Ping " + ChatFormatting.WHITE + bopis.serverManager.getPing();
             if (renderer.getStringWidth(str1) > renderer.getStringWidth(fpsText)) {
                 if (ping.getValue().booleanValue()) {
                     renderer.drawString(str1, (width - renderer.getStringWidth(str1) - 2), (2 + i++ * 10), (ClickGui.getInstance()).rainbow.getValue().booleanValue() ? (((ClickGui.getInstance()).rainbowModeA.getValue() == ClickGui.rainbowModeArray.Up) ? ColorUtil.rainbow(counter1[0] * (ClickGui.getInstance()).rainbowHue.getValue().intValue()).getRGB() : ColorUtil.rainbow((ClickGui.getInstance()).rainbowHue.getValue().intValue()).getRGB()) : color, true);
@@ -305,7 +305,7 @@ public class HUD extends Module {
         int hposZ = (int) (mc.player.posZ * nether);
         i = (mc.currentScreen instanceof net.minecraft.client.gui.GuiChat) ? 14 : 0;
         String coordinates = ChatFormatting.WHITE + "XYZ " + ChatFormatting.RESET + (inHell ? (posX + ", " + posY + ", " + posZ + ChatFormatting.WHITE + " [" + ChatFormatting.RESET + hposX + ", " + hposZ + ChatFormatting.WHITE + "]" + ChatFormatting.RESET) : (posX + ", " + posY + ", " + posZ + ChatFormatting.WHITE + " [" + ChatFormatting.RESET + hposX + ", " + hposZ + ChatFormatting.WHITE + "]"));
-        String direction = this.direction.getValue().booleanValue() ? OyVey.rotationManager.getDirection4D(false) : "";
+        String direction = this.direction.getValue().booleanValue() ? bopis.rotationManager.getDirection4D(false) : "";
         String coords = this.coords.getValue().booleanValue() ? coordinates : "";
         i += 10;
         if ((ClickGui.getInstance()).rainbow.getValue().booleanValue()) {
@@ -374,8 +374,8 @@ public class HUD extends Module {
 
     public void renderLag() {
         int width = renderer.scaledWidth;
-        if (OyVey.serverManager.isServerNotResponding()) {
-            String text = ChatFormatting.RED + "Server being chinese for " + MathUtil.round((float) OyVey.serverManager.serverRespondingTime() / 1000.0F, 1) + "s.";
+        if (bopis.serverManager.isServerNotResponding()) {
+            String text = ChatFormatting.RED + "Server being chinese for " + MathUtil.round((float) bopis.serverManager.serverRespondingTime() / 1000.0F, 1) + "s.";
             renderer.drawString(text, width / 2.0F - renderer.getStringWidth(text) / 2.0F + 2.0F, 20.0F, color, true);
         }
     }
@@ -481,7 +481,7 @@ public class HUD extends Module {
         String hfOn = (String) "HF:" + ChatFormatting.GREEN + " TRUE";
         String hfOff = (String) "HF:" + ChatFormatting.DARK_RED + " FALSE";
 
-        if (OyVey.moduleManager.getModuleByName("AutoCrystal").isEnabled()) {
+        if (bopis.moduleManager.getModuleByName("AutoCrystal").isEnabled()) {
             if (((Boolean) (ClickGui.getInstance()).rainbow.getValue()).booleanValue()) {
                 if ((ClickGui.getInstance()).rainbowModeHud.getValue() == ClickGui.rainbowMode.Static) {
                     renderer.drawString(caOn, 2.0F, 10.0f, ColorUtil.rainbow(((Integer) (ClickGui.getInstance()).rainbowHue.getValue()).intValue()).getRGB(), true);
@@ -499,7 +499,7 @@ public class HUD extends Module {
                 renderer.drawString(caOn, 2.0F, 10.0f, color, true);
             }
         }
-        if (OyVey.moduleManager.getModuleByName("AutoTrap").isEnabled()) {
+        if (bopis.moduleManager.getModuleByName("AutoTrap").isEnabled()) {
             if (((Boolean) (ClickGui.getInstance()).rainbow.getValue()).booleanValue()) {
                 if ((ClickGui.getInstance()).rainbowModeHud.getValue() == ClickGui.rainbowMode.Static) {
                     renderer.drawString(atOn, 2.0F, 20.0f, ColorUtil.rainbow(((Integer) (ClickGui.getInstance()).rainbowHue.getValue()).intValue()).getRGB(), true);
@@ -517,7 +517,7 @@ public class HUD extends Module {
                 renderer.drawString(atOn, 2.0F, 20.0f, color, true);
             }
         }
-        if (OyVey.moduleManager.getModuleByName("Surround").isEnabled()) {
+        if (bopis.moduleManager.getModuleByName("Surround").isEnabled()) {
             if (((Boolean) (ClickGui.getInstance()).rainbow.getValue()).booleanValue()) {
                 if ((ClickGui.getInstance()).rainbowModeHud.getValue() == ClickGui.rainbowMode.Static) {
                     renderer.drawString(suOn, 2.0F, 30.0f, ColorUtil.rainbow(((Integer) (ClickGui.getInstance()).rainbowHue.getValue()).intValue()).getRGB(), true);
@@ -535,7 +535,7 @@ public class HUD extends Module {
                 renderer.drawString(suOn, 2.0F, 30.0f, color, true);
             }
         }
-        if (OyVey.moduleManager.getModuleByName("HoleFill").isEnabled()) {
+        if (bopis.moduleManager.getModuleByName("HoleFill").isEnabled()) {
             if (((Boolean) (ClickGui.getInstance()).rainbow.getValue()).booleanValue()) {
                 if ((ClickGui.getInstance()).rainbowModeHud.getValue() == ClickGui.rainbowMode.Static) {
                     renderer.drawString(hfOn, 2.0F, 40.0f, ColorUtil.rainbow(((Integer) (ClickGui.getInstance()).rainbowHue.getValue()).intValue()).getRGB(), true);
@@ -553,7 +553,7 @@ public class HUD extends Module {
                 renderer.drawString(hfOn, 2.0F, 40.0f, color, true);
             }
         }
-        if (OyVey.moduleManager.getModuleByName("AutoCrystal").isDisabled()) {
+        if (bopis.moduleManager.getModuleByName("AutoCrystal").isDisabled()) {
             if (((Boolean) (ClickGui.getInstance()).rainbow.getValue()).booleanValue()) {
                 if ((ClickGui.getInstance()).rainbowModeHud.getValue() == ClickGui.rainbowMode.Static) {
                     renderer.drawString(caOff, 2.0F, 10.0f, ColorUtil.rainbow(((Integer) (ClickGui.getInstance()).rainbowHue.getValue()).intValue()).getRGB(), true);
@@ -571,7 +571,7 @@ public class HUD extends Module {
                 renderer.drawString(caOff, 2.0F, 10.0f, color, true);
             }
         }
-        if (OyVey.moduleManager.getModuleByName("AutoTrap").isDisabled()) {
+        if (bopis.moduleManager.getModuleByName("AutoTrap").isDisabled()) {
             if (((Boolean) (ClickGui.getInstance()).rainbow.getValue()).booleanValue()) {
                 if ((ClickGui.getInstance()).rainbowModeHud.getValue() == ClickGui.rainbowMode.Static) {
                     renderer.drawString(atOff, 2.0F, 20.0f, ColorUtil.rainbow(((Integer) (ClickGui.getInstance()).rainbowHue.getValue()).intValue()).getRGB(), true);
@@ -589,7 +589,7 @@ public class HUD extends Module {
                 renderer.drawString(atOff, 2.0F, 20.0f, color, true);
             }
         }
-        if (OyVey.moduleManager.getModuleByName("Surround").isDisabled()) {
+        if (bopis.moduleManager.getModuleByName("Surround").isDisabled()) {
             if (((Boolean) (ClickGui.getInstance()).rainbow.getValue()).booleanValue()) {
                 if ((ClickGui.getInstance()).rainbowModeHud.getValue() == ClickGui.rainbowMode.Static) {
                     renderer.drawString(suOff, 2.0F, 30.0f, ColorUtil.rainbow(((Integer) (ClickGui.getInstance()).rainbowHue.getValue()).intValue()).getRGB(), true);
@@ -607,7 +607,7 @@ public class HUD extends Module {
                 renderer.drawString(suOff, 2.0F, 30.0f, color, true);
             }
         }
-        if (OyVey.moduleManager.getModuleByName("HoleFill").isDisabled()) {
+        if (bopis.moduleManager.getModuleByName("HoleFill").isDisabled()) {
             if (((Boolean) (ClickGui.getInstance()).rainbow.getValue()).booleanValue()) {
                 if ((ClickGui.getInstance()).rainbowModeHud.getValue() == ClickGui.rainbowMode.Static) {
                     renderer.drawString(hfOff, 2.0F, 40.0f, ColorUtil.rainbow(((Integer) (ClickGui.getInstance()).rainbowHue.getValue()).intValue()).getRGB(), true);
@@ -633,14 +633,14 @@ public class HUD extends Module {
     }
 
     public void onLoad() {
-        OyVey.commandManager.setClientMessage(getCommandMessage());
+        bopis.commandManager.setClientMessage(getCommandMessage());
     }
 
     @SubscribeEvent
     public void onSettingChange(ClientEvent event) {
         if (event.getStage() == 2 &&
                 equals(event.getSetting().getFeature()))
-            OyVey.commandManager.setClientMessage(getCommandMessage());
+            bopis.commandManager.setClientMessage(getCommandMessage());
     }
 
 

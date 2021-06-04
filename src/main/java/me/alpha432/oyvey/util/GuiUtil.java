@@ -1,9 +1,7 @@
 package me.alpha432.oyvey.util;
 
-import me.alpha432.oyvey.OyVey;
-import me.alpha432.oyvey.features.gui.font.CustomFont;
+import me.alpha432.oyvey.bopis;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -11,8 +9,8 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 
 public class GuiUtil {
     public static void drawString(String paramString, float paramFloat1, float paramFloat2, int paramInt) {
-        if (OyVey.moduleManager.getModuleByName("CustomFont").isEnabled()) {
-            OyVey.fontRenderer.drawStringWithShadow(paramString, paramFloat1, paramFloat2, paramInt);
+        if (bopis.moduleManager.getModuleByName("CustomFont").isEnabled()) {
+            bopis.fontRenderer.drawStringWithShadow(paramString, paramFloat1, paramFloat2, paramInt);
         } else {
             Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(paramString, paramFloat1, paramFloat2, paramInt);
         }
@@ -32,15 +30,15 @@ public class GuiUtil {
     }
 
     public static void drawString(String paramString, int paramInt1, int paramInt2, int paramInt3) {
-        if (OyVey.moduleManager.getModuleByName("CustomFont").isEnabled()) {
-            OyVey.fontRenderer.drawStringWithShadow(paramString, paramInt1, paramInt2, paramInt3);
+        if (bopis.moduleManager.getModuleByName("CustomFont").isEnabled()) {
+            bopis.fontRenderer.drawStringWithShadow(paramString, paramInt1, paramInt2, paramInt3);
         } else {
             Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(paramString, paramInt1, paramInt2, paramInt3);
         }
     }
 
     public static String getCFont() {
-        return OyVey.fontRenderer.getFont().getFamily();
+        return bopis.fontRenderer.getFont().getFamily();
     }
 
     public static void drawRect(int paramInt1, int paramInt2, int paramInt3, int paramInt4, int paramInt5) {
@@ -75,7 +73,7 @@ public class GuiUtil {
     }
 
     public static int getHeight() {
-        return OyVey.moduleManager.getModuleByName("CustomFont").isEnabled() ? OyVey.fontRenderer.getHeight() : OyVey.fontRenderer.getHeight();
+        return bopis.moduleManager.getModuleByName("CustomFont").isEnabled() ? bopis.fontRenderer.getHeight() : bopis.fontRenderer.getHeight();
     }
 
     public static void drawVerticalLine(int paramInt1, int paramInt2, int paramInt3, int paramInt4) {
@@ -88,10 +86,10 @@ public class GuiUtil {
     }
 
     public static void drawCenteredString(String paramString, int paramInt1, int paramInt2, int paramInt3) {
-        if (OyVey.moduleManager.getModuleByName("CustomFont").isEnabled()) {
-            OyVey.fontRenderer.drawStringWithShadow(paramString, (paramInt1 - OyVey.fontRenderer.getStringWidth(paramString) / 2), paramInt2, paramInt3);
+        if (bopis.moduleManager.getModuleByName("CustomFont").isEnabled()) {
+            bopis.fontRenderer.drawStringWithShadow(paramString, (paramInt1 - bopis.fontRenderer.getStringWidth(paramString) / 2), paramInt2, paramInt3);
         } else {
-            Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(paramString, (paramInt1 - OyVey.fontRenderer.getStringWidth(paramString) / 2), paramInt2, paramInt3);
+            Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(paramString, (paramInt1 - bopis.fontRenderer.getStringWidth(paramString) / 2), paramInt2, paramInt3);
         }
     }
 }

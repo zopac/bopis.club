@@ -1,13 +1,12 @@
 package me.alpha432.oyvey.features.modules.client;
 
-import me.alpha432.oyvey.OyVey;
+import me.alpha432.oyvey.bopis;
 import me.alpha432.oyvey.event.events.Render2DEvent;
 import me.alpha432.oyvey.features.modules.Module;
 import me.alpha432.oyvey.features.setting.Setting;
 import me.alpha432.oyvey.util.EntityUtil;
 import me.alpha432.oyvey.util.MathUtil;
 import me.alpha432.oyvey.util.RenderUtil;
-import me.alpha432.oyvey.util.TextUtil;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.DestroyBlockProgress;
@@ -83,7 +82,7 @@ public class HudComponents extends Module {
         EntityPlayer closestPlayer = null;
         for (EntityPlayer player : mc.world.playerEntities) {
             if (player == mc.player) continue;
-            if (OyVey.friendManager.isFriend(player)) continue;
+            if (bopis.friendManager.isFriend(player)) continue;
             if (closestPlayer == null) {
                 closestPlayer = player;
             } else if (mc.player.getDistanceSq(player) < mc.player.getDistanceSq(closestPlayer)) {

@@ -1,6 +1,6 @@
 package me.alpha432.oyvey.features.modules.player;
 
-import me.alpha432.oyvey.OyVey;
+import me.alpha432.oyvey.bopis;
 import me.alpha432.oyvey.event.events.BlockEvent;
 import me.alpha432.oyvey.event.events.Render3DEvent;
 import me.alpha432.oyvey.features.modules.Module;
@@ -79,7 +79,7 @@ public class Speedmine extends Module {
     @Override
     public void onRender3D(Render3DEvent event) {
         if (render.getValue().booleanValue() && currentPos != null && currentBlockState.getBlock() == Blocks.OBSIDIAN) {
-            Color color = new Color(timer.passedMs((int) (2000.0f * OyVey.serverManager.getTpsFactor())) ? 0 : 255, timer.passedMs((int) (2000.0f * OyVey.serverManager.getTpsFactor())) ? 255 : 0, 0, 255);
+            Color color = new Color(timer.passedMs((int) (2000.0f * bopis.serverManager.getTpsFactor())) ? 0 : 255, timer.passedMs((int) (2000.0f * bopis.serverManager.getTpsFactor())) ? 255 : 0, 0, 255);
             RenderUtil.drawBoxESP(currentPos, color, false, color, lineWidth.getValue().floatValue(), outline.getValue(), box.getValue(), boxAlpha.getValue(), false);
             if (autosw.getValue()) {
                 boolean hasPickaxe = mc.player.getHeldItemMainhand().getItem() == Items.DIAMOND_PICKAXE;

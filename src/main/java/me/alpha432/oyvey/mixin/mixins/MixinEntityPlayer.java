@@ -1,7 +1,7 @@
 package me.alpha432.oyvey.mixin.mixins;
 
 import com.mojang.authlib.GameProfile;
-import me.alpha432.oyvey.OyVey;
+import me.alpha432.oyvey.bopis;
 import me.alpha432.oyvey.event.events.PlayerJumpEvent;
 import me.alpha432.oyvey.features.modules.player.TpsSync;
 import net.minecraft.client.Minecraft;
@@ -26,7 +26,7 @@ public abstract class MixinEntityPlayer extends EntityLivingBase {
     @Inject(method={"getCooldownPeriod"}, at={@At(value="HEAD")}, cancellable=true)
     private void getCooldownPeriodHook(CallbackInfoReturnable<Float> callbackInfoReturnable) {
         if (TpsSync.getInstance().isOn() && TpsSync.getInstance().attack.getValue().booleanValue()) {
-            callbackInfoReturnable.setReturnValue(Float.valueOf((float)(1.0 / ((EntityPlayer)EntityPlayer.class.cast((Object)this)).getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED).getBaseValue() * 20.0 * (double)OyVey.serverManager.getTpsFactor())));
+            callbackInfoReturnable.setReturnValue(Float.valueOf((float)(1.0 / ((EntityPlayer)EntityPlayer.class.cast((Object)this)).getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED).getBaseValue() * 20.0 * (double) bopis.serverManager.getTpsFactor())));
         }
     }
 

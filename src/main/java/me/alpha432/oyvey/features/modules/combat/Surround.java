@@ -1,36 +1,25 @@
 package me.alpha432.oyvey.features.modules.combat;
 
-import java.awt.Color;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
-import me.alpha432.oyvey.OyVey;
-import me.alpha432.oyvey.event.events.Render3DEvent;
-import me.alpha432.oyvey.event.events.UpdateWalkingPlayerEvent;
+import me.alpha432.oyvey.bopis;
 import me.alpha432.oyvey.features.command.Command;
 import me.alpha432.oyvey.features.modules.Module;
 import me.alpha432.oyvey.features.setting.Setting;
 import me.alpha432.oyvey.util.BlockUtil;
 import me.alpha432.oyvey.util.EntityUtil;
 import me.alpha432.oyvey.util.InventoryUtil;
-import me.alpha432.oyvey.util.RenderUtil;
 import me.alpha432.oyvey.util.Timer;
-import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockEnderChest;
 import net.minecraft.block.BlockObsidian;
-import net.minecraft.entity.Entity;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class Surround
         extends Module {
@@ -67,7 +56,7 @@ public class Surround
         lastHotbarSlot = Surround.mc.player.inventory.currentItem;
         startPos = EntityUtil.getRoundedBlockPos(Surround.mc.player);
         if (center.getValue().booleanValue()) {
-            OyVey.positionManager.setPositionPacket((double) startPos.getX() + 0.5, startPos.getY(), (double) startPos.getZ() + 0.5, true, true, true);
+            bopis.positionManager.setPositionPacket((double) startPos.getX() + 0.5, startPos.getY(), (double) startPos.getZ() + 0.5, true, true, true);
         }
         retries.clear();
         retryTimer.reset();
@@ -169,7 +158,7 @@ public class Surround
                         retryTimer.reset();
                         continue block5;
                     }
-                    if (OyVey.speedManager.getSpeedKpH() != 0.0 || isExtending || extenders >= 1) continue block5;
+                    if (bopis.speedManager.getSpeedKpH() != 0.0 || isExtending || extenders >= 1) continue block5;
                     placeBlocks(Surround.mc.player.getPositionVector().add(vec3d), EntityUtil.getUnsafeBlockArrayFromVec3d(Surround.mc.player.getPositionVector().add(vec3d), 0, true), hasHelpingBlocks, false, true);
                     extendingBlocks.add(vec3d);
                     ++extenders;

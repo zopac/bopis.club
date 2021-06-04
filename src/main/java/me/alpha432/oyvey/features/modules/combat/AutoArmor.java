@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import me.alpha432.oyvey.OyVey;
+import me.alpha432.oyvey.bopis;
 import me.alpha432.oyvey.features.gui.OyVeyGui;
 import me.alpha432.oyvey.features.modules.Module;
 import me.alpha432.oyvey.features.modules.player.XCarry;
@@ -174,7 +174,7 @@ public class AutoArmor
                 this.getSlotOn(8, slot);
             }
         }
-        if (this.timer.passedMs((int)((float)this.delay.getValue().intValue() * (this.tps.getValue() != false ? OyVey.serverManager.getTpsFactor() : 1.0f)))) {
+        if (this.timer.passedMs((int)((float)this.delay.getValue().intValue() * (this.tps.getValue() != false ? bopis.serverManager.getTpsFactor() : 1.0f)))) {
             if (!this.taskList.isEmpty()) {
                 for (int i = 0; i < this.actions.getValue(); ++i) {
                     InventoryUtil.Task task = this.taskList.poll();

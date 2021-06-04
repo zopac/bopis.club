@@ -2,7 +2,7 @@ package me.alpha432.oyvey.features.command.commands;
 
 import com.google.gson.JsonParser;
 import com.mojang.realmsclient.gui.ChatFormatting;
-import me.alpha432.oyvey.OyVey;
+import me.alpha432.oyvey.bopis;
 import me.alpha432.oyvey.features.command.Command;
 import me.alpha432.oyvey.features.modules.Module;
 import me.alpha432.oyvey.features.setting.Setting;
@@ -19,18 +19,18 @@ public class ModuleCommand
         Setting setting;
         if (commands.length == 1) {
             ModuleCommand.sendMessage("Modules: ");
-            for (Module.Category category : OyVey.moduleManager.getCategories()) {
+            for (Module.Category category : bopis.moduleManager.getCategories()) {
                 String modules = category.getName() + ": ";
-                for (Module module1 : OyVey.moduleManager.getModulesByCategory(category)) {
+                for (Module module1 : bopis.moduleManager.getModulesByCategory(category)) {
                     modules = modules + (module1.isEnabled() ? ChatFormatting.GREEN : ChatFormatting.RED) + module1.getName() + ChatFormatting.WHITE + ", ";
                 }
                 ModuleCommand.sendMessage(modules);
             }
             return;
         }
-        Module module = OyVey.moduleManager.getModuleByDisplayName(commands[0]);
+        Module module = bopis.moduleManager.getModuleByDisplayName(commands[0]);
         if (module == null) {
-            module = OyVey.moduleManager.getModuleByName(commands[0]);
+            module = bopis.moduleManager.getModuleByName(commands[0]);
             if (module == null) {
                 ModuleCommand.sendMessage("This module doesnt exist.");
                 return;

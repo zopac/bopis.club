@@ -1,7 +1,6 @@
 package me.alpha432.oyvey.manager;
 
 import me.alpha432.oyvey.features.Feature;
-import me.alpha432.oyvey.OyVey;
 
 public class TimerManager
         extends Feature {

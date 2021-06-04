@@ -1,6 +1,6 @@
 package me.alpha432.oyvey.features;
 
-import me.alpha432.oyvey.OyVey;
+import me.alpha432.oyvey.bopis;
 import me.alpha432.oyvey.features.gui.OyVeyGui;
 import me.alpha432.oyvey.features.modules.Module;
 import me.alpha432.oyvey.features.setting.Setting;
@@ -13,7 +13,7 @@ import java.util.List;
 public class Feature
         implements Util {
     public List<Setting> settings = new ArrayList<Setting>();
-    public TextManager renderer = OyVey.textManager;
+    public TextManager renderer = bopis.textManager;
     private String name;
 
     public Feature() {

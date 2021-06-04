@@ -5,8 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
-import me.alpha432.oyvey.OyVey;
-import me.alpha432.oyvey.util.Util;
+import me.alpha432.oyvey.bopis;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
@@ -224,7 +223,7 @@ public class SwitchUtil
                     switchedItemSwitched[0] = true;
                 } else if (back && switchedItem) {
                     switchedItemSwitched[0] = false;
-                    OyVey.inventoryManager.recoverSilent(lastHotbarSlot);
+                    bopis.inventoryManager.recoverSilent(lastHotbarSlot);
                 }
                 switchedItemSwitched[1] = true;
                 break;
@@ -256,7 +255,7 @@ public class SwitchUtil
                     switchedItemSwitched[0] = true;
                 } else if (back && switchedItem) {
                     switchedItemSwitched[0] = false;
-                    OyVey.inventoryManager.recoverSilent(lastHotbarSlot);
+                    bopis.inventoryManager.recoverSilent(lastHotbarSlot);
                 }
                 switchedItemSwitched[1] = true;
                 break;

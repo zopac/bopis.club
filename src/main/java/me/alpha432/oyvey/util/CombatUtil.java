@@ -1,11 +1,9 @@
 package me.alpha432.oyvey.util;
 
-import me.alpha432.oyvey.OyVey;
-import me.alpha432.oyvey.manager.FriendManager;
+import me.alpha432.oyvey.bopis;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockLiquid;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -32,7 +30,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.*;
 import net.minecraft.world.Explosion;
-import org.lwjgl.opengl.GL11;
 
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -476,7 +473,7 @@ public class CombatUtil {
             areAllInvalid = threads.stream().noneMatch(thread -> thread.isValid && thread.isInterrupted());
         } while (finalPos == null && !areAllInvalid);
 
-        OyVey.LOGGER.info(finalPos == null ? "pos was null" : finalPos.toString());
+        bopis.LOGGER.info(finalPos == null ? "pos was null" : finalPos.toString());
         return finalPos;
     }
 
@@ -523,7 +520,7 @@ public class CombatUtil {
                                 if (!rayTrace || rayTraceRangeCheck(pos, wallsRange, 0.0d)) {
                                     this.isValid = true;
                                     this.info = new CombatPosInfo(this.player, this.pos, this.damage);
-                                    OyVey.LOGGER.info("Pos was valid.");
+                                    bopis.LOGGER.info("Pos was valid.");
                                     return;
                                 }
                             }
@@ -533,7 +530,7 @@ public class CombatUtil {
             }
             this.isValid = false;
             this.info = new CombatPosInfo(this.player, this.pos, -1.0f);
-            OyVey.LOGGER.info("Pos was invalid.");
+            bopis.LOGGER.info("Pos was invalid.");
         }
 
     }

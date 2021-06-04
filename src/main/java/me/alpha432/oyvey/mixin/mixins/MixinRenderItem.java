@@ -1,6 +1,6 @@
 package me.alpha432.oyvey.mixin.mixins;
 
-import me.alpha432.oyvey.OyVey;
+import me.alpha432.oyvey.bopis;
 import me.alpha432.oyvey.features.modules.render.GlintModify;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -19,7 +19,7 @@ public class MixinRenderItem {
 
     @ModifyArg(method = "renderEffect", at = @At(value = "INVOKE", target = "net/minecraft/client/renderer/RenderItem.renderModel(Lnet/minecraft/client/renderer/block/model/IBakedModel;I)V"), index = 1)
     private int renderEffect(int oldValue) {
-        return OyVey.moduleManager.getModuleByName("GlintModify").isEnabled() ? GlintModify.getColor(1, 1).getRGB()
+        return bopis.moduleManager.getModuleByName("GlintModify").isEnabled() ? GlintModify.getColor(1, 1).getRGB()
                 : oldValue;
     }
 }

@@ -11,7 +11,7 @@ import java.util.LinkedList;
 public class CommandManager
         extends Feature {
     private final ArrayList<Command> commands = new ArrayList();
-    private String clientMessage = "<OyVey>";
+    private String clientMessage = "<bopis>";
     private String prefix = ".";
 
     public CommandManager() {

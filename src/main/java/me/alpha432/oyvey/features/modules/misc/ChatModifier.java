@@ -1,6 +1,6 @@
 package me.alpha432.oyvey.features.modules.misc;
 
-import me.alpha432.oyvey.OyVey;
+import me.alpha432.oyvey.bopis;
 import me.alpha432.oyvey.event.events.PacketEvent;
 import me.alpha432.oyvey.features.modules.Module;
 import me.alpha432.oyvey.features.setting.Setting;
@@ -33,7 +33,7 @@ public class ChatModifier extends Module {
     public void onPacketSend(PacketEvent.Send event) {
         if (event.getPacket() instanceof CPacketChatMessage) {
             String s = ((CPacketChatMessage) event.getPacket()).getMessage();
-            check = !s.startsWith(OyVey.commandManager.getPrefix());
+            check = !s.startsWith(bopis.commandManager.getPrefix());
         }
     }
 }

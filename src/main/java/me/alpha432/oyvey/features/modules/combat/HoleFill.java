@@ -18,8 +18,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class HoleFiller extends Module {
-    private static HoleFiller INSTANCE = new HoleFiller();
+public class HoleFill extends Module {
+    private static HoleFill INSTANCE = new HoleFill();
 
     private final Setting<Integer> range;
     private final Setting<Integer> delay;
@@ -35,7 +35,7 @@ public class HoleFiller extends Module {
     private int blocksThisTick;
     private ArrayList<BlockPos> holes;
 
-	public HoleFiller() {
+	public HoleFill() {
         super("HoleFill", "Fills holes around you.", Category.COMBAT, true, false, true);
         range = (Setting<Integer>) register(new Setting<Integer>("PlaceRange", 8, 0, 10));
         delay = (Setting<Integer>) register(new Setting<Integer>("Delay", 50, 0, 250));
@@ -51,15 +51,15 @@ public class HoleFiller extends Module {
         setInstance();
     }
 
-    public static HoleFiller getInstance() {
-        if (HoleFiller.INSTANCE == null) {
-            HoleFiller.INSTANCE = new HoleFiller();
+    public static HoleFill getInstance() {
+        if (HoleFill.INSTANCE == null) {
+            HoleFill.INSTANCE = new HoleFill();
         }
-        return HoleFiller.INSTANCE;
+        return HoleFill.INSTANCE;
     }
 
     private void setInstance() {
-        HoleFiller.INSTANCE = this;
+        HoleFill.INSTANCE = this;
     }
 
     @Override
@@ -87,10 +87,10 @@ public class HoleFiller extends Module {
             return;
         }
         holes = new ArrayList<BlockPos>();
-        final Iterable<BlockPos> blocks = BlockPos.getAllInBox(HoleFiller.mc.player.getPosition().add(-range.getValue(), -range.getValue(), -range.getValue()), HoleFiller.mc.player.getPosition().add(range.getValue(), range.getValue(), range.getValue()));
+        final Iterable<BlockPos> blocks = BlockPos.getAllInBox(HoleFill.mc.player.getPosition().add(-range.getValue(), -range.getValue(), -range.getValue()), HoleFill.mc.player.getPosition().add(range.getValue(), range.getValue(), range.getValue()));
         for (final BlockPos pos : blocks) {
-            if (!HoleFiller.mc.world.getBlockState(pos).getMaterial().blocksMovement() && !HoleFiller.mc.world.getBlockState(pos.add(0, 1, 0)).getMaterial().blocksMovement()) {
-                final boolean solidNeighbours = (HoleFiller.mc.world.getBlockState(pos.add(1, 0, 0)).getBlock() == Blocks.BEDROCK | HoleFiller.mc.world.getBlockState(pos.add(1, 0, 0)).getBlock() == Blocks.OBSIDIAN) && (HoleFiller.mc.world.getBlockState(pos.add(0, 0, 1)).getBlock() == Blocks.BEDROCK | HoleFiller.mc.world.getBlockState(pos.add(0, 0, 1)).getBlock() == Blocks.OBSIDIAN) && (HoleFiller.mc.world.getBlockState(pos.add(-1, 0, 0)).getBlock() == Blocks.BEDROCK | HoleFiller.mc.world.getBlockState(pos.add(-1, 0, 0)).getBlock() == Blocks.OBSIDIAN) && (HoleFiller.mc.world.getBlockState(pos.add(0, 0, -1)).getBlock() == Blocks.BEDROCK | HoleFiller.mc.world.getBlockState(pos.add(0, 0, -1)).getBlock() == Blocks.OBSIDIAN) && HoleFiller.mc.world.getBlockState(pos.add(0, 0, 0)).getMaterial() == Material.AIR && HoleFiller.mc.world.getBlockState(pos.add(0, 1, 0)).getMaterial() == Material.AIR && HoleFiller.mc.world.getBlockState(pos.add(0, 2, 0)).getMaterial() == Material.AIR;
+            if (!HoleFill.mc.world.getBlockState(pos).getMaterial().blocksMovement() && !HoleFill.mc.world.getBlockState(pos.add(0, 1, 0)).getMaterial().blocksMovement()) {
+                final boolean solidNeighbours = (HoleFill.mc.world.getBlockState(pos.add(1, 0, 0)).getBlock() == Blocks.BEDROCK | HoleFill.mc.world.getBlockState(pos.add(1, 0, 0)).getBlock() == Blocks.OBSIDIAN) && (HoleFill.mc.world.getBlockState(pos.add(0, 0, 1)).getBlock() == Blocks.BEDROCK | HoleFill.mc.world.getBlockState(pos.add(0, 0, 1)).getBlock() == Blocks.OBSIDIAN) && (HoleFill.mc.world.getBlockState(pos.add(-1, 0, 0)).getBlock() == Blocks.BEDROCK | HoleFill.mc.world.getBlockState(pos.add(-1, 0, 0)).getBlock() == Blocks.OBSIDIAN) && (HoleFill.mc.world.getBlockState(pos.add(0, 0, -1)).getBlock() == Blocks.BEDROCK | HoleFill.mc.world.getBlockState(pos.add(0, 0, -1)).getBlock() == Blocks.OBSIDIAN) && HoleFill.mc.world.getBlockState(pos.add(0, 0, 0)).getMaterial() == Material.AIR && HoleFill.mc.world.getBlockState(pos.add(0, 1, 0)).getMaterial() == Material.AIR && HoleFill.mc.world.getBlockState(pos.add(0, 2, 0)).getMaterial() == Material.AIR;
                 if (!solidNeighbours) {
                     continue;
                 }
@@ -102,7 +102,7 @@ public class HoleFiller extends Module {
     }
 
     private void placeBlock(final BlockPos pos) {
-        for (final Entity entity : HoleFiller.mc.world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(pos))) {
+        for (final Entity entity : HoleFill.mc.world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(pos))) {
             if (entity instanceof EntityLivingBase) {
                 return;
             }
@@ -119,13 +119,13 @@ public class HoleFiller extends Module {
             } else {
                 isSneaking = BlockUtil.placeBlock(pos, hasOffhand ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND, rotate.getValue(), packet.getValue(), isSneaking);
             }
-            final int originalSlot = HoleFiller.mc.player.inventory.currentItem;
-            HoleFiller.mc.player.inventory.currentItem = ((obbySlot == -1) ? eChestSot : obbySlot);
-            HoleFiller.mc.playerController.updateController();
+            final int originalSlot = HoleFill.mc.player.inventory.currentItem;
+            HoleFill.mc.player.inventory.currentItem = ((obbySlot == -1) ? eChestSot : obbySlot);
+            HoleFill.mc.playerController.updateController();
             TestUtil.placeBlock(pos);
-            if (HoleFiller.mc.player.inventory.currentItem != originalSlot) {
-                HoleFiller.mc.player.inventory.currentItem = originalSlot;
-                HoleFiller.mc.playerController.updateController();
+            if (HoleFill.mc.player.inventory.currentItem != originalSlot) {
+                HoleFill.mc.player.inventory.currentItem = originalSlot;
+                HoleFill.mc.playerController.updateController();
             }
             timer.reset();
             ++blocksThisTick;

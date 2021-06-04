@@ -1,9 +1,8 @@
 package me.alpha432.oyvey.manager;
 
 import io.netty.util.internal.ConcurrentSet;
-import me.alpha432.oyvey.OyVey;
+import me.alpha432.oyvey.bopis;
 import me.alpha432.oyvey.util.Enemy;
-import com.google.gson.annotations.SerializedName;
 
 public class Enemies extends RotationManager {
     private static ConcurrentSet<Enemy> enemies = new ConcurrentSet<>();
@@ -15,7 +14,7 @@ public class Enemies extends RotationManager {
     }
     public static Enemy getEnemyByName(String name) {
         for (Enemy e : enemies) {
-            if (OyVey.enemy.username.equalsIgnoreCase(name)) {
+            if (bopis.enemy.username.equalsIgnoreCase(name)) {
                 return e;
             }
         }

@@ -1,6 +1,6 @@
 package me.alpha432.oyvey.features.command.commands;
 
-import me.alpha432.oyvey.OyVey;
+import me.alpha432.oyvey.bopis;
 import me.alpha432.oyvey.features.command.Command;
 
 public class ReloadCommand
@@ -11,7 +11,7 @@ public class ReloadCommand
 
     @Override
     public void execute(String[] commands) {
-        OyVey.reload();
+        bopis.reload();
     }
 }
 
