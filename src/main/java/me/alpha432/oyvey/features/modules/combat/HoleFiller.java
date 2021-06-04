@@ -17,20 +17,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class HoleFiller extends Module {
-    private static final BlockPos[] surroundOffset;
-    private static HoleFiller INSTANCE;
 
-    static {
-        HoleFiller.INSTANCE = new HoleFiller();
-        surroundOffset = BlockUtil.toBlockPos(EntityUtil.getOffsets(0, true));
-    }
+public class HoleFiller extends Module {
+    private static HoleFiller INSTANCE = new HoleFiller();
 
     private final Setting<Integer> range;
     private final Setting<Integer> delay;
     private final Setting<Boolean> rotate;
     private final Setting<Integer> blocksPerTick;
-    private final Setting<Boolean> packet = register(new Setting("Packet", false));
+    private final Setting<Boolean> packet;
     private final Timer offTimer;
     private final Timer timer;
     private boolean isSneaking;
@@ -39,14 +34,14 @@ public class HoleFiller extends Module {
     private final Timer retryTimer;
     private int blocksThisTick;
     private ArrayList<BlockPos> holes;
-    private int trie;
 
-    public HoleFiller() {
+	public HoleFiller() {
         super("HoleFill", "Fills holes around you.", Category.COMBAT, true, false, true);
-        range = (Setting<Integer>) register(new Setting("PlaceRange", 8, 0, 10));
-        delay = (Setting<Integer>) register(new Setting("Delay", 50, 0, 250));
-        blocksPerTick = (Setting<Integer>) register(new Setting("BlocksPerTick", 4, 1, 30));
-        rotate = (Setting<Boolean>) register(new Setting("Rotate", true));
+        range = (Setting<Integer>) register(new Setting<Integer>("PlaceRange", 8, 0, 10));
+        delay = (Setting<Integer>) register(new Setting<Integer>("Delay", 50, 0, 250));
+        blocksPerTick = (Setting<Integer>) register(new Setting<Integer>("BlocksPerTick", 4, 1, 30));
+        rotate = (Setting<Boolean>) register(new Setting<Boolean>("Rotate", true));
+        packet = (Setting<Boolean>) register(new Setting<Boolean>("Packet", false));
         offTimer = new Timer();
         timer = new Timer();
         blocksThisTick = 0;
@@ -73,7 +68,6 @@ public class HoleFiller extends Module {
             disable();
         }
         offTimer.reset();
-        trie = 0;
     }
 
     @Override
