@@ -1,6 +1,6 @@
 package me.alpha432.oyvey.features.modules.movement;
 
-import me.alpha432.oyvey.bopis;
+import me.alpha432.oyvey.Bopis;
 import me.alpha432.oyvey.event.events.PacketEvent;
 import me.alpha432.oyvey.event.events.KeyPressedEvent;
 import me.alpha432.oyvey.features.modules.Module;
@@ -72,7 +72,7 @@ public class NoSlowDown extends Module {
                 }
             }
         }
-        if (webs.getValue().booleanValue() && bopis.moduleManager.getModuleByClass(Flight.class).isDisabled() && bopis.moduleManager.getModuleByClass(PacketFly.class).isDisabled() && NoSlowDown.mc.player.isInWeb) {
+        if (webs.getValue().booleanValue() && Bopis.moduleManager.getModuleByClass(Flight.class).isDisabled() && Bopis.moduleManager.getModuleByClass(PacketFly.class).isDisabled() && NoSlowDown.mc.player.isInWeb) {
             NoSlowDown.mc.player.motionX *= webHorizontalFactor.getValue().doubleValue();
             NoSlowDown.mc.player.motionZ *= webHorizontalFactor.getValue().doubleValue();
             NoSlowDown.mc.player.motionY *= webVerticalFactor.getValue().doubleValue();

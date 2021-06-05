@@ -1,6 +1,6 @@
 package me.alpha432.oyvey.util;
 
-import me.alpha432.oyvey.bopis;
+import me.alpha432.oyvey.Bopis;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -194,7 +194,7 @@ public class InventoryUtil
                     switchedItemSwitched[0] = true;
                 } else if (back && switchedItem) {
                     switchedItemSwitched[0] = false;
-                    bopis.inventoryManager.recoverSilent(lastHotbarSlot);
+                    Bopis.inventoryManager.recoverSilent(lastHotbarSlot);
                 }
                 switchedItemSwitched[1] = true;
                 break;
@@ -226,7 +226,7 @@ public class InventoryUtil
                     switchedItemSwitched[0] = true;
                 } else if (back && switchedItem) {
                     switchedItemSwitched[0] = false;
-                    bopis.inventoryManager.recoverSilent(lastHotbarSlot);
+                    Bopis.inventoryManager.recoverSilent(lastHotbarSlot);
                 }
                 switchedItemSwitched[1] = true;
                 break;

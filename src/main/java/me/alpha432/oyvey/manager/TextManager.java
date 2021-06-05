@@ -1,6 +1,6 @@
 package me.alpha432.oyvey.manager;
 
-import me.alpha432.oyvey.bopis;
+import me.alpha432.oyvey.Bopis;
 import me.alpha432.oyvey.features.Feature;
 import me.alpha432.oyvey.features.gui.font.CustomFont;
 import me.alpha432.oyvey.features.modules.client.FontMod;
@@ -24,7 +24,7 @@ public class TextManager
     }
 
     public void init(boolean startup) {
-        FontMod cFont = bopis.moduleManager.getModuleByClass(FontMod.class);
+        FontMod cFont = Bopis.moduleManager.getModuleByClass(FontMod.class);
         try {
             this.setFontRenderer(new Font(cFont.fontName.getValue(), cFont.fontStyle.getValue(), cFont.fontSize.getValue()), cFont.antiAlias.getValue(), cFont.fractionalMetrics.getValue());
         } catch (Exception exception) {
@@ -37,7 +37,7 @@ public class TextManager
     }
 
     public float drawString(String text, float x, float y, int color, boolean shadow) {
-        if (bopis.moduleManager.isModuleEnabled(FontMod.getInstance().getName())) {
+        if (Bopis.moduleManager.isModuleEnabled(FontMod.getInstance().getName())) {
             if (shadow) {
                 this.customFont.drawStringWithShadow(text, x, y, color);
             } else {
@@ -87,14 +87,14 @@ public class TextManager
     }
 
     public int getStringWidth(String text) {
-        if (bopis.moduleManager.isModuleEnabled(FontMod.getInstance().getName())) {
+        if (Bopis.moduleManager.isModuleEnabled(FontMod.getInstance().getName())) {
             return this.customFont.getStringWidth(text);
         }
         return TextManager.mc.fontRenderer.getStringWidth(text);
     }
 
     public int getFontHeight() {
-        if (bopis.moduleManager.isModuleEnabled(FontMod.getInstance().getName())) {
+        if (Bopis.moduleManager.isModuleEnabled(FontMod.getInstance().getName())) {
             String text = "A";
             return this.customFont.getStringHeight(text);
         }

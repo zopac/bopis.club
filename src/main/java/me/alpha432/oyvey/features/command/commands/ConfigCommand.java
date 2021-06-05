@@ -1,7 +1,7 @@
 package me.alpha432.oyvey.features.command.commands;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
-import me.alpha432.oyvey.bopis;
+import me.alpha432.oyvey.Bopis;
 import me.alpha432.oyvey.features.command.Command;
 
 import java.io.File;
@@ -35,12 +35,12 @@ public class ConfigCommand extends Command {
         if (commands.length >= 3) {
             switch (commands[0]) {
                 case "save":
-                    bopis.configManager.saveConfig(commands[1]);
+                    Bopis.configManager.saveConfig(commands[1]);
                     sendMessage(ChatFormatting.GREEN + "Config '" + commands[1] + "' has been saved.");
                     return;
                 case "load":
-                    if (bopis.configManager.configExists(commands[1])) {
-                        bopis.configManager.loadConfig(commands[1]);
+                    if (Bopis.configManager.configExists(commands[1])) {
+                        Bopis.configManager.loadConfig(commands[1]);
                         sendMessage(ChatFormatting.GREEN + "Config '" + commands[1] + "' has been loaded.");
                     } else {
                         sendMessage(ChatFormatting.RED + "Config '" + commands[1] + "' does not exist.");

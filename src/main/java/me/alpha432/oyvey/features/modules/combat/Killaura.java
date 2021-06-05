@@ -1,6 +1,6 @@
 package me.alpha432.oyvey.features.modules.combat;
 
-import me.alpha432.oyvey.bopis;
+import me.alpha432.oyvey.Bopis;
 import me.alpha432.oyvey.event.events.UpdateWalkingPlayerEvent;
 import me.alpha432.oyvey.features.modules.Module;
 import me.alpha432.oyvey.features.setting.Setting;
@@ -48,14 +48,14 @@ public class Killaura extends Module {
             target = null;
             return;
         }
-        int wait = !delay.getValue().booleanValue() ? 0 : (int) (DamageUtil.getCooldownByWeapon(mc.player) * (tps.getValue().booleanValue() ? bopis.serverManager.getTpsFactor() : 1.0F));
+        int wait = !delay.getValue().booleanValue() ? 0 : (int) (DamageUtil.getCooldownByWeapon(mc.player) * (tps.getValue().booleanValue() ? Bopis.serverManager.getTpsFactor() : 1.0F));
         if (!timer.passedMs(wait))
             return;
         target = getTarget();
         if (target == null)
             return;
         if (rotate.getValue().booleanValue())
-            bopis.rotationManager.lookAtEntity(target);
+            Bopis.rotationManager.lookAtEntity(target);
         EntityUtil.attackEntity(target, packet.getValue().booleanValue(), true);
         timer.reset();
     }

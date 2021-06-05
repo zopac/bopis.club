@@ -1,6 +1,6 @@
 package me.alpha432.oyvey.features.modules.render;
 
-import me.alpha432.oyvey.bopis;
+import me.alpha432.oyvey.Bopis;
 import me.alpha432.oyvey.event.events.Render3DEvent;
 import me.alpha432.oyvey.features.modules.Module;
 import me.alpha432.oyvey.features.modules.client.ClickGui;
@@ -64,7 +64,7 @@ public class Skeleton extends Module {
             GL11.glPushMatrix();
             GL11.glEnable(2848);
             GL11.glLineWidth(lineWidth.getValue().floatValue());
-            if (bopis.friendManager.isFriend(e.getName())) {
+            if (Bopis.friendManager.isFriend(e.getName())) {
                 GlStateManager.color(0.0f, 191.0f, 230.0f, (float) alpha.getValue().intValue());
             } else {
                 GlStateManager.color((float) ClickGui.getInstance().red.getValue().intValue() / 255.0f, (float) ClickGui.getInstance().green.getValue().intValue() / 255.0f, (float) ClickGui.getInstance().blue.getValue().intValue() / 255.0f, (float) alpha.getValue().intValue());

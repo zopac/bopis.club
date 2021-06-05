@@ -1,7 +1,7 @@
 package me.alpha432.oyvey.manager;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
-import me.alpha432.oyvey.bopis;
+import me.alpha432.oyvey.Bopis;
 import me.alpha432.oyvey.event.events.PacketEvent;
 import me.alpha432.oyvey.features.Feature;
 import me.alpha432.oyvey.features.command.Command;
@@ -29,7 +29,7 @@ public class ReloadManager
     public void onPacketSend(PacketEvent.Send event) {
         CPacketChatMessage packet;
         if (event.getPacket() instanceof CPacketChatMessage && (packet = event.getPacket()).getMessage().startsWith(this.prefix) && packet.getMessage().contains("reload")) {
-            bopis.load();
+            Bopis.load();
             event.setCanceled(true);
         }
     }

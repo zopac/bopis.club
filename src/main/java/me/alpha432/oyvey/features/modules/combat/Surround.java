@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
-import me.alpha432.oyvey.bopis;
+import me.alpha432.oyvey.Bopis;
 import me.alpha432.oyvey.features.command.Command;
 import me.alpha432.oyvey.features.modules.Module;
 import me.alpha432.oyvey.features.setting.Setting;
@@ -56,7 +56,7 @@ public class Surround
         lastHotbarSlot = Surround.mc.player.inventory.currentItem;
         startPos = EntityUtil.getRoundedBlockPos(Surround.mc.player);
         if (center.getValue().booleanValue()) {
-            bopis.positionManager.setPositionPacket((double) startPos.getX() + 0.5, startPos.getY(), (double) startPos.getZ() + 0.5, true, true, true);
+            Bopis.positionManager.setPositionPacket((double) startPos.getX() + 0.5, startPos.getY(), (double) startPos.getZ() + 0.5, true, true, true);
         }
         retries.clear();
         retryTimer.reset();
@@ -158,7 +158,7 @@ public class Surround
                         retryTimer.reset();
                         continue block5;
                     }
-                    if (bopis.speedManager.getSpeedKpH() != 0.0 || isExtending || extenders >= 1) continue block5;
+                    if (Bopis.speedManager.getSpeedKpH() != 0.0 || isExtending || extenders >= 1) continue block5;
                     placeBlocks(Surround.mc.player.getPositionVector().add(vec3d), EntityUtil.getUnsafeBlockArrayFromVec3d(Surround.mc.player.getPositionVector().add(vec3d), 0, true), hasHelpingBlocks, false, true);
                     extendingBlocks.add(vec3d);
                     ++extenders;

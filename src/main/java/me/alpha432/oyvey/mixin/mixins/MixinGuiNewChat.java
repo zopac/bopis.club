@@ -3,7 +3,7 @@ package me.alpha432.oyvey.mixin.mixins;
 import java.awt.Color;
 import java.util.List;
 
-import me.alpha432.oyvey.bopis;
+import me.alpha432.oyvey.Bopis;
 import me.alpha432.oyvey.features.modules.client.HUD;
 import me.alpha432.oyvey.features.modules.misc.ChatModifier;
 import net.minecraft.client.Minecraft;
@@ -34,7 +34,7 @@ public class MixinGuiNewChat
     private int drawStringWithShadow(FontRenderer fontRenderer, String text, float x, float y, int color) {
         if (text.contains("\u00a7+")) {
             float colorSpeed = 101 - HUD.getInstance().rainbowSpeed.getValue();
-            bopis.textManager.drawRainbowString(text, x, y, Color.HSBtoRGB(HUD.getInstance().hue, 1.0f, 1.0f), 100.0f, true);
+            Bopis.textManager.drawRainbowString(text, x, y, Color.HSBtoRGB(HUD.getInstance().hue, 1.0f, 1.0f), 100.0f, true);
         } else {
             Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(text, x, y, color);
         }

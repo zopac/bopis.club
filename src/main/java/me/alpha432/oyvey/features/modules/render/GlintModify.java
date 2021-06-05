@@ -1,6 +1,6 @@
 package me.alpha432.oyvey.features.modules.render;
 
-import me.alpha432.oyvey.bopis;
+import me.alpha432.oyvey.Bopis;
 import me.alpha432.oyvey.features.modules.Module;
 import me.alpha432.oyvey.features.setting.Setting;
 
@@ -17,8 +17,8 @@ public class GlintModify extends Module {
     }
 
     public static Color getColor(long offset, float fade) {
-        if (!bopis.moduleManager.getModuleT(GlintModify.class).rainbow.getValue()) {
-            return new Color(bopis.moduleManager.getModuleT(GlintModify.class).red.getValue(), bopis.moduleManager.getModuleT(GlintModify.class).green.getValue(), bopis.moduleManager.getModuleT(GlintModify.class).blue.getValue());
+        if (!Bopis.moduleManager.getModuleT(GlintModify.class).rainbow.getValue()) {
+            return new Color(Bopis.moduleManager.getModuleT(GlintModify.class).red.getValue(), Bopis.moduleManager.getModuleT(GlintModify.class).green.getValue(), Bopis.moduleManager.getModuleT(GlintModify.class).blue.getValue());
         }
         float hue = (float) (System.nanoTime() + offset) / 1.0E10F % 1.0F;
         long color = Long.parseLong(Integer.toHexString(Integer.valueOf(Color.HSBtoRGB(hue, 1.0F, 1.0F)).intValue()), 16);

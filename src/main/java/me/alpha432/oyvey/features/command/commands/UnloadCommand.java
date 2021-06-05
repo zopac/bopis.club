@@ -1,6 +1,6 @@
 package me.alpha432.oyvey.features.command.commands;
 
-import me.alpha432.oyvey.bopis;
+import me.alpha432.oyvey.Bopis;
 import me.alpha432.oyvey.features.command.Command;
 
 public class UnloadCommand
@@ -11,7 +11,7 @@ public class UnloadCommand
 
     @Override
     public void execute(String[] commands) {
-        bopis.unload(true);
+        Bopis.unload(true);
     }
 }
 

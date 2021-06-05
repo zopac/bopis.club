@@ -1,6 +1,6 @@
 package me.alpha432.oyvey.mixin.mixins;
 
-import me.alpha432.oyvey.bopis;
+import me.alpha432.oyvey.Bopis;
 import me.alpha432.oyvey.features.modules.client.FontMod;
 import me.alpha432.oyvey.features.modules.client.NickHider;
 import net.minecraft.client.Minecraft;
@@ -34,8 +34,8 @@ public abstract class MixinFontRenderer {
 
     @Inject(method={"drawString(Ljava/lang/String;FFIZ)I"}, at={@At(value="HEAD")}, cancellable=true)
     public void renderStringHook(String text, float x, float y, int color, boolean dropShadow, CallbackInfoReturnable<Integer> info) {
-        if (FontMod.getInstance().isOn() && bopis.moduleManager.getModuleT(FontMod.class).customAll.getValue() && bopis.textManager != null) {
-            float result = bopis.textManager.drawString(text, x, y, color, dropShadow);
+        if (FontMod.getInstance().isOn() && Bopis.moduleManager.getModuleT(FontMod.class).customAll.getValue() && Bopis.textManager != null) {
+            float result = Bopis.textManager.drawString(text, x, y, color, dropShadow);
             info.setReturnValue((int)result);
         }
     }

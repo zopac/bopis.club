@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
 
-import me.alpha432.oyvey.bopis;
+import me.alpha432.oyvey.Bopis;
 import me.alpha432.oyvey.features.command.Command;
 import me.alpha432.oyvey.features.modules.Module;
 import me.alpha432.oyvey.features.setting.Setting;
@@ -297,7 +297,7 @@ public class BedAura extends Module {
             if (target == mc.player) {
                 continue;
             }
-            if (bopis.friendManager.isFriend(target.getName())) {
+            if (Bopis.friendManager.isFriend(target.getName())) {
                 continue;
             }
             if (!isLiving(target)) {

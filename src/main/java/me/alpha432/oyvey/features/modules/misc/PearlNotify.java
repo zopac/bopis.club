@@ -1,7 +1,7 @@
 package me.alpha432.oyvey.features.modules.misc;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
-import me.alpha432.oyvey.bopis;
+import me.alpha432.oyvey.Bopis;
 import me.alpha432.oyvey.features.command.Command;
 import me.alpha432.oyvey.features.modules.Module;
 import net.minecraft.entity.Entity;
@@ -63,7 +63,7 @@ public class PearlNotify extends Module {
             } else if (faceing.equals("east")) {
                 faceing = "west";
             }
-            Command.sendSilentMessage(bopis.friendManager.isFriend(closestPlayer.getName()) ? (ChatFormatting.AQUA + closestPlayer.getName() + ChatFormatting.DARK_GRAY + " has just thrown a pearl heading " + faceing + "!") : (ChatFormatting.RED + closestPlayer.getName() + ChatFormatting.DARK_GRAY + " has just thrown a pearl heading " + faceing + "!"));
+            Command.sendSilentMessage(Bopis.friendManager.isFriend(closestPlayer.getName()) ? (ChatFormatting.AQUA + closestPlayer.getName() + ChatFormatting.DARK_GRAY + " has just thrown a pearl heading " + faceing + "!") : (ChatFormatting.RED + closestPlayer.getName() + ChatFormatting.DARK_GRAY + " has just thrown a pearl heading " + faceing + "!"));
             flag = false;
         }
     }

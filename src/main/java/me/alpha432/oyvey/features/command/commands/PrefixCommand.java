@@ -1,7 +1,7 @@
 package me.alpha432.oyvey.features.command.commands;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
-import me.alpha432.oyvey.bopis;
+import me.alpha432.oyvey.Bopis;
 import me.alpha432.oyvey.features.command.Command;
 
 public class PrefixCommand
@@ -13,10 +13,10 @@ public class PrefixCommand
     @Override
     public void execute(String[] commands) {
         if (commands.length == 1) {
-            Command.sendMessage(ChatFormatting.GREEN + "Current prefix is " + bopis.commandManager.getPrefix());
+            Command.sendMessage(ChatFormatting.GREEN + "Current prefix is " + Bopis.commandManager.getPrefix());
             return;
         }
-        bopis.commandManager.setPrefix(commands[0]);
+        Bopis.commandManager.setPrefix(commands[0]);
         Command.sendMessage("Prefix changed to " + ChatFormatting.GRAY + commands[0]);
     }
 }

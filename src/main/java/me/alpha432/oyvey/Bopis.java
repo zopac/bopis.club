@@ -20,7 +20,7 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 
 @Mod(modid = "bopis", name = "bopis", version = "1.8.3")
-public class bopis {
+public class Bopis {
     public static final String MODID = "bopis";
     public static final String MODNAME = "bopis";
     public static final String MODVER = "1.8.3";
@@ -47,7 +47,7 @@ public class bopis {
     public static Render3DEvent render3DEvent;
     public static Enemy enemy;
     @Mod.Instance
-    public static bopis INSTANCE;
+    public static Bopis INSTANCE;
     private static boolean unloaded;
 
     static {
@@ -94,7 +94,7 @@ public class bopis {
             reloadManager = new ReloadManager();
             reloadManager.init(commandManager != null ? commandManager.getPrefix() : ".");
         }
-        bopis.onUnload();
+        Bopis.onUnload();
         eventManager = null;
         friendManager = null;
         speedManager = null;
@@ -114,15 +114,15 @@ public class bopis {
     }
 
     public static void reload() {
-        bopis.unload(false);
-        bopis.load();
+        Bopis.unload(false);
+        Bopis.load();
     }
 
     public static void onUnload() {
         if (!unloaded) {
             eventManager.onUnload();
             moduleManager.onUnload();
-            configManager.saveConfig(bopis.configManager.config.replaceFirst("oyvey/", ""));
+            configManager.saveConfig(Bopis.configManager.config.replaceFirst("oyvey/", ""));
             moduleManager.onUnloadPost();
             unloaded = true;
         }
@@ -141,20 +141,20 @@ public class bopis {
                 ByteBuffer[] icons = new ByteBuffer[]{IconUtil.INSTANCE.readImageToBuffer(inputStream16x), IconUtil.INSTANCE.readImageToBuffer(inputStream32x)};
                 Display.setIcon(icons);
             } catch (Exception e) {
-                bopis.LOGGER.error("Couldn't set Windows Icon", e);
+                Bopis.LOGGER.error("Couldn't set Windows Icon", e);
             }
         }
     }
 
     private void setWindowsIcon() {
-        bopis.setWindowIcon();
+        Bopis.setWindowIcon();
     }
 
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
         MinecraftForge.EVENT_BUS.register(new Title());
-        bopis.load();
+        Bopis.load();
         setWindowsIcon();
     }
 }

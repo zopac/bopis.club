@@ -1,6 +1,6 @@
 package me.alpha432.oyvey.manager;
 
-import me.alpha432.oyvey.bopis;
+import me.alpha432.oyvey.Bopis;
 import me.alpha432.oyvey.features.Feature;
 import me.alpha432.oyvey.features.modules.Module;
 
@@ -24,7 +24,7 @@ public class FileManager
 
     public FileManager() {
         this.getMkDirectory(this.base, "pvp");
-        for (Module.Category category : bopis.moduleManager.getCategories()) {
+        for (Module.Category category : Bopis.moduleManager.getCategories()) {
             this.getMkDirectory(this.config, category.getName());
         }
     }

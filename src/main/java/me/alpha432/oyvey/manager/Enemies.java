@@ -1,7 +1,7 @@
 package me.alpha432.oyvey.manager;
 
 import io.netty.util.internal.ConcurrentSet;
-import me.alpha432.oyvey.bopis;
+import me.alpha432.oyvey.Bopis;
 import me.alpha432.oyvey.util.Enemy;
 
 public class Enemies extends RotationManager {
@@ -14,7 +14,7 @@ public class Enemies extends RotationManager {
     }
     public static Enemy getEnemyByName(String name) {
         for (Enemy e : enemies) {
-            if (bopis.enemy.username.equalsIgnoreCase(name)) {
+            if (Bopis.enemy.username.equalsIgnoreCase(name)) {
                 return e;
             }
         }

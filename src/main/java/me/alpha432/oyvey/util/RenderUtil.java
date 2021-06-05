@@ -1,6 +1,6 @@
 package me.alpha432.oyvey.util;
 
-import me.alpha432.oyvey.bopis;
+import me.alpha432.oyvey.Bopis;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.EXTFramebufferObject;
 import net.minecraft.client.shader.Framebuffer;
@@ -1104,8 +1104,8 @@ public class RenderUtil implements Util
         GlStateManager.pushMatrix();
         glBillboardDistanceScaled(pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f, (EntityPlayer)RenderUtil.mc.player, 1.0f);
         GlStateManager.disableDepth();
-        GlStateManager.translate(-(bopis.textManager.getStringWidth(text) / 2.0), 0.0, 0.0);
-        bopis.textManager.drawStringWithShadow(text, 0.0f, 0.0f, -5592406);
+        GlStateManager.translate(-(Bopis.textManager.getStringWidth(text) / 2.0), 0.0, 0.0);
+        Bopis.textManager.drawStringWithShadow(text, 0.0f, 0.0f, -5592406);
         GlStateManager.popMatrix();
     }
 

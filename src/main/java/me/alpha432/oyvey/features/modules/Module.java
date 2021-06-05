@@ -1,7 +1,7 @@
 package me.alpha432.oyvey.features.modules;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
-import me.alpha432.oyvey.bopis;
+import me.alpha432.oyvey.Bopis;
 import me.alpha432.oyvey.event.events.ClientEvent;
 import me.alpha432.oyvey.event.events.Render2DEvent;
 import me.alpha432.oyvey.event.events.Render3DEvent;
@@ -102,7 +102,7 @@ public class Module
         this.onToggle();
         this.onEnable();
         if (HUD.getInstance().notifyToggles.getValue().booleanValue()) {
-            TextComponentString text = new TextComponentString(bopis.commandManager.getClientMessage() + " " + ChatFormatting.GREEN + this.getDisplayName() + " toggled on.");
+            TextComponentString text = new TextComponentString(Bopis.commandManager.getClientMessage() + " " + ChatFormatting.GREEN + this.getDisplayName() + " toggled on.");
             Module.mc.ingameGUI.getChatGUI().printChatMessageWithOptionalDeletion(text, 1);
         }
         if (this.isOn() && this.hasListener && !this.alwaysListening) {
@@ -116,7 +116,7 @@ public class Module
         }
         this.enabled.setValue(false);
         if (HUD.getInstance().notifyToggles.getValue().booleanValue()) {
-            TextComponentString text = new TextComponentString(bopis.commandManager.getClientMessage() + " " + ChatFormatting.RED + this.getDisplayName() + " toggled off.");
+            TextComponentString text = new TextComponentString(Bopis.commandManager.getClientMessage() + " " + ChatFormatting.RED + this.getDisplayName() + " toggled off.");
             Module.mc.ingameGUI.getChatGUI().printChatMessageWithOptionalDeletion(text, 1);
         }
         this.onToggle();
@@ -136,8 +136,8 @@ public class Module
     }
 
     public void setDisplayName(String name) {
-        Module module = bopis.moduleManager.getModuleByDisplayName(name);
-        Module originalModule = bopis.moduleManager.getModuleByName(name);
+        Module module = Bopis.moduleManager.getModuleByDisplayName(name);
+        Module originalModule = Bopis.moduleManager.getModuleByName(name);
         if (module == null && originalModule == null) {
             Command.sendMessage(this.getDisplayName() + ", name: " + this.getName() + ", has been renamed to: " + name);
             this.displayName.setValue(name);

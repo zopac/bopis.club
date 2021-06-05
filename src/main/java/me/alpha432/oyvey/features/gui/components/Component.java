@@ -1,6 +1,6 @@
 package me.alpha432.oyvey.features.gui.components;
 
-import me.alpha432.oyvey.bopis;
+import me.alpha432.oyvey.Bopis;
 import me.alpha432.oyvey.features.Feature;
 import me.alpha432.oyvey.features.gui.OyVeyGui;
 import me.alpha432.oyvey.features.gui.components.items.Item;
@@ -58,7 +58,7 @@ public class Component
         if (this.open) {
             RenderUtil.drawRect(this.x, (float) this.y + 12.5f, this.x + this.width, (float) (this.y + this.height) + totalItemHeight, 0x77000000);
         }
-        bopis.textManager.drawStringWithShadow(this.getName(), (float) this.x + 3.0f, (float) this.y - 4.0f - (float) OyVeyGui.getClickGui().getTextOffset(), -1);
+        Bopis.textManager.drawStringWithShadow(this.getName(), (float) this.x + 3.0f, (float) this.y - 4.0f - (float) OyVeyGui.getClickGui().getTextOffset(), -1);
         if (this.open) {
             float y = (float) (this.getY() + this.getHeight()) - 3.0f;
             for (Item item : this.getItems()) {

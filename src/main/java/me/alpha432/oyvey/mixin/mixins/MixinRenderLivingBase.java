@@ -1,6 +1,6 @@
 package me.alpha432.oyvey.mixin.mixins;
 
-import me.alpha432.oyvey.bopis;
+import me.alpha432.oyvey.Bopis;
 import me.alpha432.oyvey.features.modules.render.Chams;
 import me.alpha432.oyvey.util.ColorUtil;
 import net.minecraft.client.Minecraft;
@@ -116,7 +116,7 @@ public abstract class MixinRenderLivingBase<T extends EntityLivingBase> extends 
                         GL11.glBlendFunc(770, 771);
                         GL11.glDisable(2929);
                         GL11.glDepthMask(false);
-                        if (bopis.friendManager.isFriend(entity.getName()) || entity == (Minecraft.getMinecraft()).player) {
+                        if (Bopis.friendManager.isFriend(entity.getName()) || entity == (Minecraft.getMinecraft()).player) {
                             GL11.glColor4f(0.0F, 191.0F, 255.0F, (Chams.getInstance()).alpha.getValue().floatValue() / 255.0F);
                         } else {
                             GL11.glColor4f((Chams.getInstance()).rainbow.getValue().booleanValue() ? (ColorUtil.rainbow((Chams.getInstance()).rainbowHue.getValue().intValue()).getRed() / 255.0F) : this.red, (Chams.getInstance()).rainbow.getValue().booleanValue() ? (ColorUtil.rainbow((Chams.getInstance()).rainbowHue.getValue().intValue()).getGreen() / 255.0F) : this.green, (Chams.getInstance()).rainbow.getValue().booleanValue() ? (ColorUtil.rainbow((Chams.getInstance()).rainbowHue.getValue().intValue()).getBlue() / 255.0F) : this.blue, (Chams.getInstance()).alpha.getValue().floatValue() / 255.0F);
@@ -125,7 +125,7 @@ public abstract class MixinRenderLivingBase<T extends EntityLivingBase> extends 
                         GL11.glDisable(2896);
                         GL11.glEnable(2929);
                         GL11.glDepthMask(true);
-                        if (bopis.friendManager.isFriend(entity.getName()) || entity == (Minecraft.getMinecraft()).player) {
+                        if (Bopis.friendManager.isFriend(entity.getName()) || entity == (Minecraft.getMinecraft()).player) {
                             GL11.glColor4f(0.0F, 191.0F, 255.0F, (Chams.getInstance()).alpha.getValue().floatValue() / 255.0F);
                         } else {
                             GL11.glColor4f((Chams.getInstance()).rainbow.getValue().booleanValue() ? (ColorUtil.rainbow((Chams.getInstance()).rainbowHue.getValue().intValue()).getRed() / 255.0F) : this.red, (Chams.getInstance()).rainbow.getValue().booleanValue() ? (ColorUtil.rainbow((Chams.getInstance()).rainbowHue.getValue().intValue()).getGreen() / 255.0F) : this.green, (Chams.getInstance()).rainbow.getValue().booleanValue() ? (ColorUtil.rainbow((Chams.getInstance()).rainbowHue.getValue().intValue()).getBlue() / 255.0F) : this.blue, (Chams.getInstance()).alpha.getValue().floatValue() / 255.0F);
@@ -156,7 +156,7 @@ public abstract class MixinRenderLivingBase<T extends EntityLivingBase> extends 
                         GL11.glEnable(2848);
                         GL11.glEnable(3042);
                         GL11.glBlendFunc(770, 771);
-                        if (bopis.friendManager.isFriend(entity.getName()) || entity == (Minecraft.getMinecraft()).player) {
+                        if (Bopis.friendManager.isFriend(entity.getName()) || entity == (Minecraft.getMinecraft()).player) {
                             GL11.glColor4f(0.0F, 191.0F, 255.0F, (Chams.getInstance()).alpha.getValue().floatValue() / 255.0F);
                         } else {
                             GL11.glColor4f((Chams.getInstance()).rainbow.getValue().booleanValue() ? (ColorUtil.rainbow((Chams.getInstance()).rainbowHue.getValue().intValue()).getRed() / 255.0F) : this.red, (Chams.getInstance()).rainbow.getValue().booleanValue() ? (ColorUtil.rainbow((Chams.getInstance()).rainbowHue.getValue().intValue()).getGreen() / 255.0F) : this.green, (Chams.getInstance()).rainbow.getValue().booleanValue() ? (ColorUtil.rainbow((Chams.getInstance()).rainbowHue.getValue().intValue()).getBlue() / 255.0F) : this.blue, (Chams.getInstance()).alpha.getValue().floatValue() / 255.0F);

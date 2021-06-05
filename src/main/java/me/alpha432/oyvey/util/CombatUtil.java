@@ -1,6 +1,6 @@
 package me.alpha432.oyvey.util;
 
-import me.alpha432.oyvey.bopis;
+import me.alpha432.oyvey.Bopis;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockLiquid;
@@ -473,7 +473,7 @@ public class CombatUtil {
             areAllInvalid = threads.stream().noneMatch(thread -> thread.isValid && thread.isInterrupted());
         } while (finalPos == null && !areAllInvalid);
 
-        bopis.LOGGER.info(finalPos == null ? "pos was null" : finalPos.toString());
+        Bopis.LOGGER.info(finalPos == null ? "pos was null" : finalPos.toString());
         return finalPos;
     }
 
@@ -520,7 +520,7 @@ public class CombatUtil {
                                 if (!rayTrace || rayTraceRangeCheck(pos, wallsRange, 0.0d)) {
                                     this.isValid = true;
                                     this.info = new CombatPosInfo(this.player, this.pos, this.damage);
-                                    bopis.LOGGER.info("Pos was valid.");
+                                    Bopis.LOGGER.info("Pos was valid.");
                                     return;
                                 }
                             }
@@ -530,7 +530,7 @@ public class CombatUtil {
             }
             this.isValid = false;
             this.info = new CombatPosInfo(this.player, this.pos, -1.0f);
-            bopis.LOGGER.info("Pos was invalid.");
+            Bopis.LOGGER.info("Pos was invalid.");
         }
 
     }

@@ -1,6 +1,6 @@
 package me.alpha432.oyvey.features.modules.combat;
 
-import me.alpha432.oyvey.bopis;
+import me.alpha432.oyvey.Bopis;
 import me.alpha432.oyvey.features.modules.Module;
 import me.alpha432.oyvey.features.setting.Setting;
 import me.alpha432.oyvey.util.EntityUtil;
@@ -68,7 +68,7 @@ public class Auto32kAura extends Module {
             if (!ignoreWalls.getValue() && (!mc.player.canEntityBeSeen(target) && !canEntityFeetBeSeen(target))) {
                 continue;
             }
-            if (attackPlayers.getValue() && target instanceof EntityPlayer && !bopis.friendManager.isFriend(target.getName())) {
+            if (attackPlayers.getValue() && target instanceof EntityPlayer && !Bopis.friendManager.isFriend(target.getName())) {
                 attack(target);
                 return;
             } else {

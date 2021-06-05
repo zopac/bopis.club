@@ -1,7 +1,7 @@
 package me.alpha432.oyvey.features.modules.misc;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
-import me.alpha432.oyvey.bopis;
+import me.alpha432.oyvey.Bopis;
 import me.alpha432.oyvey.features.command.Command;
 import me.alpha432.oyvey.features.modules.Module;
 import net.minecraft.entity.Entity;
@@ -32,11 +32,11 @@ public class MCF extends Module {
         Entity entity;
         RayTraceResult result = MCF.mc.objectMouseOver;
         if (result != null && result.typeOfHit == RayTraceResult.Type.ENTITY && (entity = result.entityHit) instanceof EntityPlayer) {
-            if (bopis.friendManager.isFriend(entity.getName())) {
-                bopis.friendManager.removeFriend(entity.getName());
+            if (Bopis.friendManager.isFriend(entity.getName())) {
+                Bopis.friendManager.removeFriend(entity.getName());
                 Command.sendMessage(ChatFormatting.RED + entity.getName() + ChatFormatting.RED + " has been unfriended.");
             } else {
-                bopis.friendManager.addFriend(entity.getName());
+                Bopis.friendManager.addFriend(entity.getName());
                 Command.sendMessage(ChatFormatting.AQUA + entity.getName() + ChatFormatting.AQUA + " has been friended.");
             }
         }

@@ -1,7 +1,7 @@
 package me.alpha432.oyvey.features.modules.client;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
-import me.alpha432.oyvey.bopis;
+import me.alpha432.oyvey.Bopis;
 import me.alpha432.oyvey.event.events.ClientEvent;
 import me.alpha432.oyvey.features.command.Command;
 import me.alpha432.oyvey.features.gui.OyVeyGui;
@@ -68,10 +68,10 @@ public class ClickGui extends Module {
     public void onSettingChange(ClientEvent event) {
         if (event.getStage() == 2 && event.getSetting().getFeature().equals(this)) {
             if (event.getSetting().equals(prefix)) {
-                bopis.commandManager.setPrefix(prefix.getPlannedValue());
-                Command.sendMessage("Prefix set to " + ChatFormatting.DARK_GRAY + bopis.commandManager.getPrefix());
+                Bopis.commandManager.setPrefix(prefix.getPlannedValue());
+                Command.sendMessage("Prefix set to " + ChatFormatting.DARK_GRAY + Bopis.commandManager.getPrefix());
             }
-            bopis.colorManager.setColor(red.getPlannedValue(), green.getPlannedValue(), blue.getPlannedValue(), hoverAlpha.getPlannedValue());
+            Bopis.colorManager.setColor(red.getPlannedValue(), green.getPlannedValue(), blue.getPlannedValue(), hoverAlpha.getPlannedValue());
         }
     }
 
@@ -82,8 +82,8 @@ public class ClickGui extends Module {
 
     @Override
     public void onLoad() {
-        bopis.colorManager.setColor(red.getValue(), green.getValue(), blue.getValue(), hoverAlpha.getValue());
-        bopis.commandManager.setPrefix(prefix.getValue());
+        Bopis.colorManager.setColor(red.getValue(), green.getValue(), blue.getValue(), hoverAlpha.getValue());
+        Bopis.commandManager.setPrefix(prefix.getValue());
     }
 
     @Override
