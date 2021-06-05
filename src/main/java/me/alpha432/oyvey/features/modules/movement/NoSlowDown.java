@@ -68,7 +68,7 @@ public class NoSlowDown extends Module {
             } else if (NoSlowDown.mc.currentScreen == null) {
                 for (KeyBinding bind : keys) {
                     if (Keyboard.isKeyDown((int)bind.getKeyCode())) continue;
-                    KeyBinding.setKeyBindState((int)bind.getKeyCode(), (boolean)false);
+                    KeyBinding.setKeyBindState(bind.getKeyCode(), false);
                 }
             }
         }
