@@ -19,7 +19,7 @@ import org.lwjgl.opengl.Display;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 
-@Mod(modid = "bopis", name = "bopis", version = "1.8.3")
+@Mod(modid = Bopis.MODID, name = Bopis.MODNAME, version = Bopis.MODNAME)
 public class Bopis {
     public static final String MODID = "bopis";
     public static final String MODNAME = "bopis";
@@ -146,16 +146,11 @@ public class Bopis {
         }
     }
 
-    private void setWindowsIcon() {
-        Bopis.setWindowIcon();
-    }
-
-
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
         MinecraftForge.EVENT_BUS.register(new Title());
         Bopis.load();
-        setWindowsIcon();
+        setWindowIcon();
     }
 }
 

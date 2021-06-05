@@ -1,6 +1,6 @@
 package me.alpha432.oyvey.features.modules.client;
 
-import me.alpha432.oyvey.features.modules.*;
+import me.alpha432.oyvey.features.modules.Module;
 import me.alpha432.oyvey.util.Util;
 import net.minecraft.client.*;
 import net.minecraft.client.gui.inventory.*;
@@ -10,8 +10,7 @@ import net.minecraft.client.renderer.*;
 import net.minecraft.entity.player.*;
 import net.minecraft.util.*;
 
-public class GUIBlur extends Module
-{
+public class GUIBlur extends Module {
     final Minecraft mc;
 
     public GUIBlur() {
