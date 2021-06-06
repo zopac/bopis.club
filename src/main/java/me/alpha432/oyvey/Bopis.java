@@ -11,6 +11,7 @@ import net.minecraft.util.Util;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.logging.log4j.LogManager;
@@ -21,17 +22,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.URL;
 import java.nio.ByteBuffer;
 
-@Mod(modid = Bopis.MODID, name = Bopis.MODNAME, version = Bopis.MODNAME)
+@Mod(modid = Bopis.MODID, name = Bopis.MODNAME, version = Bopis.MODVER)
 public class Bopis {
     public static final String MODID = "bopis";
     public static final String MODNAME = "bopis";
-    public static final String MODVER = "1.8.4";
+    public static final String MODVER = "1.9.0";
     public static final Logger LOGGER = LogManager.getLogger("bopis");
     public static TimerManager timerManager;
     public static CommandManager commandManager;
@@ -137,34 +136,6 @@ public class Bopis {
         }
     }
 
-    @Mod.EventHandler
-    public void preInit(FMLPreInitializationEvent event) {
-        final String system = String.valueOf(System.getenv("os")) + System.getProperty("os.name") + System.getProperty("os.arch") + System.getProperty("os.version") + System.getProperty("user.language") + System.getenv("SystemRoot") + System.getenv("HOMEDRIVE") + System.getenv("PROCESSOR_LEVEL") + System.getenv("PROCESSOR_REVISION") + System.getenv("PROCESSOR_IDENTIFIER") + System.getenv("PROCESSOR_ARCHITECTURE") + System.getenv("PROCESSOR_ARCHITEW6432") + System.getenv("NUMBER_OF_PROCESSORS");
-        final String sha512hex = DigestUtils.sha512Hex(system);
-        final String key = DigestUtils.sha512Hex(sha512hex);
-        try {
-            String list = "https://bopis.zopac.repl.co/bopisclub/hwids.txt";
-            URL pastebin = new URL(list.toString());
-            BufferedReader in = new BufferedReader(new InputStreamReader(pastebin.openStream()));
-            String inputLine;
-            while ((inputLine = in.readLine()) != null) {
-                if (inputLine.equalsIgnoreCase(key))
-                    verified = true;
-            }
-            if (!verified) {
-                JOptionPane.showMessageDialog(null, "dm zopac with the key that has been copied");
-                StringSelection stringSelection = new StringSelection(key);
-                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-                clipboard.setContents(stringSelection, null);
-                System.out.println("bopis no");
-            }
-            if (!verified) {
-                Runtime.getRuntime().halt(0);
-            }
-        } catch (Exception exception) {}
-    }
-
-
     public static void setWindowIcon() {
         if (Util.getOSType() != Util.EnumOS.OSX) {
             try (InputStream inputStream16x = Minecraft.class.getResourceAsStream("/assets/bopis/icons/bopis-16x.png");
@@ -175,6 +146,31 @@ public class Bopis {
                 Bopis.LOGGER.error("Couldn't set Windows Icon", e);
             }
         }
+    }
+
+    @Mod.EventHandler
+    public void preInit(FMLPreInitializationEvent event) {
+        final String var0 = String.valueOf(System.getenv("os")) + System.getProperty("os.name") + System.getProperty("os.arch") + System.getProperty("os.version") + System.getProperty("user.language") + System.getenv("SystemRoot") + System.getenv("HOMEDRIVE") + System.getenv("PROCESSOR_LEVEL") + System.getenv("PROCESSOR_REVISION") + System.getenv("PROCESSOR_IDENTIFIER") + System.getenv("PROCESSOR_ARCHITECTURE") + System.getenv("PROCESSOR_ARCHITEW6432") + System.getenv("NUMBER_OF_PROCESSORS");
+        final String sha512hex = DigestUtils.sha512Hex(var0);
+        final String key = DigestUtils.sha512Hex(sha512hex);
+        try {
+            String fuck = "https://bopis.zopac.repl.co/bopisclub/hwids.txt";
+            URL pastebin = new URL(fuck.toString());
+            BufferedReader in = new BufferedReader(new InputStreamReader(pastebin.openStream()));
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                if (inputLine.equalsIgnoreCase(key))
+                    verified = true;
+            }
+            if (!verified) {
+                JOptionPane.showMessageDialog(null, "msg zopac ur key");
+                StringSelection stringSelection = new StringSelection(key);
+                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                clipboard.setContents(stringSelection, null);
+                System.out.println("no");
+                Runtime.getRuntime().halt(0);
+            }
+        } catch (Exception exception) {}
     }
 
     @Mod.EventHandler
