@@ -26,6 +26,8 @@ public class ESP
     private static ESP INSTANCE = new ESP();
     private final Setting<Mode> mode = this.register(new Setting<Mode>("Mode", Mode.OUTLINE));
     private final Setting<Boolean> colorSync = this.register(new Setting<Boolean>("Sync", false));
+    private final Setting<Boolean> colorSync = this.register(new Setting<Boolean>("Mega Sync", false));
+    private final Setting<Boolean> colorSync = this.register(new Setting<Boolean>("Giga Sync", false));
     private final Setting<Boolean> players = this.register(new Setting<Boolean>("Players", true));
     private final Setting<Boolean> animals = this.register(new Setting<Boolean>("Animals", false));
     private final Setting<Boolean> mobs = this.register(new Setting<Boolean>("Mobs", false));
@@ -45,7 +47,7 @@ public class ESP
     private final Setting<Boolean> invisibles = this.register(new Setting<Boolean>("Invisibles", false));
 
     public ESP() {
-        super("ESP", "Renders a nice ESP.", Module.Category.RENDER, false, false, false);
+        super("ESP", "Renders ESP.", Module.Category.RENDER, false, false, false);
         this.setInstance();
     }
 
