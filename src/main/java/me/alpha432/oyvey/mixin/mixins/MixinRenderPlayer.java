@@ -3,6 +3,7 @@ package me.alpha432.oyvey.mixin.mixins;
 import me.alpha432.oyvey.Bopis;
 import me.alpha432.oyvey.features.modules.render.TexturedChams;
 import net.minecraft.client.entity.AbstractClientPlayer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
@@ -24,9 +25,11 @@ public class MixinRenderPlayer {
     @Overwrite
     public ResourceLocation getEntityTexture(final AbstractClientPlayer entity) {
         if (Bopis.moduleManager.isModuleEnabled("TexturedChams")) {
-            GL11.glColor4f(TexturedChams.red.getValue() / 255.0f, TexturedChams.green.getValue() / 255.0f, TexturedChams.blue.getValue() / 255.0f, TexturedChams.alpha.getValue() / 255.0f);
+            GlStateManager.color(TexturedChams.red.getValue() / 255.0f, TexturedChams.green.getValue() / 255.0f, TexturedChams.blue.getValue() / 255.0f, TexturedChams.alpha.getValue() / 255.0f);
+            GlStateManager.resetColor();
             return new ResourceLocation("minecraft:steve_skin1.png");
         }
+        GlStateManager.resetColor();
         return entity.getLocationSkin();
     }
 

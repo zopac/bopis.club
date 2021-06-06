@@ -104,9 +104,9 @@ public abstract class MixinRenderLivingBase<T extends EntityLivingBase> extends 
                         unsetScoreTeamColor();
                 } else {
                     if (Chams.getInstance().isOn() && (Chams.getInstance()).players.getValue().booleanValue() && entity instanceof EntityPlayer && (Chams.getInstance()).mode.getValue().equals(Chams.RenderMode.SOLID)) {
-                        this.red = (Chams.getInstance()).red.getValue().intValue() / 255.0F;
-                        this.green = (Chams.getInstance()).green.getValue().intValue() / 255.0F;
-                        this.blue = (Chams.getInstance()).blue.getValue().intValue() / 255.0F;
+                        this.red = (Chams.getInstance().red.getValue()) / 255.0F;
+                        this.green = (Chams.getInstance().green.getValue()) / 255.0F;
+                        this.blue = (Chams.getInstance().blue.getValue()) / 255.0F;
                         GlStateManager.pushMatrix();
                         GL11.glPushAttrib(1048575);
                         GL11.glDisable(3553);

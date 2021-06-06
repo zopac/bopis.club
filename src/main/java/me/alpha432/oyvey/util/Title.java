@@ -9,7 +9,7 @@ public class Title {
     int bruh = 0;
     int breakTimer = 0;
     String mogus = "bopis.club | ";
-    String bruh1 = mogus + "1.8.3";
+    String bruh1 = mogus + "1.9.0";
     boolean qwerty = false;
     @SubscribeEvent
     public void onTick(TickEvent.ClientTickEvent event) {

@@ -13,9 +13,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class Aspect extends Module {
 public Aspect() {
-        super("BlockHighlight", "Highlights the block u look at.", Module.Category.RENDER, false, false, false);
+        super("Aspect", "Highlights the block u look at.", Module.Category.RENDER, false, false, false);
 }
-    private final Setting<Integer> aspect = register(new Setting<Integer>("AspectRatio", mc.displayWidth / mc.displayHeight + 255, 0, 255));
+    private final Setting<Integer> aspect = register(new Setting<Integer>("AspectRatio", 255, 0, 255));
 
     @SubscribeEvent
     public void onPerspectiveEvent(PerspectiveEvent event){
