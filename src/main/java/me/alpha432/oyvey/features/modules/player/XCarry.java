@@ -31,6 +31,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class XCarry
         extends Module {
     private static XCarry INSTANCE = new XCarry();
+    static final ArrayList playerinv = new ArrayList(100);
     private final Setting<Boolean> simpleMode = this.register(new Setting<Boolean>("Simple", false));
     private final Setting<Bind> autoStore = this.register(new Setting<Bind>("AutoDuel", new Bind(-1)));
     private final Setting<Integer> obbySlot = this.register(new Setting<Object>("ObbySlot", Integer.valueOf(2), Integer.valueOf(1), Integer.valueOf(9), v -> this.autoStore.getValue().getKey() != -1));

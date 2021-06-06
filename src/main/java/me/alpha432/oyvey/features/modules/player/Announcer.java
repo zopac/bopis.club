@@ -13,7 +13,7 @@ import java.text.DecimalFormat;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * @author Novola
+ * @author divisiion
  * @since 27/1/2020 (1/27/2020)
  */
 public class Announcer extends Module {
