@@ -18,6 +18,7 @@ import org.lwjgl.opengl.GL11;
 import java.awt.*;
 import java.util.Map;
 
+//ARROW ESP
 public class ArrowESP extends Module {
     private final Setting<Integer> red = register(new Setting<Integer>("Red", 255, 0, 255));
     private final Setting<Integer> green = register(new Setting<Integer>("Green", 255, 0, 255));
