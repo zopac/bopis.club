@@ -138,7 +138,7 @@ public class AutoCrystal
     public Setting<Integer> minArmor = this.register(new Setting<Object>("MinArmor", Integer.valueOf(5), Integer.valueOf(0), Integer.valueOf(125), v -> this.setting.getValue() == Settings.MISC));
     public Setting<AutoSwitch> autoSwitch = this.register(new Setting<Object>("Switch", AutoSwitch.TOGGLE, v -> this.setting.getValue() == Settings.MISC));
     public Setting<Bind> switchBind = this.register(new Setting<Object>("SwitchBind", new Bind(-1), v -> this.setting.getValue() == Settings.MISC && this.autoSwitch.getValue() == AutoSwitch.TOGGLE));
-    public Setting<Boolean> offhandSwitch = this.register(new Setting<Object>("Offhand", Boolean.valueOf(true), v -> this.setting.getValue() == Settings.MISC && this.autoSwitch.getValue() != AutoSwitch.NONE));
+    public Setting<Boolean> offhandSwitch = this.register(new Setting<Object>("AutoTotem", Boolean.valueOf(true), v -> this.setting.getValue() == Settings.MISC && this.autoSwitch.getValue() != AutoSwitch.NONE));
     public Setting<Boolean> switchBack = this.register(new Setting<Object>("Switchback", Boolean.valueOf(true), v -> this.setting.getValue() == Settings.MISC && this.autoSwitch.getValue() != AutoSwitch.NONE && this.offhandSwitch.getValue() != false));
     public Setting<Boolean> lethalSwitch = this.register(new Setting<Object>("LethalSwitch", Boolean.valueOf(false), v -> this.setting.getValue() == Settings.MISC && this.autoSwitch.getValue() != AutoSwitch.NONE));
     public Setting<Boolean> mineSwitch = this.register(new Setting<Object>("MineSwitch", Boolean.valueOf(true), v -> this.setting.getValue() == Settings.MISC && this.autoSwitch.getValue() != AutoSwitch.NONE));
@@ -457,11 +457,11 @@ public class AutoCrystal
     public void onKeyInput(InputEvent.KeyInputEvent event) {
         if (Keyboard.getEventKeyState() && !(AutoCrystal.mc.currentScreen instanceof OyVeyGui) && this.switchBind.getValue().getKey() == Keyboard.getEventKey()) {
             if (this.switchBack.getValue().booleanValue() && this.offhandSwitch.getValue().booleanValue() && this.offHand) {
-                Offhand module = Bopis.moduleManager.getModuleByClass(Offhand.class);
+                AutoTotem module = Bopis.moduleManager.getModuleByClass(AutoTotem.class);
                 if (module.isOff()) {
-                    Command.sendMessage("<" + this.getDisplayName() + "> " + "\u00a7c" + "Switch failed. Enable the Offhand module.");
+                    Command.sendMessage("<" + this.getDisplayName() + "> " + "\u00a7c" + "Switch failed. Enable the AutoTotem module.");
                 } else {
-                    module.setMode(Offhand.Mode2.TOTEMS);
+                    module.setMode(AutoTotem.Mode2.TOTEMS);
                     module.doSwitch();
                 }
                 return;
@@ -854,9 +854,9 @@ public class AutoCrystal
 
     private boolean doSwitch() {
         if (this.offhandSwitch.getValue().booleanValue()) {
-            Offhand module = Bopis.moduleManager.getModuleByClass(Offhand.class);
+            AutoTotem module = Bopis.moduleManager.getModuleByClass(AutoTotem.class);
             if (module.isOff()) {
-                Command.sendMessage("<" + this.getDisplayName() + "> " + "\u00a7c" + "Switch failed. Enable the Offhand module.");
+                Command.sendMessage("<" + this.getDisplayName() + "> " + "\u00a7c" + "Switch failed. Enable the AutoTotem module.");
                 this.switching = false;
                 return false;
             }

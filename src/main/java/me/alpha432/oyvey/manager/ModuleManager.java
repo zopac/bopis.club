@@ -58,15 +58,18 @@ public class ModuleManager
         this.modules.add(new GlintModify());
         this.modules.add(new SkyColor());
         this.modules.add(new ESP());
-        this.modules.add(new NameTags());
-        this.modules.add(new TestNameTags());
         this.modules.add(new TexturedChams());
         this.modules.add(new HitMarkers());
         this.modules.add(new CrystalModifier());
         this.modules.add(new StorageESP());
         this.modules.add(new NoFog());
+        this.modules.add(new LogoutSpots());
+        this.modules.add(new NoRender());
+        this.modules.add(new VoidESP());
+        this.modules.add(new PortalESP());
+        this.modules.add(new Nametags());
         //COMBAT
-        this.modules.add(new Offhand());
+        this.modules.add(new AutoTotem());
         this.modules.add(new Surround());
         this.modules.add(new AutoTrap());
         this.modules.add(new GodModule());
@@ -79,12 +82,12 @@ public class ModuleManager
         this.modules.add(new Selftrap());
         this.modules.add(new SelfWeb());
         this.modules.add(new Quiver());
-        this.modules.add(new AutoMinecart());
         this.modules.add(new Burrow());
         this.modules.add(new Anti32k());
         this.modules.add(new Auto32k());
         this.modules.add(new Auto32kAura());
         this.modules.add(new BedAura());
+        this.modules.add(new Offhand());
         //PLAYER
         this.modules.add(new FakeKick());
         this.modules.add(new Freecam());
@@ -97,6 +100,8 @@ public class ModuleManager
         this.modules.add(new LiquidInteract());
         this.modules.add(new Speedmine());
         this.modules.add(new Announcer());
+        this.modules.add(new XCarry());
+        this.modules.add(new Swing());
         //MISC
         this.modules.add(new ExtraTab());
         this.modules.add(new NoHitBox());
@@ -111,24 +116,23 @@ public class ModuleManager
         this.modules.add(new PearlNotify());
         this.modules.add(new AutoGG());
         this.modules.add(new ToolTips());
-        this.modules.add(new RPC());
         this.modules.add(new Tracker());
         this.modules.add(new PopCounter());
         this.modules.add(new NarratorTweaks());
         this.modules.add(new GhastNotifier());
-        this.modules.add(new XCarry());
-        this.modules.add(new me.alpha432.oyvey.features.modules.misc.bopis());
+        this.modules.add(new bopis());
+        this.modules.add(new AutoRespawn());
+        this.modules.add(new MobOwner());
         //MOVEMENT
-        this.modules.add(new PacketFly());
-        this.modules.add(new Speed());
-        this.modules.add(new Step());
         this.modules.add(new BoatFly());
         this.modules.add(new ReverseStep());
-        this.modules.add(new AntiVoid());
-        this.modules.add(new Flight());
-        this.modules.add(new Scaffold());
+        this.modules.add(new Static());
         this.modules.add(new NoSlowDown());
         this.modules.add(new NoSlowBypass());
+        this.modules.add(new Sprint());
+        this.modules.add(new Velocity());
+        this.modules.add(new IceSpeed());
+        this.modules.add(new ElytraFlight());
     }
 
     public Module getModuleByName(String name) {
@@ -145,6 +149,16 @@ public class ModuleManager
             return (T) module;
         }
         return null;
+    }
+
+    public boolean isModuleEnabledthe(String name) {
+        Module module = this.getModuleByName(name);
+        return module != null && module.isOn();
+    }
+
+    public boolean isModuleEnabledthe(Class clazz) {
+        Object module = this.getModuleByClass(clazz);
+        return module != null && ((Module) module).isOn();
     }
 
     public void enableModule(Class<Module> clazz) {

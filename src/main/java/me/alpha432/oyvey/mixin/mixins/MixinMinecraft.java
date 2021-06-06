@@ -27,16 +27,6 @@ public abstract class MixinMinecraft {
         this.unload();
     }
 
-    @Inject(method = {"runTickKeyboard"}, at = {@At(value = "INVOKE", remap = false, target = "Lorg/lwjgl/input/Keyboard;getEventKey()I", ordinal = 0, shift = At.Shift.BEFORE)})
-    private void onKeyboard(CallbackInfo callbackInfo) {
-        int i;
-        int n = i = Keyboard.getEventKey() == 0 ? Keyboard.getEventCharacter() + 256 : Keyboard.getEventKey();
-        if (Keyboard.getEventKeyState()) {
-            KeyEvent event = new KeyEvent(i);
-            MinecraftForge.EVENT_BUS.post(event);
-        }
-    }
-
     private void unload() {
         Bopis.LOGGER.info("Initiated client shutdown.");
         Bopis.onUnload();

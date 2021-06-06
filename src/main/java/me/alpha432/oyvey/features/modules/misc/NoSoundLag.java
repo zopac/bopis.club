@@ -32,7 +32,7 @@ public class NoSoundLag
     public Setting<Float> soundRange = this.register(new Setting<Float>("SoundRange", Float.valueOf(12.0f), Float.valueOf(0.0f), Float.valueOf(12.0f)));
 
     public NoSoundLag() {
-        super("NoSoundLag", "Prevents Lag through sound spam.", Category.MISC, true, false, false);
+        super("NoSoundLag", "Prevents Lag through sound spam.", Module.Category.MISC, true, false, false);
         instance = this;
     }
 

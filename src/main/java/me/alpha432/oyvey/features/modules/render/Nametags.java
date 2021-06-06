@@ -25,55 +25,61 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.text.TextFormatting;
 import org.lwjgl.opengl.GL11;
 
-public class TestNameTags extends Module {
+public class Nametags extends Module {
     private final Setting<Boolean> health = this.register(new Setting<Boolean>("Health", true));
     private final Setting<Boolean> armor = this.register(new Setting<Boolean>("Armor", true));
-    private final Setting<Float> scaling = this.register(new Setting<Float>("Size", Float.valueOf(0.3f), Float.valueOf(0.1f), Float.valueOf(20.0f)));
-    private final Setting<Boolean> invisibles = this.register(new Setting<Boolean>("Invisibles", false));
+    private final Setting<Float> scaling = this.register(new Setting<Float>("Size", 0.3f, 0.1f, 20.0f));
     private final Setting<Boolean> ping = this.register(new Setting<Boolean>("Ping", true));
-    private final Setting<Boolean> totemPops = this.register(new Setting<Boolean>("TotemPops", true));
     private final Setting<Boolean> gamemode = this.register(new Setting<Boolean>("Gamemode", false));
     private final Setting<Boolean> entityID = this.register(new Setting<Boolean>("ID", false));
     private final Setting<Boolean> rect = this.register(new Setting<Boolean>("Rectangle", true));
-    private final Setting<Boolean> outline = this.register(new Setting<Object>("Outline", Boolean.valueOf(false), v -> this.rect.getValue()));
-    private final Setting<Integer> redSetting = this.register(new Setting<Object>("Red", Integer.valueOf(255), Integer.valueOf(0), Integer.valueOf(255), v -> this.outline.getValue()));
-    private final Setting<Integer> greenSetting = this.register(new Setting<Object>("Green", Integer.valueOf(255), Integer.valueOf(0), Integer.valueOf(255), v -> this.outline.getValue()));
-    private final Setting<Integer> blueSetting = this.register(new Setting<Object>("Blue", Integer.valueOf(255), Integer.valueOf(0), Integer.valueOf(255), v -> this.outline.getValue()));
-    private final Setting<Integer> alphaSetting = this.register(new Setting<Object>("Alpha", Integer.valueOf(255), Integer.valueOf(0), Integer.valueOf(255), v -> this.outline.getValue()));
-    private final Setting<Float> lineWidth = this.register(new Setting<Object>("LineWidth", Float.valueOf(1.5f), Float.valueOf(0.1f), Float.valueOf(5.0f), v -> this.outline.getValue()));
-    private final Setting<Boolean> sneak = this.register(new Setting<Boolean>("SneakColor", false));
+    private final Setting<Boolean> outline = this.register(new Setting<Object>("Outline", false, v -> this.rect.getValue()));
+    private final Setting<Integer> redSetting = this.register(new Setting<Object>("Outline-Red", 255, 0, 255, v -> this.outline.getValue()));
+    private final Setting<Integer> greenSetting = this.register(new Setting<Object>("Outline-Green", 255, 0, 25, v -> this.outline.getValue()));
+    private final Setting<Integer> blueSetting = this.register(new Setting<Object>("Outline-Blue", 255, 0, 255, v -> this.outline.getValue()));
+    private final Setting<Integer> alphaSetting = this.register(new Setting<Object>("Outline-Alpha", 255, 0, 255, v -> this.outline.getValue()));
+    private final Setting<Float> lineWidth = this.register(new Setting<Object>("Outline-LineWidth", 1.5f, 0.1f, 5.0f, v -> this.outline.getValue()));
+    private final Setting<Boolean> sneak = this.register(new Setting<Boolean>("SneakColor", true));
+    private final Setting<Boolean> invisibles = this.register(new Setting<Boolean>("Invisibles", true));
     private final Setting<Boolean> heldStackName = this.register(new Setting<Boolean>("StackName", false));
-    private final Setting<Boolean> whiter = this.register(new Setting<Boolean>("White", false));
-    private final Setting<Boolean> onlyFov = this.register(new Setting<Boolean>("OnlyFov", false));
+    private final Setting<Boolean> whiter = this.register(new Setting<Boolean>("WhiteName", false));
+    private final Setting<Boolean> onlyFov = this.register(new Setting<Boolean>("RenderOnlyInFov", false));
     private final Setting<Boolean> scaleing = this.register(new Setting<Boolean>("Scale", false));
-    private final Setting<Float> factor = this.register(new Setting<Object>("Factor", Float.valueOf(0.3f), Float.valueOf(0.1f), Float.valueOf(1.0f), v -> this.scaleing.getValue()));
-    private final Setting<Boolean> smartScale = this.register(new Setting<Object>("SmartScale", Boolean.valueOf(false), v -> this.scaleing.getValue()));
-    private static TestNameTags INSTANCE = new TestNameTags();
+    private final Setting<Float> factor = this.register(new Setting<Object>("Factor", 0.3f, 0.1f, 1.0f, v -> this.scaleing.getValue()));
+    private final Setting<Boolean> smartScale = this.register(new Setting<Object>("SmartScale", false, v -> this.scaleing.getValue()));
+    private static Nametags INSTANCE = new Nametags();
 
-    public TestNameTags() {
-        super("TestNameTags", "nigga wtf is this", Module.Category.RENDER, false, false, false);
+    public Nametags() {
+        super("Nametags", "nigga wtf is this", Module.Category.RENDER, false, false, false);
         this.setInstance();
+    }
+
+    @Override
+    public void onUpdate() {
+        if (rect.getValue().equals(false)) {
+            rect.setValue(true);
+        }
     }
 
     private void setInstance() {
         INSTANCE = this;
     }
 
-    public static TestNameTags getInstance() {
+    public static Nametags getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new TestNameTags();
+            INSTANCE = new Nametags();
         }
         return INSTANCE;
     }
 
     @Override
     public void onRender3D(Render3DEvent event) {
-        if (!TestNameTags.fullNullCheck()) {
-            for (EntityPlayer player : TestNameTags.mc.world.playerEntities) {
-                if (player == null || player.equals((Object) TestNameTags.mc.player) || !player.isEntityAlive() || player.isInvisible() && !this.invisibles.getValue().booleanValue() || this.onlyFov.getValue().booleanValue() && !RotationUtil.isInFov((Entity)player)) continue;
-                double x = this.interpolate(player.lastTickPosX, player.posX, event.getPartialTicks()) - TestNameTags.mc.getRenderManager().renderPosX;
-                double y = this.interpolate(player.lastTickPosY, player.posY, event.getPartialTicks()) - TestNameTags.mc.getRenderManager().renderPosY;
-                double z = this.interpolate(player.lastTickPosZ, player.posZ, event.getPartialTicks()) - TestNameTags.mc.getRenderManager().renderPosZ;
+        if (!Nametags.fullNullCheck()) {
+            for (EntityPlayer player : Nametags.mc.world.playerEntities) {
+                if (player == null || player.equals((Object) Nametags.mc.player) || !player.isEntityAlive() || player.isInvisible() && !this.invisibles.getValue().booleanValue() || this.onlyFov.getValue().booleanValue() && !RotationUtil.isInFov((Entity)player)) continue;
+                double x = this.interpolate(player.lastTickPosX, player.posX, event.getPartialTicks()) - Nametags.mc.getRenderManager().renderPosX;
+                double y = this.interpolate(player.lastTickPosY, player.posY, event.getPartialTicks()) - Nametags.mc.getRenderManager().renderPosY;
+                double z = this.interpolate(player.lastTickPosZ, player.posZ, event.getPartialTicks()) - Nametags.mc.getRenderManager().renderPosZ;
                 this.renderProperNameTag(player, x, y, z, event.getPartialTicks());
             }
         }
@@ -91,7 +97,7 @@ public class TestNameTags extends Module {
         camera.posY = this.interpolate(camera.prevPosY, camera.posY, delta);
         camera.posZ = this.interpolate(camera.prevPosZ, camera.posZ, delta);
         String displayTag = this.getDisplayTag(player);
-        double distance = camera.getDistance(x + TestNameTags.mc.getRenderManager().viewerPosX, y + TestNameTags.mc.getRenderManager().viewerPosY, z + TestNameTags.mc.getRenderManager().viewerPosZ);
+        double distance = camera.getDistance(x + Nametags.mc.getRenderManager().viewerPosX, y + Nametags.mc.getRenderManager().viewerPosY, z + Nametags.mc.getRenderManager().viewerPosZ);
         int width = this.renderer.getStringWidth(displayTag) / 2;
         double scale = (0.0018 + (double)this.scaling.getValue().floatValue() * (distance * (double)this.factor.getValue().floatValue())) / 1000.0;
         if (distance <= 8.0 && this.smartScale.getValue().booleanValue()) {
@@ -106,17 +112,17 @@ public class TestNameTags extends Module {
         GlStateManager.doPolygonOffset((float)1.0f, (float)-1500000.0f);
         GlStateManager.disableLighting();
         GlStateManager.translate((float)((float)x), (float)((float)tempY + 1.4f), (float)((float)z));
-        GlStateManager.rotate((float)(-TestNameTags.mc.getRenderManager().playerViewY), (float)0.0f, (float)1.0f, (float)0.0f);
-        GlStateManager.rotate((float) TestNameTags.mc.getRenderManager().playerViewX, (float)(TestNameTags.mc.gameSettings.thirdPersonView == 2 ? -1.0f : 1.0f), (float)0.0f, (float)0.0f);
+        GlStateManager.rotate((float)(-Nametags.mc.getRenderManager().playerViewY), (float)0.0f, (float)1.0f, (float)0.0f);
+        GlStateManager.rotate((float) Nametags.mc.getRenderManager().playerViewX, (float)(Nametags.mc.gameSettings.thirdPersonView == 2 ? -1.0f : 1.0f), (float)0.0f, (float)0.0f);
         GlStateManager.scale((double)(-scale), (double)(-scale), (double)scale);
         GlStateManager.disableDepth();
         GlStateManager.enableBlend();
         GlStateManager.disableAlpha();
         if (this.rect.getValue().booleanValue()) {
-            this.drawRect(-width - 2, -(TestNameTags.mc.fontRenderer.FONT_HEIGHT + 1), (float)width + 2.0f, 1.5f, 0x55000000);
+            this.drawRect(-width - 2, -(Nametags.mc.fontRenderer.FONT_HEIGHT + 1), (float)width + 2.0f, 1.5f, 0x55000000);
             if (this.outline.getValue().booleanValue()) {
                 int color = new Color(this.redSetting.getValue(), this.greenSetting.getValue(), this.blueSetting.getValue(), this.alphaSetting.getValue()).getRGB();
-                this.drawOutlineRect(-width - 2, -(TestNameTags.mc.fontRenderer.FONT_HEIGHT + 1), (float)width + 2.0f, 1.5f, color);
+                this.drawOutlineRect(-width - 2, -(Nametags.mc.fontRenderer.FONT_HEIGHT + 1), (float)width + 2.0f, 1.5f, color);
             }
         }
         GlStateManager.enableAlpha();
@@ -180,8 +186,8 @@ public class TestNameTags extends Module {
         camera.posX = this.interpolate(camera.prevPosX, camera.posX, partialTicks);
         camera.posY = this.interpolate(camera.prevPosY, camera.posY, partialTicks);
         camera.posZ = this.interpolate(camera.prevPosZ, camera.posZ, partialTicks);
-        double distance = camera.getDistance(x + TestNameTags.mc.getRenderManager().viewerPosX, y + TestNameTags.mc.getRenderManager().viewerPosY, z + TestNameTags.mc.getRenderManager().viewerPosZ);
-        int width = TestNameTags.mc.fontRenderer.getStringWidth(this.getDisplayTag(player)) / 2;
+        double distance = camera.getDistance(x + Nametags.mc.getRenderManager().viewerPosX, y + Nametags.mc.getRenderManager().viewerPosY, z + Nametags.mc.getRenderManager().viewerPosZ);
+        int width = Nametags.mc.fontRenderer.getStringWidth(this.getDisplayTag(player)) / 2;
         double scale = (0.0018 + (double)this.scaling.getValue().floatValue() * distance) / 50.0;
         GlStateManager.pushMatrix();
         RenderHelper.enableStandardItemLighting();
@@ -189,16 +195,16 @@ public class TestNameTags extends Module {
         GlStateManager.doPolygonOffset((float)1.0f, (float)-1500000.0f);
         GlStateManager.disableLighting();
         GlStateManager.translate((float)((float)x), (float)((float)tempY + 1.4f), (float)((float)z));
-        GlStateManager.rotate((float)(-TestNameTags.mc.getRenderManager().playerViewY), (float)0.0f, (float)1.0f, (float)0.0f);
-        float thirdPersonOffset = TestNameTags.mc.gameSettings.thirdPersonView == 2 ? -1.0f : 1.0f;
-        GlStateManager.rotate((float) TestNameTags.mc.getRenderManager().playerViewX, (float)thirdPersonOffset, (float)0.0f, (float)0.0f);
+        GlStateManager.rotate((float)(-Nametags.mc.getRenderManager().playerViewY), (float)0.0f, (float)1.0f, (float)0.0f);
+        float thirdPersonOffset = Nametags.mc.gameSettings.thirdPersonView == 2 ? -1.0f : 1.0f;
+        GlStateManager.rotate((float) Nametags.mc.getRenderManager().playerViewX, (float)thirdPersonOffset, (float)0.0f, (float)0.0f);
         GlStateManager.scale((double)(-scale), (double)(-scale), (double)scale);
         GlStateManager.disableDepth();
         GlStateManager.enableBlend();
         GlStateManager.disableAlpha();
-        this.drawRect(-width - 2, -(TestNameTags.mc.fontRenderer.FONT_HEIGHT + 1), (float)width + 2.0f, 1.5f, 0x55000000);
+        this.drawRect(-width - 2, -(Nametags.mc.fontRenderer.FONT_HEIGHT + 1), (float)width + 2.0f, 1.5f, 0x55000000);
         GlStateManager.enableAlpha();
-        TestNameTags.mc.fontRenderer.drawStringWithShadow(this.getDisplayTag(player), (float)(-width), (float)(-(TestNameTags.mc.fontRenderer.FONT_HEIGHT - 1)), this.getNameColor((Entity)player).getRGB());
+        Nametags.mc.fontRenderer.drawStringWithShadow(this.getDisplayTag(player), (float)(-width), (float)(-(Nametags.mc.fontRenderer.FONT_HEIGHT - 1)), this.getNameColor((Entity)player).getRGB());
         if (this.armor.getValue().booleanValue()) {
             GlStateManager.pushMatrix();
             double changeValue = 16.0;
@@ -284,15 +290,15 @@ public class TestNameTags extends Module {
         GlStateManager.depthMask((boolean)true);
         GlStateManager.clear((int)256);
         RenderHelper.enableStandardItemLighting();
-        TestNameTags.mc.getRenderItem().zLevel = -150.0f;
+        Nametags.mc.getRenderItem().zLevel = -150.0f;
         GlStateManager.disableAlpha();
         GlStateManager.enableDepth();
         GlStateManager.disableCull();
         if (item) {
             mc.getRenderItem().renderItemAndEffectIntoGUI(stack, x, y);
-            mc.getRenderItem().renderItemOverlays(TestNameTags.mc.fontRenderer, stack, x, y);
+            mc.getRenderItem().renderItemOverlays(Nametags.mc.fontRenderer, stack, x, y);
         }
-        TestNameTags.mc.getRenderItem().zLevel = 0.0f;
+        Nametags.mc.getRenderItem().zLevel = 0.0f;
         RenderHelper.disableStandardItemLighting();
         GlStateManager.enableCull();
         GlStateManager.enableAlpha();

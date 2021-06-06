@@ -20,7 +20,13 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class PlayerUtil implements Util {
-    private static final JsonParser PARSER = new JsonParser();
+    public static Timer timer;
+    private static JsonParser PARSER;
+
+    static {
+        PlayerUtil.timer = new Timer();
+        PlayerUtil.PARSER = new JsonParser();
+    }
 
     public static String getNameFromUUID(UUID uuid) {
         try {

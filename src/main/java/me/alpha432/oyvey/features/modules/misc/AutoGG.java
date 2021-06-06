@@ -14,8 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class AutoGG extends Module {
     private static AutoGG INSTANCE = new AutoGG();
-    public Setting<String> custom = register(new Setting<String>("Custom", "Nigga-Hack.me"));
-    public Setting<String> test = register(new Setting<String>("Test", "null"));
+    public Setting<String> custom = register(new Setting<String>("Message", "ur bad"));
     private ConcurrentHashMap<String, Integer> targetedPlayers = null;
 
     public AutoGG() {
@@ -104,9 +103,6 @@ public class AutoGG extends Module {
         int u = 0;
         for (int i = 0; i < 10; ++i) {
             ++u;
-        }
-        if (!test.getValue().equalsIgnoreCase("null")) {
-            AutoGG.mc.player.connection.sendPacket(new CPacketChatMessage(test.getValue()));
         }
     }
 
