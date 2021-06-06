@@ -8,6 +8,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class Sprint
         extends Module {
     private static Sprint INSTANCE = new Sprint();
+    public Setting<Boolean> sync = this.register(new Setting<Boolean>("Sync", false));
     public Setting<Mode> mode = this.register(new Setting<Mode>("Mode", Mode.LEGIT));
 
     public Sprint() {
