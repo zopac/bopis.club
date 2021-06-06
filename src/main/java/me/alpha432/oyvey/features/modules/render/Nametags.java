@@ -28,7 +28,7 @@ import org.lwjgl.opengl.GL11;
 public class Nametags extends Module {
     private final Setting<Boolean> health = this.register(new Setting<Boolean>("Health", true));
     private final Setting<Boolean> armor = this.register(new Setting<Boolean>("Armor", true));
-    private final Setting<Float> scaling = this.register(new Setting<Float>("Size", 0.3f, 0.1f, 20.0f));
+    private final Setting<Integer> scaling = this.register(new Setting<Integer>("Size", 0, 0, 10));
     private final Setting<Boolean> ping = this.register(new Setting<Boolean>("Ping", true));
     private final Setting<Boolean> gamemode = this.register(new Setting<Boolean>("Gamemode", false));
     private final Setting<Boolean> entityID = this.register(new Setting<Boolean>("ID", false));
