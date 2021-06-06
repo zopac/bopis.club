@@ -19,7 +19,7 @@ import java.awt.*;
 import java.util.Map;
 
 //ARROW ESP
-// ARROW ESP
+//ARROW ESP
 //ARROW ESP
 public class ArrowESP extends Module {
     private final Setting<Integer> red = register(new Setting<Integer>("Red", 255, 0, 255));
