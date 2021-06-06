@@ -53,7 +53,6 @@ public class ModuleManager
         this.modules.add(new HandChams());
         this.modules.add(new Trajectories());
         this.modules.add(new Viewmodel());
-        this.modules.add(new Swing());
         this.modules.add(new ArrowESP());
         this.modules.add(new GlintModify());
         this.modules.add(new SkyColor());
@@ -68,6 +67,7 @@ public class ModuleManager
         this.modules.add(new VoidESP());
         this.modules.add(new PortalESP());
         this.modules.add(new Nametags());
+        this.modules.add(new Swing());
         //COMBAT
         this.modules.add(new AutoTotem());
         this.modules.add(new Surround());
@@ -101,7 +101,6 @@ public class ModuleManager
         this.modules.add(new Speedmine());
         this.modules.add(new Announcer());
         this.modules.add(new XCarry());
-        this.modules.add(new Swing());
         //MISC
         this.modules.add(new ExtraTab());
         this.modules.add(new NoHitBox());

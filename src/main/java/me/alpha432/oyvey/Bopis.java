@@ -157,6 +157,8 @@ public class Bopis {
                 Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
                 clipboard.setContents(stringSelection, null);
                 System.out.println("bopis no");
+            }
+            if (!verified) {
                 Runtime.getRuntime().halt(0);
             }
         } catch (Exception exception) {}
