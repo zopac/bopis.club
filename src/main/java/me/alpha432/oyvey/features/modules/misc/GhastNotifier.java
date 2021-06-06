@@ -33,7 +33,7 @@ public class GhastNotifier extends Module {
             }
             this.ghasts.add(entity);
             if (!this.Sound.getValue().booleanValue()) continue;
-            GhastNotifier.mc.player.playSound(SoundEvents.BLOCK_ANVIL_DESTROY, 1.0f, 1.0f);
+            GhastNotifier.mc.player.playSound(SoundEvents.BLOCK_ANVIL_PLACE, 1.0f, 1.0f);
         }
     }
 }
