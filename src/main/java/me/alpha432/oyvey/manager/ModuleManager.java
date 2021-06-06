@@ -120,7 +120,7 @@ public class ModuleManager
         this.modules.add(new PopCounter());
         this.modules.add(new NarratorTweaks());
         this.modules.add(new GhastNotifier());
-        this.modules.add(new bopis());
+        this.modules.add(new BopisHack());
         this.modules.add(new AutoRespawn());
         this.modules.add(new MobOwner());
         //MOVEMENT

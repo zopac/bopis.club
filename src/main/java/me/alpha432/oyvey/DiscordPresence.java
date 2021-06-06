@@ -7,8 +7,7 @@ import club.minnced.discord.rpc.DiscordEventHandlers;
 import club.minnced.discord.rpc.DiscordRPC;
 import club.minnced.discord.rpc.DiscordRichPresence;
 
-public class DiscordPresence
-{
+public class DiscordPresence {
     public static DiscordRichPresence presence;
     private static final DiscordRPC rpc;
     private static Thread thread;

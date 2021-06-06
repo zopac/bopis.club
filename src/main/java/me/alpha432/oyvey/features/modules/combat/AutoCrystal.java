@@ -53,9 +53,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class AutoCrystal
         extends Module {
     public static EntityPlayer target = null;
-    public static Set<BlockPos> lowDmgPos = new ConcurrentSet();
-    public static Set<BlockPos> placedPos = new HashSet<BlockPos>();
-    public static Set<BlockPos> brokenPos = new HashSet<BlockPos>();
+    public static Set<BlockPos> lowDmgPos = new ConcurrentSet<>();
+    public static Set<BlockPos> placedPos = new HashSet<>();
+    public static Set<BlockPos> brokenPos = new HashSet<>();
     private static AutoCrystal instance;
     public final Timer threadTimer = new Timer();
     private final Setting<Settings> setting = this.register(new Setting<Settings>("Settings", Settings.PLACE));
