@@ -289,8 +289,7 @@ public class ModuleManager
         });
     }
 
-    private class Animation
-            extends Thread {
+    private class Animation extends Thread {
         public Module module;
         public float offset;
         public float vOffset;

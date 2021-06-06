@@ -8,7 +8,7 @@ import java.util.List;
 
 public class PacketManager
         extends Feature {
-    private final List<Packet<?>> noEventPackets = new ArrayList();
+    private final List<Packet<?>> noEventPackets = new ArrayList<>();
 
     public void sendPacketNoEvent(Packet<?> packet) {
         if (packet != null && !PacketManager.nullCheck()) {

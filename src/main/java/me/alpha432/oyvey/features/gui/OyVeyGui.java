@@ -15,14 +15,13 @@ import java.util.Comparator;
 
 public class OyVeyGui
         extends GuiScreen {
-    private static OyVeyGui oyveyGui;
     private static OyVeyGui INSTANCE;
 
     static {
         INSTANCE = new OyVeyGui();
     }
 
-    private final ArrayList<Component> components = new ArrayList();
+    private final ArrayList<Component> components = new ArrayList<>();
 
     public OyVeyGui() {
         this.setInstance();

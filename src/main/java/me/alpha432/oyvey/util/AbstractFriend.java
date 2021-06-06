@@ -37,6 +37,6 @@ public abstract class AbstractFriend implements INameable, IFriendable {
 
     @Override
     public void setDisplayName(String displayName) {
-        this.name = name;
+        this.name = displayName;
     }
 }

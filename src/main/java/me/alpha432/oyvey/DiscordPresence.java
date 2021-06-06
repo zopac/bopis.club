@@ -19,8 +19,8 @@ public class DiscordPresence
         DiscordPresence.presence.startTimestamp = System.currentTimeMillis() / 1000L;
         DiscordPresence.presence.details = ((Minecraft.getMinecraft().currentScreen instanceof GuiMainMenu) ? "In the main menu." : ("Playing " + ((Minecraft.getMinecraft().getCurrentServerData() != null) ? (RPC.INSTANCE.showIP.getValue() ? ("on " + Minecraft.getMinecraft().getCurrentServerData().serverIP + ".") : " multiplayer.") : " singleplayer.")));
         DiscordPresence.presence.state = RPC.INSTANCE.state.getValue();
-        DiscordPresence.presence.largeImageKey = "zori";
-        DiscordPresence.presence.largeImageText = "Zori 1.2.1";
+        DiscordPresence.presence.largeImageKey = Bopis.MODNAME;
+        DiscordPresence.presence.largeImageText = Bopis.MODNAME + " " + Bopis.MODVER;
         DiscordPresence.rpc.Discord_UpdatePresence(DiscordPresence.presence);
         (DiscordPresence.thread = new Thread(() -> {
             while (!Thread.currentThread().isInterrupted()) {

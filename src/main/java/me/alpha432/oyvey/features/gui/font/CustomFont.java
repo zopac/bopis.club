@@ -11,7 +11,6 @@ import java.util.List;
 public class CustomFont extends CFont {
 
     private final int[] colorCode = new int[32];
-    private final String colorcodeIdentifiers = "0123456789abcdefklmnor";
     protected CharData[] boldChars = new CharData[256];
     protected CharData[] italicChars = new CharData[256];
     protected CharData[] boldItalicChars = new CharData[256];
@@ -61,7 +60,6 @@ public class CustomFont extends CFont {
 
         CharData[] currentData = this.charData;
         float alpha = (color >> 24 & 0xFF) / 255.0F;
-        boolean randomCase = false;
         boolean bold = false;
         boolean italic = false;
         boolean strikethrough = false;
@@ -90,7 +88,6 @@ public class CustomFont extends CFont {
                     if (colorIndex < 16) {
                         bold = false;
                         italic = false;
-                        randomCase = false;
                         underline = false;
                         strikethrough = false;
                         GlStateManager.bindTexture(tex.getGlTextureId());
@@ -101,8 +98,8 @@ public class CustomFont extends CFont {
                         if (shadow) colorIndex += 16;
                         int colorcode = this.colorCode[colorIndex];
                         GlStateManager.color((colorcode >> 16 & 0xFF) / 255.0F, (colorcode >> 8 & 0xFF) / 255.0F, (colorcode & 0xFF) / 255.0F, alpha);
-                    } else if (colorIndex == 16) randomCase = true;
-                    else if (colorIndex == 17) {
+                    } else if (colorIndex == 16) {
+					} else if (colorIndex == 17) {
                         bold = true;
                         if (italic) {
                             GlStateManager.bindTexture(texItalicBold.getGlTextureId());
@@ -133,7 +130,6 @@ public class CustomFont extends CFont {
                     } else if (colorIndex == 21) {
                         bold = false;
                         italic = false;
-                        randomCase = false;
                         underline = false;
                         strikethrough = false;
                         GlStateManager.color((color >> 16 & 0xFF) / 255.0F, (color >> 8 & 0xFF) / 255.0F, (color & 0xFF) / 255.0F, alpha);
@@ -232,7 +228,7 @@ public class CustomFont extends CFont {
     }
 
     public List<String> wrapWords(String text, double width) {
-        List finalWords = new ArrayList();
+        List<String> finalWords = new ArrayList<>();
         if (getStringWidth(text) > width) {
             String[] words = text.split(" ");
             String currentWord = "";
@@ -267,7 +263,7 @@ public class CustomFont extends CFont {
     }
 
     public List<String> formatString(String string, double width) {
-        List finalWords = new ArrayList();
+        List<String> finalWords = new ArrayList<>();
         String currentWord = "";
         char lastColorCode = 65535;
         char[] chars = string.toCharArray();

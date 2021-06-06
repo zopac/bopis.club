@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class Component
         extends Feature {
     public static int[] counter1 = new int[]{1};
-    private final ArrayList<Item> items = new ArrayList();
+    private final ArrayList<Item> items = new ArrayList<>();
     public boolean drag;
     private int x;
     private int y;

@@ -1,15 +1,7 @@
 package me.alpha432.oyvey.manager;
 
 import me.alpha432.oyvey.util.Util;
-import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketHeldItemChange;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.client.CPacketHeldItemChange;
-
 public class InventoryManager
         implements Util {
     public int currentPlayerItem;

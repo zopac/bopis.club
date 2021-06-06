@@ -14,16 +14,16 @@ public class GUIBlur extends Module {
 
     public void onDisable() {
         if (mc.world != null) {
-            Util.mc.entityRenderer.getShaderGroup().deleteShaderGroup();
+            mc.entityRenderer.getShaderGroup().deleteShaderGroup();
         }
     }
 
     public void onUpdate() {
         if (mc.world != null) {
             if (ClickGui.getInstance().isEnabled() || mc.currentScreen != null) {
-                if (OpenGlHelper.shadersSupported && Util.mc.getRenderViewEntity() instanceof EntityPlayer) {
-                    if (Util.mc.entityRenderer.getShaderGroup() != null) {
-                        Util.mc.entityRenderer.getShaderGroup().deleteShaderGroup();
+                if (OpenGlHelper.shadersSupported && mc.getRenderViewEntity() instanceof EntityPlayer) {
+                    if (mc.entityRenderer.getShaderGroup() != null) {
+                        mc.entityRenderer.getShaderGroup().deleteShaderGroup();
                     }
                     try {
                         Util.mc.entityRenderer.loadShader(new ResourceLocation("shaders/post/blur.json"));
@@ -32,12 +32,12 @@ public class GUIBlur extends Module {
                         e.printStackTrace();
                     }
                 }
-                else if (Util.mc.entityRenderer.getShaderGroup() != null && Util.mc.currentScreen == null) {
-                    Util.mc.entityRenderer.getShaderGroup().deleteShaderGroup();
+                else if (mc.entityRenderer.getShaderGroup() != null && mc.currentScreen == null) {
+                    mc.entityRenderer.getShaderGroup().deleteShaderGroup();
                 }
             }
-            else if (Util.mc.entityRenderer.getShaderGroup() != null) {
-                Util.mc.entityRenderer.getShaderGroup().deleteShaderGroup();
+            else if (mc.entityRenderer.getShaderGroup() != null) {
+                mc.entityRenderer.getShaderGroup().deleteShaderGroup();
             }
         }
     }

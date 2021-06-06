@@ -24,11 +24,11 @@ public class Feature
     }
 
     public static boolean nullCheck() {
-        return Feature.mc.player == null;
+        return mc.player == null;
     }
 
     public static boolean fullNullCheck() {
-        return Feature.mc.player == null || Feature.mc.world == null;
+        return mc.player == null || mc.world == null;
     }
 
     public String getName() {
@@ -57,7 +57,7 @@ public class Feature
     public Setting register(Setting setting) {
         setting.setFeature(this);
         this.settings.add(setting);
-        if (this instanceof Module && Feature.mc.currentScreen instanceof OyVeyGui) {
+        if (this instanceof Module && mc.currentScreen instanceof OyVeyGui) {
             OyVeyGui.getInstance().updateModule((Module) this);
         }
         return setting;
@@ -72,7 +72,7 @@ public class Feature
         if (!removeList.isEmpty()) {
             this.settings.removeAll(removeList);
         }
-        if (this instanceof Module && Feature.mc.currentScreen instanceof OyVeyGui) {
+        if (this instanceof Module && mc.currentScreen instanceof OyVeyGui) {
             OyVeyGui.getInstance().updateModule((Module) this);
         }
     }

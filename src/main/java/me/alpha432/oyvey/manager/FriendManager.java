@@ -2,7 +2,6 @@ package me.alpha432.oyvey.manager;
 
 import me.alpha432.oyvey.features.Feature;
 import me.alpha432.oyvey.features.setting.Setting;
-import me.alpha432.oyvey.util.AbstractFriend;
 import me.alpha432.oyvey.util.PlayerUtil;
 import net.minecraft.entity.player.EntityPlayer;
 

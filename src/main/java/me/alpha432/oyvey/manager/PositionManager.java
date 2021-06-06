@@ -1,14 +1,7 @@
 package me.alpha432.oyvey.manager;
 
 import me.alpha432.oyvey.features.Feature;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.play.client.CPacketPlayer;
-import java.io.*;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class PositionManager
         extends Feature {
