@@ -152,11 +152,6 @@ public class BedAura extends Module {
                 }
             }
         }
-
-        //Stolen from some autotrap ^
-        //still a pretty nice way to find the target
-        //but i still havent implemented an antisuicide so if the target is in your hole... good luck
-
         try {
             diffXZ = mc.player.getPositionVector().distanceTo(closestTarget.getPositionVector());
         } catch(NullPointerException npe) {
@@ -164,12 +159,6 @@ public class BedAura extends Module {
         }
 
         try {
-
-            //messiness below
-            //TODO: rewrite
-
-            //i figured damage calc is pretty useless since the only way its really gonna do significant damage
-            //is if its right next to the target (or ideally - inside it)
             if(closestTarget != null) {
                 placeTarget = new BlockPos(closestTarget.getPositionVector().add(1, 1, 0));
                 nowTop = false;

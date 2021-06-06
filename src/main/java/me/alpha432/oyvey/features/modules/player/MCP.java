@@ -17,7 +17,6 @@ public class MCP
     private final Setting<Mode> mode = this.register(new Setting<Mode>("Mode", Mode.MIDDLECLICK));
     private final Setting<Boolean> stopRotation = this.register(new Setting<Boolean>("Rotation", true));
     private final Setting<Boolean> antiFriend = this.register(new Setting<Boolean>("AntiFriend", true));
-    private final Setting<Integer> rotation = this.register(new Setting<Object>("Delay", Integer.valueOf(10), Integer.valueOf(0), Integer.valueOf(100), v -> this.stopRotation.getValue()));
     private boolean clicked = false;
 
     public MCP() {
