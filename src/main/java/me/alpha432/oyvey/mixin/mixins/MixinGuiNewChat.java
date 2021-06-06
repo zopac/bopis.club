@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.util.List;
 
 import me.alpha432.oyvey.Bopis;
+import me.alpha432.oyvey.features.modules.client.ClickGui;
 import me.alpha432.oyvey.features.modules.client.HUD;
 import me.alpha432.oyvey.features.modules.misc.ChatModifier;
 import net.minecraft.client.Minecraft;
@@ -33,8 +34,8 @@ public class MixinGuiNewChat
     @Redirect(method={"drawChat"}, at=@At(value="INVOKE", target="Lnet/minecraft/client/gui/FontRenderer;drawStringWithShadow(Ljava/lang/String;FFI)I"))
     private int drawStringWithShadow(FontRenderer fontRenderer, String text, float x, float y, int color) {
         if (text.contains("\u00a7+")) {
-            float colorSpeed = 101 - HUD.getInstance().rainbowSpeed.getValue();
-            Bopis.textManager.drawRainbowString(text, x, y, Color.HSBtoRGB(HUD.getInstance().hue, 1.0f, 1.0f), 100.0f, true);
+            float colorSpeed = 101 - 20;
+            Bopis.textManager.drawRainbowString(text, x, y, Color.HSBtoRGB(ClickGui.getInstance().hue, 1.0f, 1.0f), 100.0f, true);
         } else {
             Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(text, x, y, color);
         }

@@ -2,6 +2,7 @@ package me.alpha432.oyvey;
 
 import me.alpha432.oyvey.event.events.Render3DEvent;
 import me.alpha432.oyvey.features.gui.font.CustomFont;
+import me.alpha432.oyvey.features.modules.client.HUD;
 import me.alpha432.oyvey.manager.*;
 import me.alpha432.oyvey.util.Enemy;
 import me.alpha432.oyvey.util.IconUtil;
@@ -19,11 +20,11 @@ import org.lwjgl.opengl.Display;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 
-@Mod(modid = Bopis.MODID, name = Bopis.MODNAME, version = Bopis.MODNAME)
+@Mod(modid = Bopis.MODID, name = Bopis.MODNAME, version = Bopis.MODVER)
 public class Bopis {
     public static final String MODID = "bopis";
     public static final String MODNAME = "bopis";
-    public static final String MODVER = "1.8.3";
+    public static final String MODVER = "1.8.9";
     public static final Logger LOGGER = LogManager.getLogger("bopis");
     public static TimerManager timerManager;
     public static CommandManager commandManager;
@@ -122,7 +123,7 @@ public class Bopis {
         if (!unloaded) {
             eventManager.onUnload();
             moduleManager.onUnload();
-            configManager.saveConfig(Bopis.configManager.config.replaceFirst("oyvey/", ""));
+            configManager.saveConfig(Bopis.configManager.config.replaceFirst("bopis/", ""));
             moduleManager.onUnloadPost();
             unloaded = true;
         }

@@ -114,7 +114,7 @@ jar {
                 'FMLCorePluginContainsFMLMod': 'true',
                 'FMLCorePlugin': 'me.alpha432.oyvey.mixin.OyVeyMixinLoader',
                 'ForceLoadAsMod': 'true',
-                'FMLAT': 'oyvey_at.cfg'
+                'FMLAT': 'bopis_at.cfg'
         )
     }
 }

@@ -19,11 +19,10 @@ import java.util.stream.Stream;
 
 public class FileManager
         extends Feature {
-    private final Path base = this.getMkDirectory(this.getRoot(), "oyvey");
+    private final Path base = this.getMkDirectory(this.getRoot(), "bopis");
     private final Path config = this.getMkDirectory(this.base, "config");
 
     public FileManager() {
-        this.getMkDirectory(this.base, "pvp");
         for (Module.Category category : Bopis.moduleManager.getCategories()) {
             this.getMkDirectory(this.config, category.getName());
         }

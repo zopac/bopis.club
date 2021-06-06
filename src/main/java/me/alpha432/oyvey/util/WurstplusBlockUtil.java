@@ -72,7 +72,7 @@ public class WurstplusBlockUtil {
         if (setting.equals("Mainhand") || setting.equals("Both")) {
             mc.player.swingArm(EnumHand.MAIN_HAND);
         }
-        if (setting.equals("Offhand") || setting.equals("Both")) {
+        if (setting.equals("AutoTotem") || setting.equals("Both")) {
             mc.player.swingArm(EnumHand.OFF_HAND);
         }
     }

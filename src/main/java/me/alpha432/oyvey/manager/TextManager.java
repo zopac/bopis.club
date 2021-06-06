@@ -37,17 +37,15 @@ public class TextManager
     }
 
     public float drawString(String text, float x, float y, int color, boolean shadow) {
-        if (Bopis.moduleManager.isModuleEnabled(FontMod.getInstance().getName())) {
+        if (Bopis.moduleManager.isModuleEnabledthe(FontMod.class)) {
             if (shadow) {
-                this.customFont.drawStringWithShadow(text, x, y, color);
-            } else {
-                this.customFont.drawString(text, x, y, color);
+                return this.customFont.drawStringWithShadow(text, x, y, color);
             }
-            return x;
+            return this.customFont.drawString(text, x, y, color);
         }
-        TextManager.mc.fontRenderer.drawString(text, x, y, color, shadow);
-        return x;
+        return TextManager.mc.fontRenderer.drawString(text, x, y, color, shadow);
     }
+
     public void drawRainbowString(String text, float x, float y, int startColor, float factor, boolean shadow) {
         Color currentColor = new Color(startColor);
         float hueIncrement = 1.0f / factor;

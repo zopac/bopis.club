@@ -29,11 +29,7 @@ public class HUD extends Module {
     private final Setting<Boolean> grayNess = register(new Setting("Gray", Boolean.valueOf(true)));
     private final Setting<Boolean> renderingUp = register(new Setting("RenderingUp", Boolean.valueOf(false), "Orientation of the HUD-Elements."));
     private final Setting<Boolean> waterMark = register(new Setting("Watermark", Boolean.valueOf(false), "displays watermark"));
-    private final Setting<Boolean> bopiswatermark = register(new Setting("bopiswatermark", Boolean.valueOf(false), "displays watermark"));
-    private final Setting<Boolean> slolwatermark = register(new Setting("slolwatermark", Boolean.valueOf(false), "displays watermark"));
     public Setting<Integer> waterMarkY = register(new Setting("WatermarkPosY", 2, 0, 20, v -> ((Boolean)waterMark.getValue()).booleanValue()));
-    public Setting<Integer> bopiswatermarkY = register(new Setting("bopiswatermarkY", 2, 0, 20, v -> ((Boolean)bopiswatermark.getValue()).booleanValue()));
-    public Setting<Integer> slolwatermarkY = register(new Setting("slolwatermarkY", 2, 0, 100, v -> ((Boolean)slolwatermark.getValue()).booleanValue()));
     private final Setting<Boolean> arrayList = register(new Setting("ActiveModules", Boolean.valueOf(false), "Lists the active modules."));
     private final Setting<Boolean> pvp = register(new Setting("PvpInfo", true));
     private final Setting<Boolean> coords = register(new Setting("Coords", Boolean.valueOf(false), "Your current coordinates"));
@@ -50,10 +46,10 @@ public class HUD extends Module {
     private final Timer timer = new Timer();
     private final Map<String, Integer> players = new HashMap<>();
     public Setting<String> command = register(new Setting("Command", "bopis.club"));
+    public Setting<String> version = register(new Setting("Version", "1.8.9"));
     public Setting<TextUtil.Color> bracketColor = register(new Setting("BracketColor", TextUtil.Color.RED));
     public Setting<TextUtil.Color> commandColor = register(new Setting("NameColor", TextUtil.Color.GRAY));
-    public Setting<Boolean> rainbowPrefix = this.register(new Setting<Boolean>("RainbowPrefix", false));
-    public Setting<Integer> rainbowSpeed = this.register(new Setting<Object>("PrefixSpeed", Integer.valueOf(20), Integer.valueOf(0), Integer.valueOf(100), v -> this.rainbowPrefix.getValue()));
+    public Setting<Boolean> rainbowPrefix = this.register(new Setting<Boolean>("GradientChat", false));
     public Setting<String> commandBracket = register(new Setting("Bracket", "["));
     public Setting<String> commandBracket2 = register(new Setting("Bracket2", "]"));
     public Setting<Boolean> notifyToggles = register(new Setting("ChatNotify", Boolean.valueOf(false), "notifys in chat"));
@@ -99,68 +95,28 @@ public class HUD extends Module {
         int height = renderer.scaledHeight;
         color = ColorUtil.toRGBA(((Integer)(ClickGui.getInstance()).red.getValue()).intValue(), ((Integer)(ClickGui.getInstance()).green.getValue()).intValue(), ((Integer)(ClickGui.getInstance()).blue.getValue()).intValue());
         if (((Boolean)waterMark.getValue()).booleanValue()) {
-            String string = (String)command.getPlannedValue() + " v1.8.3";
-            if (((Boolean)(ClickGui.getInstance()).rainbow.getValue()).booleanValue()) {
+            String string = (String) command.getPlannedValue() + version.getPlannedValue();
+            if (((Boolean) (ClickGui.getInstance()).rainbow.getValue()).booleanValue()) {
                 if ((ClickGui.getInstance()).rainbowModeHud.getValue() == ClickGui.rainbowMode.Static) {
-                    renderer.drawString(string, 2.0F, ((Integer)waterMarkY.getValue()).intValue(), ColorUtil.rainbow(((Integer)(ClickGui.getInstance()).rainbowHue.getValue()).intValue()).getRGB(), true);
+                    renderer.drawString(string, 2.0F, ((Integer) waterMarkY.getValue()).intValue(), ColorUtil.rainbow(((Integer) (ClickGui.getInstance()).rainbowHue.getValue()).intValue()).getRGB(), true);
                 } else {
-                    int[] arrayOfInt = { 1 };
+                    int[] arrayOfInt = {1};
                     char[] stringToCharArray = string.toCharArray();
                     float f = 0.0F;
                     for (char c : stringToCharArray) {
-                        renderer.drawString(String.valueOf(c), 2.0F + f, ((Integer)waterMarkY.getValue()).intValue(), ColorUtil.rainbow(arrayOfInt[0] * ((Integer)(ClickGui.getInstance()).rainbowHue.getValue()).intValue()).getRGB(), true);
+                        renderer.drawString(String.valueOf(c), 2.0F + f, ((Integer) waterMarkY.getValue()).intValue(), ColorUtil.rainbow(arrayOfInt[0] * ((Integer) (ClickGui.getInstance()).rainbowHue.getValue()).intValue()).getRGB(), true);
                         f += renderer.getStringWidth(String.valueOf(c));
                         arrayOfInt[0] = arrayOfInt[0] + 1;
                     }
                 }
             } else {
-                renderer.drawString(string, 2.0F, ((Integer)waterMarkY.getValue()).intValue(), color, true);
+                renderer.drawString(string, 2.0F, ((Integer) waterMarkY.getValue()).intValue(), color, true);
             }
         }
+
         if(pvp.getValue()) {
             renderPvpInfo();
         }
-
-        if (((Boolean)slolwatermark.getValue()).booleanValue()) {
-            String string = (String)"slol lives in vancouver canada and his name is jacob ward";
-            if (((Boolean)(ClickGui.getInstance()).rainbow.getValue()).booleanValue()) {
-                if ((ClickGui.getInstance()).rainbowModeHud.getValue() == ClickGui.rainbowMode.Static) {
-                    renderer.drawString(string, 2.0F, ((Integer)slolwatermarkY.getValue()).intValue(), ColorUtil.rainbow(((Integer)(ClickGui.getInstance()).rainbowHue.getValue()).intValue()).getRGB(), true);
-                } else {
-                    int[] arrayOfInt = { 1 };
-                    char[] stringToCharArray = string.toCharArray();
-                    float f = 0.0F;
-                    for (char c : stringToCharArray) {
-                        renderer.drawString(String.valueOf(c), 2.0F + f, ((Integer)slolwatermarkY.getValue()).intValue(), ColorUtil.rainbow(arrayOfInt[0] * ((Integer)(ClickGui.getInstance()).rainbowHue.getValue()).intValue()).getRGB(), true);
-                        f += renderer.getStringWidth(String.valueOf(c));
-                        arrayOfInt[0] = arrayOfInt[0] + 1;
-                    }
-                }
-            } else {
-                renderer.drawString(string, 2.0F, ((Integer)slolwatermarkY.getValue()).intValue(), color, true);
-            }
-        }
-
-        if (((Boolean)bopiswatermark.getValue()).booleanValue()) {
-            String string = (String)"bopis.club";
-            if (((Boolean)(ClickGui.getInstance()).rainbow.getValue()).booleanValue()) {
-                if ((ClickGui.getInstance()).rainbowModeHud.getValue() == ClickGui.rainbowMode.Static) {
-                    renderer.drawString(string, 2.0F, ((Integer)bopiswatermarkY.getValue()).intValue(), ColorUtil.rainbow(((Integer)(ClickGui.getInstance()).rainbowHue.getValue()).intValue()).getRGB(), true);
-                } else {
-                    int[] arrayOfInt = { 1 };
-                    char[] stringToCharArray = string.toCharArray();
-                    float f = 0.0F;
-                    for (char c : stringToCharArray) {
-                        renderer.drawString(String.valueOf(c), 2.0F + f, ((Integer)bopiswatermarkY.getValue()).intValue(), ColorUtil.rainbow(arrayOfInt[0] * ((Integer)(ClickGui.getInstance()).rainbowHue.getValue()).intValue()).getRGB(), true);
-                        f += renderer.getStringWidth(String.valueOf(c));
-                        arrayOfInt[0] = arrayOfInt[0] + 1;
-                    }
-                }
-            } else {
-                renderer.drawString(string, 2.0F, ((Integer)bopiswatermarkY.getValue()).intValue(), color, true);
-            }
-        }
-
         int[] counter1 = {1};
         int j = (mc.currentScreen instanceof net.minecraft.client.gui.GuiChat && !renderingUp.getValue().booleanValue()) ? 14 : 0;
         if (arrayList.getValue().booleanValue())

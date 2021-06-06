@@ -8,10 +8,6 @@ import net.minecraft.network.play.client.CPacketAnimation;
 import net.minecraft.util.EnumHand;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-/**
- * @author Novola
- * @since 19/1/2020 (1/19/2020)
- */
 public class Swing extends Module {
     private Setting<Hand> hand = register(new Setting("Hand", Hand.OFFHAND));
 

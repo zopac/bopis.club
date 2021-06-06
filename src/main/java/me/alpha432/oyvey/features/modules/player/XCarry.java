@@ -1,12 +1,5 @@
-
 package me.alpha432.oyvey.features.modules.player;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.atomic.AtomicBoolean;
 import me.alpha432.oyvey.event.events.ClientEvent;
 import me.alpha432.oyvey.event.events.PacketEvent;
 import me.alpha432.oyvey.features.command.Command;
@@ -17,11 +10,9 @@ import me.alpha432.oyvey.features.setting.Setting;
 import me.alpha432.oyvey.util.InventoryUtil;
 import me.alpha432.oyvey.util.ReflectionUtil;
 import me.alpha432.oyvey.util.Util;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiInventory;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
-import net.minecraft.network.Packet;
+
 import net.minecraft.network.play.client.CPacketCloseWindow;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -30,8 +21,16 @@ import net.minecraftforge.fml.common.gameevent.InputEvent;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public class XCarry
-extends Module {
+        extends Module {
+    private static XCarry INSTANCE = new XCarry();
     private final Setting<Boolean> simpleMode = this.register(new Setting<Boolean>("Simple", false));
     private final Setting<Bind> autoStore = this.register(new Setting<Bind>("AutoDuel", new Bind(-1)));
     private final Setting<Integer> obbySlot = this.register(new Setting<Object>("ObbySlot", Integer.valueOf(2), Integer.valueOf(1), Integer.valueOf(9), v -> this.autoStore.getValue().getKey() != -1));
@@ -43,12 +42,11 @@ extends Module {
     private final Setting<Boolean> shiftClicker = this.register(new Setting<Boolean>("ShiftClick", false));
     private final Setting<Boolean> withShift = this.register(new Setting<Object>("WithShift", Boolean.valueOf(true), v -> this.shiftClicker.getValue()));
     private final Setting<Bind> keyBind = this.register(new Setting<Object>("ShiftBind", new Bind(-1), v -> this.shiftClicker.getValue()));
-    private static XCarry INSTANCE = new XCarry();
-    private GuiInventory openedGui = null;
     private final AtomicBoolean guiNeedsClose = new AtomicBoolean(false);
+    private final Queue<InventoryUtil.Task> taskList = new ConcurrentLinkedQueue<InventoryUtil.Task>();
+    private GuiInventory openedGui = null;
     private boolean guiCloseGuard = false;
     private boolean autoDuelOn = false;
-    private final Queue<InventoryUtil.Task> taskList = new ConcurrentLinkedQueue<InventoryUtil.Task>();
     private boolean obbySlotDone = false;
     private boolean slot1done = false;
     private boolean slot2done = false;
@@ -60,10 +58,6 @@ extends Module {
         this.setInstance();
     }
 
-    private void setInstance() {
-        INSTANCE = this;
-    }
-
     public static XCarry getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new XCarry();
@@ -71,13 +65,17 @@ extends Module {
         return INSTANCE;
     }
 
+    private void setInstance() {
+        INSTANCE = this;
+    }
+
     @Override
     public void onUpdate() {
         if (this.shiftClicker.getValue().booleanValue() && XCarry.mc.currentScreen instanceof GuiInventory) {
             Slot slot;
             boolean ourBind;
-            boolean bl = ourBind = this.keyBind.getValue().getKey() != -1 && Keyboard.isKeyDown((int)this.keyBind.getValue().getKey()) && !Keyboard.isKeyDown((int)42);
-            if ((Keyboard.isKeyDown((int)42) && this.withShift.getValue().booleanValue() || ourBind) && Mouse.isButtonDown((int)0) && (slot = ((GuiInventory)XCarry.mc.currentScreen).getSlotUnderMouse()) != null && InventoryUtil.getEmptyXCarry() != -1) {
+            boolean bl = ourBind = this.keyBind.getValue().getKey() != -1 && Keyboard.isKeyDown(this.keyBind.getValue().getKey()) && !Keyboard.isKeyDown(42);
+            if ((Keyboard.isKeyDown(42) && this.withShift.getValue().booleanValue() || ourBind) && Mouse.isButtonDown(0) && (slot = ((GuiInventory) XCarry.mc.currentScreen).getSlotUnderMouse()) != null && InventoryUtil.getEmptyXCarry() != -1) {
                 int slotNumber = slot.slotNumber;
                 if (slotNumber > 4 && ourBind) {
                     this.taskList.add(new InventoryUtil.Task(slotNumber));
@@ -111,19 +109,19 @@ extends Module {
                 this.autoDuelOn = false;
             }
             if (this.autoDuelOn) {
-                if (!this.obbySlotDone && !XCarry.mc.player.inventory.getStackInSlot((int)(this.obbySlot.getValue().intValue() - 1)).isEmpty) {
+                if (!this.obbySlotDone && !XCarry.mc.player.inventory.getStackInSlot(this.obbySlot.getValue().intValue() - 1).isEmpty) {
                     this.addTasks(36 + this.obbySlot.getValue() - 1);
                 }
                 this.obbySlotDone = true;
-                if (!this.slot1done && !((Slot)XCarry.mc.player.inventoryContainer.inventorySlots.get((int)this.slot1.getValue().intValue())).getStack().isEmpty) {
+                if (!this.slot1done && !XCarry.mc.player.inventoryContainer.inventorySlots.get(this.slot1.getValue().intValue()).getStack().isEmpty) {
                     this.addTasks(this.slot1.getValue());
                 }
                 this.slot1done = true;
-                if (!this.slot2done && !((Slot)XCarry.mc.player.inventoryContainer.inventorySlots.get((int)this.slot2.getValue().intValue())).getStack().isEmpty) {
+                if (!this.slot2done && !XCarry.mc.player.inventoryContainer.inventorySlots.get(this.slot2.getValue().intValue()).getStack().isEmpty) {
                     this.addTasks(this.slot2.getValue());
                 }
                 this.slot2done = true;
-                if (!this.slot3done && !((Slot)XCarry.mc.player.inventoryContainer.inventorySlots.get((int)this.slot3.getValue().intValue())).getStack().isEmpty) {
+                if (!this.slot3done && !XCarry.mc.player.inventoryContainer.inventorySlots.get(this.slot3.getValue().intValue()).getStack().isEmpty) {
                     this.addTasks(this.slot3.getValue());
                 }
                 this.slot3done = true;
@@ -166,7 +164,7 @@ extends Module {
                 this.closeGui();
                 this.close();
             } else {
-                XCarry.mc.player.connection.sendPacket((Packet)new CPacketCloseWindow(XCarry.mc.player.inventoryContainer.windowId));
+                XCarry.mc.player.connection.sendPacket(new CPacketCloseWindow(XCarry.mc.player.inventoryContainer.windowId));
             }
         }
     }
@@ -179,21 +177,21 @@ extends Module {
     @SubscribeEvent
     public void onCloseGuiScreen(PacketEvent.Send event) {
         if (this.simpleMode.getValue().booleanValue() && event.getPacket() instanceof CPacketCloseWindow) {
-            CPacketCloseWindow packet = (CPacketCloseWindow)event.getPacket();
+            CPacketCloseWindow packet = event.getPacket();
             if (packet.windowId == XCarry.mc.player.inventoryContainer.windowId) {
                 event.setCanceled(true);
             }
         }
     }
 
-    @SubscribeEvent(priority=EventPriority.LOWEST)
+    @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onGuiOpen(GuiOpenEvent event) {
         if (!this.simpleMode.getValue().booleanValue()) {
             if (this.guiCloseGuard) {
                 event.setCanceled(true);
             } else if (event.getGui() instanceof GuiInventory) {
-                this.openedGui = this.createGuiWrapper((GuiInventory)event.getGui());
-                event.setGui((GuiScreen)this.openedGui);
+                this.openedGui = this.createGuiWrapper((GuiInventory) event.getGui());
+                event.setGui(this.openedGui);
                 this.guiNeedsClose.set(false);
             }
         }
@@ -245,17 +243,16 @@ extends Module {
             GuiInventoryWrapper wrapper = new GuiInventoryWrapper();
             ReflectionUtil.copyOf(gui, wrapper);
             return wrapper;
-        }
-        catch (IllegalAccessException | NoSuchFieldException e) {
+        } catch (IllegalAccessException | NoSuchFieldException e) {
             e.printStackTrace();
             return null;
         }
     }
 
     private class GuiInventoryWrapper
-    extends GuiInventory {
+            extends GuiInventory {
         GuiInventoryWrapper() {
-            super((EntityPlayer)Util.mc.player);
+            super(Util.mc.player);
         }
 
         protected void keyTyped(char typedChar, int keyCode) throws IOException {

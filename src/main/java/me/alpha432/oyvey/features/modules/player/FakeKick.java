@@ -7,7 +7,7 @@ import net.minecraft.util.text.TextComponentString;
 
 public class FakeKick extends Module {
     public FakeKick() {
-        super("FakeKick", "Say you were ddosed (with the clip!)", Category.PLAYER, true, false, false);
+        super("FakeKick", "Say you were ddosed", Category.PLAYER, true, false, false);
     }
 
     public void onEnable() {

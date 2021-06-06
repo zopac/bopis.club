@@ -7,6 +7,7 @@ import me.alpha432.oyvey.features.command.Command;
 import me.alpha432.oyvey.features.gui.OyVeyGui;
 import me.alpha432.oyvey.features.modules.Module;
 import me.alpha432.oyvey.features.setting.Setting;
+import me.alpha432.oyvey.util.ColorUtil;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -37,6 +38,7 @@ public class ClickGui extends Module {
     public ClickGui() {
         super("ClickGui", "Opens the ClickGui", Module.Category.CLIENT, true, false, false);
         setInstance();
+        this.setBind(80);
     }
 
     public static ClickGui getInstance() {
@@ -62,6 +64,13 @@ public class ClickGui extends Module {
             return Color.getHSBColor(this.hue, (float)this.rainbowSaturation.getValue().intValue() / 255.0f, (float)this.rainbowBrightness.getValue().intValue() / 255.0f);
         }
         return new Color(this.red.getValue(), this.green.getValue(), this.blue.getValue(), this.alpha.getValue());
+    }
+
+    public int getCurrentColorHex() {
+        if (this.rainbow.getValue().booleanValue()) {
+            return Color.HSBtoRGB(this.hue, (float) this.rainbowSaturation.getValue().intValue() / 255.0f, (float) this.rainbowBrightness.getValue().intValue() / 255.0f);
+        }
+        return ColorUtil.toARGB(this.red.getValue(), this.green.getValue(), this.blue.getValue(), this.alpha.getValue());
     }
 
     @SubscribeEvent

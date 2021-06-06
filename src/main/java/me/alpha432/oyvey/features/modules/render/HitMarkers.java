@@ -12,8 +12,7 @@ import net.minecraft.client.gui.*;
 import java.awt.*;
 import me.alpha432.oyvey.util.*;
 
-public final class HitMarkers extends Module
-{
+public final class HitMarkers extends Module {
 
     public final ResourceLocation image;
     private int renderTicks;
