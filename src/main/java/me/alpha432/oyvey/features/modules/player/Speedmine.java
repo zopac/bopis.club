@@ -42,9 +42,9 @@ public class Speedmine
     public Setting<Boolean> allow = this.register(new Setting<Boolean>("AllowMultiTask", false));
     public Setting<Boolean> doubleBreak = this.register(new Setting<Boolean>("DoubleBreak", false));
     public Setting<Boolean> webSwitch = this.register(new Setting<Boolean>("WebSwitch", false));
-    public Setting<Boolean> silentSwitch = this.register(new Setting<Boolean>("SilentSwitch", false));
-    public Setting<Boolean> render = this.register(new Setting<Boolean>("Render", false));
-    public Setting<Boolean> box = this.register(new Setting<Object>("Box", Boolean.valueOf(false), v -> this.render.getValue()));
+    public Setting<Boolean> silentSwitch = this.register(new Setting<Boolean>("SilentSwitch", true));
+    public Setting<Boolean> render = this.register(new Setting<Boolean>("Render", true));
+    public Setting<Boolean> box = this.register(new Setting<Object>("Box", Boolean.valueOf(true), v -> this.render.getValue()));
     private final Setting<Integer> boxAlpha = this.register(new Setting<Object>("BoxAlpha", Integer.valueOf(85), Integer.valueOf(0), Integer.valueOf(255), v -> this.box.getValue() != false && this.render.getValue() != false));
     public Setting<Boolean> outline = this.register(new Setting<Object>("Outline", Boolean.valueOf(true), v -> this.render.getValue()));
     private final Setting<Float> lineWidth = this.register(new Setting<Object>("LineWidth", Float.valueOf(1.0f), Float.valueOf(0.1f), Float.valueOf(5.0f), v -> this.outline.getValue() != false && this.render.getValue() != false));

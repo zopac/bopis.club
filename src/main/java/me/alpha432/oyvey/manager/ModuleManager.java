@@ -15,7 +15,6 @@ import me.alpha432.oyvey.features.modules.player.*;
 import me.alpha432.oyvey.features.modules.render.*;
 import me.alpha432.oyvey.features.modules.render.Swing;
 import me.alpha432.oyvey.util.Util;
-import me.travis.wurstplusthree.hack.render.Aspect;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.EventBus;
 import org.lwjgl.input.Keyboard;
@@ -68,7 +67,6 @@ public class ModuleManager
         this.modules.add(new PortalESP());
         this.modules.add(new Nametags());
         this.modules.add(new Swing());
-        this.modules.add(new Aspect());
         //COMBAT
         this.modules.add(new AutoTotem());
         this.modules.add(new Surround());
@@ -86,7 +84,6 @@ public class ModuleManager
         this.modules.add(new Burrow());
         this.modules.add(new Anti32k());
         this.modules.add(new Auto32k());
-        this.modules.add(new Auto32kAura());
         this.modules.add(new BedAura());
         this.modules.add(new Offhand());
         //PLAYER

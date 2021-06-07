@@ -15,11 +15,11 @@ import java.awt.*;
 
 public class ClickGui extends Module {
     private static ClickGui INSTANCE = new ClickGui();
-    public Setting<String> prefix = register(new Setting<String>("Prefix", "."));
+    public Setting<String> prefix = register(new Setting<String>("Prefix", "-"));
     public Setting<Boolean> customFov = register(new Setting<Boolean>("CustomFov", false));
     public Setting<Float> fov = register(new Setting<Float>("Fov", Float.valueOf(150.0f), Float.valueOf(-180.0f), Float.valueOf(180.0f)));
-    public Setting<Integer> red = register(new Setting<Integer>("Red", 0, 0, 255));
-    public Setting<Integer> green = register(new Setting<Integer>("Green", 0, 0, 255));
+    public Setting<Integer> red = register(new Setting<Integer>("Red", 255, 0, 255));
+    public Setting<Integer> green = register(new Setting<Integer>("Green", 255, 0, 255));
     public Setting<Integer> blue = register(new Setting<Integer>("Blue", 255, 0, 255));
     public Setting<Integer> hoverAlpha = register(new Setting<Integer>("Alpha", 180, 0, 255));
     public Setting<Integer> topRed = register(new Setting<Integer>("SecondRed", 0, 0, 255));

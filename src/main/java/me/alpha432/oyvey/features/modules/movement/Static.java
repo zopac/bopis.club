@@ -8,11 +8,11 @@ import net.minecraft.util.math.Vec3d;
 
 public class Static
         extends Module {
-    private final Setting<Mode> mode = this.register(new Setting<Mode>("Mode", Mode.ROOF));
+    private final Setting<Mode> mode = this.register(new Setting<Mode>("Mode", Mode.NOVOID));
     private final Setting<Boolean> disabler = this.register(new Setting<Object>("Disable", true, v -> this.mode.getValue() == Mode.ROOF));
     private final Setting<Boolean> ySpeed = this.register(new Setting<Object>("YSpeed", false, v -> this.mode.getValue() == Mode.STATIC));
     private final Setting<Float> speed = this.register(new Setting<Object>("Speed", 0.1f, 0.0f, 10.0f, v -> this.ySpeed.getValue() != false && this.mode.getValue() == Mode.STATIC));
-    private final Setting<Float> height = this.register(new Setting<Object>("Height", 1f, 0f, 10f, v -> this.mode.getValue() == Mode.NOVOID));
+    private final Setting<Float> height = this.register(new Setting<Object>("Height", 2.5f, 0f, 10f, v -> this.mode.getValue() == Mode.NOVOID));
 
     public Static() {
         super("Static", "Stops any movement. Glitches you up.", Module.Category.MOVEMENT, false, false, false);

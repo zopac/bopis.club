@@ -28,10 +28,10 @@ public class HUD extends Module {
     private static HUD INSTANCE = new HUD();
     private final Setting<Boolean> grayNess = register(new Setting("Gray", Boolean.valueOf(true)));
     private final Setting<Boolean> renderingUp = register(new Setting("RenderingUp", Boolean.valueOf(false), "Orientation of the HUD-Elements."));
-    private final Setting<Boolean> waterMark = register(new Setting("Watermark", Boolean.valueOf(false), "displays watermark"));
+    private final Setting<Boolean> waterMark = register(new Setting("Watermark", Boolean.valueOf(true), "displays watermark"));
     public Setting<Integer> waterMarkY = register(new Setting("WatermarkPosY", 2, 0, 20, v -> ((Boolean)waterMark.getValue()).booleanValue()));
     private final Setting<Boolean> arrayList = register(new Setting("ActiveModules", Boolean.valueOf(false), "Lists the active modules."));
-    private final Setting<Boolean> pvp = register(new Setting("PvpInfo", true));
+    private final Setting<Boolean> pvp = register(new Setting("PvpInfo", false));
     private final Setting<Boolean> coords = register(new Setting("Coords", Boolean.valueOf(false), "Your current coordinates"));
     private final Setting<Boolean> direction = register(new Setting("Direction", Boolean.valueOf(false), "The Direction you are facing."));
     private final Setting<Boolean> armor = register(new Setting("Armor", Boolean.valueOf(false), "ArmorHUD"));
@@ -46,9 +46,9 @@ public class HUD extends Module {
     private final Timer timer = new Timer();
     private final Map<String, Integer> players = new HashMap<>();
     public Setting<String> command = register(new Setting("Command", "bopis.club"));
-    public Setting<String> version = register(new Setting("Version", "1.8.9"));
-    public Setting<TextUtil.Color> bracketColor = register(new Setting("BracketColor", TextUtil.Color.RED));
-    public Setting<TextUtil.Color> commandColor = register(new Setting("NameColor", TextUtil.Color.GRAY));
+    public Setting<String> version = register(new Setting("Version", "1.9.1"));
+    public Setting<TextUtil.Color> bracketColor = register(new Setting("BracketColor", TextUtil.Color.LIGHT_PURPLE));
+    public Setting<TextUtil.Color> commandColor = register(new Setting("CommandColor", TextUtil.Color.DARK_PURPLE));
     public Setting<Boolean> rainbowPrefix = this.register(new Setting<Boolean>("GradientChat", false));
     public Setting<String> commandBracket = register(new Setting("Bracket", "["));
     public Setting<String> commandBracket2 = register(new Setting("Bracket2", "]"));

@@ -19,10 +19,10 @@ public class NarratorTweaks extends Module {
     public Setting<Boolean> death = register(new Setting("Death", true));
     public Setting<Boolean> totemPop = register(new Setting("EnemyTotemPop", true));
     public Setting<Boolean> killsay = register(new Setting("Killsay", true));
-    public Setting<String> totemPopMessage = register(new Setting("PopMessage", "<player> bro stop popping ", v -> pop.getValue()));
-    public Setting<String> deathMessages = register(new Setting("DeathMessage", "<player> ayt bro its calm just come back innit", v -> death.getValue()));
-    public Setting<String> popEnemyMessage = register(new Setting("PopEnemyMessage", "<player> YOU'RE POPPING KID", v -> totemPop.getValue()));
-    public Setting<String> killsayMsg = register(new Setting("KillsayMessage", "1 sit no name dog!", v -> killsay.getValue()));
+    public Setting<String> totemPopMessage = register(new Setting("PopMessage", "stop popping fuckface", v -> pop.getValue()));
+    public Setting<String> deathMessages = register(new Setting("DeathMessage", "loot supply drop", v -> death.getValue()));
+    public Setting<String> popEnemyMessage = register(new Setting("PopEnemyMessage", "ez", v -> totemPop.getValue()));
+    public Setting<String> killsayMsg = register(new Setting("KillsayMessage", "among us gone wrong", v -> killsay.getValue()));
     private final Narrator narrator = Narrator.getNarrator();
     private ConcurrentHashMap<String, Integer> targetedPlayers = null;
 
@@ -89,7 +89,7 @@ public class NarratorTweaks extends Module {
     @SubscribeEvent
     public void onLeavingDeathEvent(LivingDeathEvent event) {
         EntityLivingBase entity;
-        if (AutoGG.mc.player == null) {
+        if (NarratorTweaks.mc.player == null) {
             return;
         }
         if (targetedPlayers == null) {
