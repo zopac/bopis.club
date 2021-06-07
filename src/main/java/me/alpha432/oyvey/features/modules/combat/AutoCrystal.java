@@ -204,6 +204,7 @@ public class AutoCrystal
     private int minDmgCount = 0;
     private int lastSlot = -1;
     private float yaw = 0.0f;
+    private float ePeek = 69420.420f;
     private float pitch = 0.0f;
     private BlockPos webPos = null;
     private BlockPos lastPos = null;
@@ -584,6 +585,7 @@ public class AutoCrystal
                 case BREAKPLACE: {
                     this.breakCrystal();
                     this.placeCrystal();
+                    this.ePeek = 5.0f;
                     break;
                 }
             }
@@ -644,6 +646,7 @@ public class AutoCrystal
             this.attackList = new ConcurrentLinkedQueue<Entity>();
             this.crystalMap = new HashMap<Entity, Float>();
         }
+        this.ePeek++;
         this.crystalCount = 0;
         this.minDmgCount = 0;
         Entity maxCrystal = null;
@@ -883,6 +886,7 @@ public class AutoCrystal
         EntityPlayer currentTarget = null;
         BlockPos currentPos = null;
         float maxSelfDamage = 0.0f;
+        this.ePeek += 69;
         this.foundDoublePop = false;
         BlockPos setToAir = null;
         IBlockState state = null;
