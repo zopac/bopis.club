@@ -104,7 +104,6 @@ public class ModuleManager
         this.modules.add(new NoHitBox());
         this.modules.add(new Timestamps());
         this.modules.add(new NoSoundLag());
-        this.modules.add(new ChatSuffix());
         this.modules.add(new NoHandShake());
         this.modules.add(new BuildHeight());
         this.modules.add(new ChatModifier());

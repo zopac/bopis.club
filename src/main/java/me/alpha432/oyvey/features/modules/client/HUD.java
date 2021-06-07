@@ -46,7 +46,7 @@ public class HUD extends Module {
     private final Timer timer = new Timer();
     private final Map<String, Integer> players = new HashMap<>();
     public Setting<String> command = register(new Setting("Command", "bopis.club"));
-    public Setting<String> version = register(new Setting("Version", "1.9.1"));
+    public Setting<String> version = register(new Setting("Version", "1.9.2"));
     public Setting<TextUtil.Color> bracketColor = register(new Setting("BracketColor", TextUtil.Color.LIGHT_PURPLE));
     public Setting<TextUtil.Color> commandColor = register(new Setting("CommandColor", TextUtil.Color.DARK_PURPLE));
     public Setting<Boolean> rainbowPrefix = this.register(new Setting<Boolean>("GradientChat", false));
