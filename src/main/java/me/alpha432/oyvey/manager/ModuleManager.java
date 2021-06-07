@@ -110,7 +110,6 @@ public class ModuleManager
         this.modules.add(new ChatModifier());
         this.modules.add(new MCF());
         this.modules.add(new PearlNotify());
-        this.modules.add(new AutoGG());
         this.modules.add(new ToolTips());
         this.modules.add(new Tracker());
         this.modules.add(new PopCounter());
