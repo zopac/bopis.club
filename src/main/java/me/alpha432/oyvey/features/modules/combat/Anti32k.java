@@ -41,9 +41,9 @@ public class Anti32k extends Module {
 
     @Override
     public void onTick() {
+        int once = 0;
         for (EntityPlayer player : mc.world.playerEntities) {
-            int once = 0;
-            int Distanc = (int)mc.player.getDistance(player);
+            int Distance = (int)mc.player.getDistance(player);
             if (player.equals(mc.player))
                 continue;
             if (is32k(player, player.getHeldItem(EnumHand.MAIN_HAND)) && !this.sword.contains(player)) {
@@ -55,7 +55,7 @@ public class Anti32k extends Module {
                 once++;
                 if(LogOut.getValue()) {
                     if(!Bopis.friendManager.isFriend(player.getName())){
-                        if(Distanc < 8){
+                        if(Distance < 8){
                             Minecraft.getMinecraft().getConnection().handleDisconnect(new SPacketDisconnect(new TextComponentString(ChatFormatting.RED + "[32k Detect] Detected 32k near you")));
                         }
                     }
@@ -69,5 +69,4 @@ public class Anti32k extends Module {
             this.sword.remove(player);
         }
     }
-    public static final Minecraft mc = Minecraft.getMinecraft();
 }

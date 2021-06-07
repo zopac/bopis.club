@@ -51,6 +51,10 @@ public class PopCounter extends Module {
     }
 
     public void onTotemPop(EntityPlayer player) {
+        if (!this.isEnabled()) {
+            return;
+        }
+
         if (PopCounter.fullNullCheck()) {
             return;
         }

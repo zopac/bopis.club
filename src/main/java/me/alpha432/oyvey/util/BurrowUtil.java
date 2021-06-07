@@ -18,9 +18,7 @@ import net.minecraft.util.math.Vec3d;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BurrowUtil {
-
-    public static final Minecraft mc = Minecraft.getMinecraft();
+public class BurrowUtil implements Util {
 
     /*
     Start block Util.

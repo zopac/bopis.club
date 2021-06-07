@@ -13,7 +13,7 @@ import me.alpha432.oyvey.features.setting.Setting;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.common.MinecraftForge;
 
-public class Module
+public abstract class Module
         extends Feature {
     private final String description;
     private final Category category;

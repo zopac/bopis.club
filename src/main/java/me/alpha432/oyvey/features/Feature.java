@@ -10,7 +10,7 @@ import me.alpha432.oyvey.util.Util;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Feature
+public abstract class Feature
         implements Util {
     public List<Setting> settings = new ArrayList<Setting>();
     public TextManager renderer = Bopis.textManager;
