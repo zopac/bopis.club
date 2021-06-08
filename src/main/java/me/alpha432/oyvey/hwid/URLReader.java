@@ -10,11 +10,10 @@ import java.util.List;
 
 public class URLReader {
 
-    public static List<String> readURL() {
+    public static List<String> readURL(String url) {
         List<String> s = new ArrayList<>();
         try {
-            final URL url = new URL(HWIDManager.websiteUrl);
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(url.openStream()));
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new URL(url).openStream()));
             String hwid;
             while ((hwid = bufferedReader.readLine()) != null) {
                 s.add(hwid);
