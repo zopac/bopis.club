@@ -8,7 +8,7 @@ public class BlockDestructionEvent extends EventStage {
     BlockPos nigger;
     public BlockDestructionEvent(BlockPos nigger){
         super();
-        nigger = nigger;
+        this.nigger = nigger;
     }
 
     public BlockPos getBlockPos(){

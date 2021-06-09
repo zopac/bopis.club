@@ -37,17 +37,17 @@ public class HoleFill extends Module {
 
 	public HoleFill() {
         super("HoleFill", "Fills holes around you.", Category.COMBAT, true, false, true);
-        range = (Setting<Integer>) register(new Setting<Integer>("PlaceRange", 8, 0, 10));
-        delay = (Setting<Integer>) register(new Setting<Integer>("Delay", 50, 0, 250));
-        blocksPerTick = (Setting<Integer>) register(new Setting<Integer>("BlocksPerTick", 4, 1, 30));
-        rotate = (Setting<Boolean>) register(new Setting<Boolean>("Rotate", true));
-        packet = (Setting<Boolean>) register(new Setting<Boolean>("Packet", false));
+        range = register(new Setting<>("PlaceRange", 8, 0, 10));
+        delay = register(new Setting<>("Delay", 50, 0, 250));
+        blocksPerTick = register(new Setting<>("BlocksPerTick", 4, 1, 30));
+        rotate = register(new Setting<>("Rotate", true));
+        packet = register(new Setting<>("Packet", false));
         offTimer = new Timer();
         timer = new Timer();
         blocksThisTick = 0;
-        retries = new HashMap<BlockPos, Integer>();
+        retries = new HashMap<>();
         retryTimer = new Timer();
-        holes = new ArrayList<BlockPos>();
+        holes = new ArrayList<>();
         setInstance();
     }
 
@@ -86,7 +86,7 @@ public class HoleFill extends Module {
         if (check()) {
             return;
         }
-        holes = new ArrayList<BlockPos>();
+        holes = new ArrayList<>();
         final Iterable<BlockPos> blocks = BlockPos.getAllInBox(HoleFill.mc.player.getPosition().add(-range.getValue(), -range.getValue(), -range.getValue()), HoleFill.mc.player.getPosition().add(range.getValue(), range.getValue(), range.getValue()));
         for (final BlockPos pos : blocks) {
             if (!HoleFill.mc.world.getBlockState(pos).getMaterial().blocksMovement() && !HoleFill.mc.world.getBlockState(pos.add(0, 1, 0)).getMaterial().blocksMovement()) {

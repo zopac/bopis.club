@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import me.alpha432.oyvey.Bopis;
-import me.alpha432.oyvey.features.gui.OyVeyGui;
+import me.alpha432.oyvey.features.gui.ClickGuiScreen;
 import me.alpha432.oyvey.features.modules.Module;
 import me.alpha432.oyvey.features.modules.player.XCarry;
 import me.alpha432.oyvey.features.setting.Bind;
@@ -55,7 +55,7 @@ public class AutoArmor
 
     @SubscribeEvent
     public void onKeyInput(InputEvent.KeyInputEvent event) {
-        if (Keyboard.getEventKeyState() && !(AutoArmor.mc.currentScreen instanceof OyVeyGui) && this.elytraBind.getValue().getKey() == Keyboard.getEventKey()) {
+        if (Keyboard.getEventKeyState() && !(AutoArmor.mc.currentScreen instanceof ClickGuiScreen) && this.elytraBind.getValue().getKey() == Keyboard.getEventKey()) {
             this.elytraOn = !this.elytraOn;
         }
     }

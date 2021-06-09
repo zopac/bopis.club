@@ -4,7 +4,7 @@ import com.mojang.realmsclient.gui.ChatFormatting;
 import me.alpha432.oyvey.Bopis;
 import me.alpha432.oyvey.event.events.ClientEvent;
 import me.alpha432.oyvey.features.command.Command;
-import me.alpha432.oyvey.features.gui.OyVeyGui;
+import me.alpha432.oyvey.features.gui.ClickGuiScreen;
 import me.alpha432.oyvey.features.modules.Module;
 import me.alpha432.oyvey.features.setting.Setting;
 import me.alpha432.oyvey.util.ColorUtil;
@@ -15,24 +15,23 @@ import java.awt.*;
 
 public class ClickGui extends Module {
     private static ClickGui INSTANCE = new ClickGui();
-    public Setting<String> prefix = register(new Setting<String>("Prefix", "-"));
-    public Setting<Boolean> customFov = register(new Setting<Boolean>("CustomFov", false));
-    public Setting<Float> fov = register(new Setting<Float>("Fov", Float.valueOf(150.0f), Float.valueOf(-180.0f), Float.valueOf(180.0f)));
-    public Setting<Integer> red = register(new Setting<Integer>("Red", 255, 0, 255));
-    public Setting<Integer> green = register(new Setting<Integer>("Green", 255, 0, 255));
-    public Setting<Integer> blue = register(new Setting<Integer>("Blue", 255, 0, 255));
-    public Setting<Integer> hoverAlpha = register(new Setting<Integer>("Alpha", 180, 0, 255));
-    public Setting<Integer> topRed = register(new Setting<Integer>("SecondRed", 0, 0, 255));
-    public Setting<Integer> topGreen = register(new Setting<Integer>("SecondGreen", 0, 0, 255));
-    public Setting<Integer> topBlue = register(new Setting<Integer>("SecondBlue", 150, 0, 255));
-    public Setting<Integer> alpha = register(new Setting<Integer>("HoverAlpha", 240, 0, 255));
-    public Setting<Boolean> rainbow = register(new Setting<Boolean>("Rainbow", false));
-    public Setting<rainbowMode> rainbowModeHud = register(new Setting<Object>("HRainbowMode", rainbowMode.Static, v -> rainbow.getValue()));
-    public Setting<rainbowModeArray> rainbowModeA = register(new Setting<Object>("ARainbowMode", rainbowModeArray.Static, v -> rainbow.getValue()));
-    public Setting<Integer> rainbowHue = register(new Setting<Object>("Delay", Integer.valueOf(240), Integer.valueOf(0), Integer.valueOf(600), v -> rainbow.getValue()));
-    public Setting<Float> rainbowBrightness = register(new Setting<Object>("Brightness ", Float.valueOf(150.0f), Float.valueOf(1.0f), Float.valueOf(255.0f), v -> rainbow.getValue()));
-    public Setting<Float> rainbowSaturation = register(new Setting<Object>("Saturation", Float.valueOf(150.0f), Float.valueOf(1.0f), Float.valueOf(255.0f), v -> rainbow.getValue()));
-    private OyVeyGui click;
+    public Setting<String> prefix = register(new Setting<>("Prefix", "-"));
+    public Setting<Boolean> customFov = register(new Setting<>("CustomFov", false));
+    public Setting<Float> fov = register(new Setting<>("Fov", Float.valueOf(150.0f), Float.valueOf(-180.0f), Float.valueOf(180.0f)));
+    public Setting<Integer> red = register(new Setting<>("Red", 255, 0, 255));
+    public Setting<Integer> green = register(new Setting<>("Green", 255, 0, 255));
+    public Setting<Integer> blue = register(new Setting<>("Blue", 255, 0, 255));
+    public Setting<Integer> hoverAlpha = register(new Setting<>("Alpha", 180, 0, 255));
+    public Setting<Integer> topRed = register(new Setting<>("SecondRed", 0, 0, 255));
+    public Setting<Integer> topGreen = register(new Setting<>("SecondGreen", 0, 0, 255));
+    public Setting<Integer> topBlue = register(new Setting<>("SecondBlue", 150, 0, 255));
+    public Setting<Integer> alpha = register(new Setting<>("HoverAlpha", 240, 0, 255));
+    public Setting<Boolean> rainbow = register(new Setting<>("Rainbow", false));
+    public Setting<rainbowMode> rainbowModeHud = register(new Setting<>("HRainbowMode", rainbowMode.Static, v -> rainbow.getValue()));
+    public Setting<rainbowModeArray> rainbowModeA = register(new Setting<>("ARainbowMode", rainbowModeArray.Static, v -> rainbow.getValue()));
+    public Setting<Integer> rainbowHue = register(new Setting<>("Delay", Integer.valueOf(240), Integer.valueOf(0), Integer.valueOf(600), v -> rainbow.getValue()));
+    public Setting<Float> rainbowBrightness = register(new Setting<>("Brightness ", Float.valueOf(150.0f), Float.valueOf(1.0f), Float.valueOf(255.0f), v -> rainbow.getValue()));
+    public Setting<Float> rainbowSaturation = register(new Setting<>("Saturation", Float.valueOf(150.0f), Float.valueOf(1.0f), Float.valueOf(255.0f), v -> rainbow.getValue()));
     public float hue;
 
     public ClickGui() {
@@ -54,20 +53,20 @@ public class ClickGui extends Module {
 
     @Override
     public void onUpdate() {
-        if (customFov.getValue().booleanValue()) {
-            ClickGui.mc.gameSettings.setOptionFloatValue(GameSettings.Options.FOV, fov.getValue().floatValue());
+        if (customFov.getValue()) {
+            ClickGui.mc.gameSettings.setOptionFloatValue(GameSettings.Options.FOV, fov.getValue());
         }
     }
 
     public Color getCurrentColor() {
-        if (this.rainbow.getValue().booleanValue()) {
+        if (this.rainbow.getValue()) {
             return Color.getHSBColor(this.hue, (float)this.rainbowSaturation.getValue().intValue() / 255.0f, (float)this.rainbowBrightness.getValue().intValue() / 255.0f);
         }
         return new Color(this.red.getValue(), this.green.getValue(), this.blue.getValue(), this.alpha.getValue());
     }
 
     public int getCurrentColorHex() {
-        if (this.rainbow.getValue().booleanValue()) {
+        if (this.rainbow.getValue()) {
             return Color.HSBtoRGB(this.hue, (float) this.rainbowSaturation.getValue().intValue() / 255.0f, (float) this.rainbowBrightness.getValue().intValue() / 255.0f);
         }
         return ColorUtil.toARGB(this.red.getValue(), this.green.getValue(), this.blue.getValue(), this.alpha.getValue());
@@ -86,7 +85,7 @@ public class ClickGui extends Module {
 
     @Override
     public void onEnable() {
-        mc.displayGuiScreen(OyVeyGui.getClickGui());
+        mc.displayGuiScreen(ClickGuiScreen.getClickGui());
     }
 
     @Override
@@ -97,7 +96,7 @@ public class ClickGui extends Module {
 
     @Override
     public void onTick() {
-        if (!(ClickGui.mc.currentScreen instanceof OyVeyGui)) {
+        if (!(ClickGui.mc.currentScreen instanceof ClickGuiScreen)) {
             disable();
         }
     }
@@ -105,13 +104,11 @@ public class ClickGui extends Module {
     public enum rainbowModeArray {
         Static,
         Up
-
     }
 
     public enum rainbowMode {
         Static,
         Sideway
-
     }
 }
 

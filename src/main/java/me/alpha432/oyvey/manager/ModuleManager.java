@@ -5,7 +5,7 @@ import me.alpha432.oyvey.Bopis;
 import me.alpha432.oyvey.event.events.Render2DEvent;
 import me.alpha432.oyvey.event.events.Render3DEvent;
 import me.alpha432.oyvey.features.Feature;
-import me.alpha432.oyvey.features.gui.OyVeyGui;
+import me.alpha432.oyvey.features.gui.ClickGuiScreen;
 import me.alpha432.oyvey.features.modules.Module;
 import me.alpha432.oyvey.features.modules.client.*;
 import me.alpha432.oyvey.features.modules.combat.*;
@@ -31,8 +31,8 @@ import java.util.stream.Collectors;
 public class ModuleManager
         extends Feature {
     public ArrayList<Module> modules = new ArrayList<>();
-    public List<Module> sortedModules = new ArrayList<Module>();
-    public List<String> sortedModulesABC = new ArrayList<String>();
+    public List<Module> sortedModules = new ArrayList<>();
+    public List<String> sortedModulesABC = new ArrayList<>();
     public Animation animationThread;
 
     public void init() {
@@ -287,7 +287,7 @@ public class ModuleManager
     }
 
     public void onKeyPressed(int eventKey) {
-        if (eventKey == 0 || !Keyboard.getEventKeyState() || ModuleManager.mc.currentScreen instanceof OyVeyGui) {
+        if (eventKey == 0 || !Keyboard.getEventKeyState() || ModuleManager.mc.currentScreen instanceof ClickGuiScreen) {
             return;
         }
         this.modules.forEach(module -> {
@@ -366,13 +366,11 @@ public class ModuleManager
     }
 
     public static boolean isModuleEnablednigger(String name) {
-        Module modulenigger = getModules().stream().filter(mm->mm.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
-        return modulenigger.isEnabled();
+        return getModules().stream().filter(mm->mm.getName().equalsIgnoreCase(name)).findFirst().orElse(null).isEnabled();
     }
 
     public static boolean isModuleEnablednigger(Module modulenigger) {
         return modulenigger.isEnabled();
     }
-
 }
 

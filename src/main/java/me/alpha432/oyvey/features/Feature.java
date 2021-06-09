@@ -1,7 +1,7 @@
 package me.alpha432.oyvey.features;
 
 import me.alpha432.oyvey.Bopis;
-import me.alpha432.oyvey.features.gui.OyVeyGui;
+import me.alpha432.oyvey.features.gui.ClickGuiScreen;
 import me.alpha432.oyvey.features.modules.Module;
 import me.alpha432.oyvey.features.setting.Setting;
 import me.alpha432.oyvey.manager.TextManager;
@@ -57,8 +57,8 @@ public abstract class Feature
     public Setting register(Setting setting) {
         setting.setFeature(this);
         this.settings.add(setting);
-        if (this instanceof Module && mc.currentScreen instanceof OyVeyGui) {
-            OyVeyGui.getInstance().updateModule((Module) this);
+        if (this instanceof Module && mc.currentScreen instanceof ClickGuiScreen) {
+            ClickGuiScreen.getInstance().updateModule((Module) this);
         }
         return setting;
     }
@@ -72,8 +72,8 @@ public abstract class Feature
         if (!removeList.isEmpty()) {
             this.settings.removeAll(removeList);
         }
-        if (this instanceof Module && mc.currentScreen instanceof OyVeyGui) {
-            OyVeyGui.getInstance().updateModule((Module) this);
+        if (this instanceof Module && mc.currentScreen instanceof ClickGuiScreen) {
+            ClickGuiScreen.getInstance().updateModule((Module) this);
         }
     }
 

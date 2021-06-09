@@ -3,7 +3,7 @@ package me.alpha432.oyvey.features.modules.player;
 import me.alpha432.oyvey.event.events.ClientEvent;
 import me.alpha432.oyvey.event.events.PacketEvent;
 import me.alpha432.oyvey.features.command.Command;
-import me.alpha432.oyvey.features.gui.OyVeyGui;
+import me.alpha432.oyvey.features.gui.ClickGuiScreen;
 import me.alpha432.oyvey.features.modules.Module;
 import me.alpha432.oyvey.features.setting.Bind;
 import me.alpha432.oyvey.features.setting.Setting;
@@ -215,7 +215,7 @@ public class XCarry
 
     @SubscribeEvent
     public void onKeyInput(InputEvent.KeyInputEvent event) {
-        if (Keyboard.getEventKeyState() && !(XCarry.mc.currentScreen instanceof OyVeyGui) && this.autoStore.getValue().getKey() == Keyboard.getEventKey()) {
+        if (Keyboard.getEventKeyState() && !(XCarry.mc.currentScreen instanceof ClickGuiScreen) && this.autoStore.getValue().getKey() == Keyboard.getEventKey()) {
             this.autoDuelOn = !this.autoDuelOn;
             Command.sendMessage("<XCarry> \u00a7aAutostoring...");
         }

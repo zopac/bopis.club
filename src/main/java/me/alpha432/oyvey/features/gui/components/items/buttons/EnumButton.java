@@ -2,7 +2,7 @@ package me.alpha432.oyvey.features.gui.components.items.buttons;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
 import me.alpha432.oyvey.Bopis;
-import me.alpha432.oyvey.features.gui.OyVeyGui;
+import me.alpha432.oyvey.features.gui.ClickGuiScreen;
 import me.alpha432.oyvey.features.modules.client.ClickGui;
 import me.alpha432.oyvey.features.setting.Setting;
 import me.alpha432.oyvey.util.RenderUtil;
@@ -22,7 +22,7 @@ public class EnumButton
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         RenderUtil.drawRect(this.x, this.y, this.x + (float) this.width + 7.4f, this.y + (float) this.height - 0.5f, this.getState() ? (!this.isHovering(mouseX, mouseY) ? Bopis.colorManager.getColorWithAlpha(Bopis.moduleManager.getModuleByClass(ClickGui.class).hoverAlpha.getValue()) : Bopis.colorManager.getColorWithAlpha(Bopis.moduleManager.getModuleByClass(ClickGui.class).alpha.getValue())) : (!this.isHovering(mouseX, mouseY) ? 0x11555555 : -2007673515));
-        Bopis.textManager.drawStringWithShadow(this.setting.getName() + " " + ChatFormatting.GRAY + (this.setting.currentEnumName().equalsIgnoreCase("ABC") ? "ABC" : this.setting.currentEnumName()), this.x + 2.3f, this.y - 1.7f - (float) OyVeyGui.getClickGui().getTextOffset(), this.getState() ? -1 : -5592406);
+        Bopis.textManager.drawStringWithShadow(this.setting.getName() + " " + ChatFormatting.GRAY + (this.setting.currentEnumName().equalsIgnoreCase("ABC") ? "ABC" : this.setting.currentEnumName()), this.x + 2.3f, this.y - 1.7f - (float) ClickGuiScreen.getClickGui().getTextOffset(), this.getState() ? -1 : -5592406);
     }
 
     @Override

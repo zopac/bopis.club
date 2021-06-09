@@ -36,13 +36,13 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class BedAura extends Module {
     public BedAura() {
-        super("BedAura", "hiugedawihodjw", Module.Category.COMBAT, true, false, false);
+        super("BedAura", "does cool shit with beds", Module.Category.COMBAT, true, false, false);
     }
     
-    public Setting<Integer> placedelay = register(new Setting<Integer>("Place Delay", 15, 1, 20));
-    public Setting<Integer> range = register(new Setting<Integer>("Range", 7, 1, 9));
-    public Setting<Boolean> announceUsage = register(new Setting("Announce", true));
-    public Setting<Boolean> placeesp = register(new Setting("Bed ESP", true));
+    public Setting<Integer> placedelay = register(new Setting<>("Place Delay", 15, 1, 20));
+    public Setting<Integer> range = register(new Setting<>("Range", 7, 1, 9));
+    public Setting<Boolean> announceUsage = register(new Setting<>("Announce", true));
+    public Setting<Boolean> placeesp = register(new Setting<>("Bed ESP", true));
 
     private int playerHotbarSlot = -1;
     private int lastHotbarSlot = -1;
@@ -70,18 +70,11 @@ public class BedAura extends Module {
         //this is gay ^
         //this should already happen on the onEnable() in module.class (since its overriding it)
         //but it doesnt
-
-
+        // if you want it to happen you have to do super.onEnable()
         firstRun = true;
-
-
         blocksPlaced = 0;
-
-
         playerHotbarSlot = mc.player.inventory.currentItem;
         lastHotbarSlot = -1;
-
-
     }
 
     @Override

@@ -4,7 +4,7 @@ import me.alpha432.oyvey.event.events.ClientEvent;
 import me.alpha432.oyvey.event.events.PacketEvent;
 import me.alpha432.oyvey.event.events.UpdateWalkingPlayerEvent;
 import me.alpha432.oyvey.features.command.Command;
-import me.alpha432.oyvey.features.gui.OyVeyGui;
+import me.alpha432.oyvey.features.gui.ClickGuiScreen;
 import me.alpha432.oyvey.features.modules.Module;
 import me.alpha432.oyvey.features.modules.player.Freecam;
 import me.alpha432.oyvey.features.setting.Bind;
@@ -189,7 +189,7 @@ public class Auto32k extends Module {
         if (this.isOff()) {
             return;
         }
-        if (Keyboard.getEventKeyState() && !(Auto32k.mc.currentScreen instanceof OyVeyGui) && this.switchBind.getValue().getKey() == Keyboard.getEventKey() && this.withBind.getValue().booleanValue()) {
+        if (Keyboard.getEventKeyState() && !(Auto32k.mc.currentScreen instanceof ClickGuiScreen) && this.switchBind.getValue().getKey() == Keyboard.getEventKey() && this.withBind.getValue().booleanValue()) {
             if (this.switching) {
                 this.resetFields();
                 this.switching = true;

@@ -49,7 +49,7 @@ public class HUD extends Module {
     public Setting<String> version = register(new Setting("Version", "1.9.5"));
     public Setting<TextUtil.Color> bracketColor = register(new Setting("BracketColor", TextUtil.Color.LIGHT_PURPLE));
     public Setting<TextUtil.Color> commandColor = register(new Setting("CommandColor", TextUtil.Color.DARK_PURPLE));
-    public Setting<Boolean> rainbowPrefix = this.register(new Setting<Boolean>("GradientChat", false));
+    public Setting<Boolean> rainbowPrefix = register(new Setting<Boolean>("GradientChat", false));
     public Setting<String> commandBracket = register(new Setting("Bracket", "["));
     public Setting<String> commandBracket2 = register(new Setting("Bracket2", "]"));
     public Setting<Boolean> notifyToggles = register(new Setting("ChatNotify", Boolean.valueOf(false), "notifys in chat"));
@@ -93,24 +93,24 @@ public class HUD extends Module {
             return;
         int width = renderer.scaledWidth;
         int height = renderer.scaledHeight;
-        color = ColorUtil.toRGBA(((Integer)(ClickGui.getInstance()).red.getValue()).intValue(), ((Integer)(ClickGui.getInstance()).green.getValue()).intValue(), ((Integer)(ClickGui.getInstance()).blue.getValue()).intValue());
-        if (((Boolean)waterMark.getValue()).booleanValue()) {
+        color = ColorUtil.toRGBA(((Integer)(ClickGui.getInstance()).red.getValue()), ((Integer) ClickGui.getInstance().green.getValue()), ((Integer) ClickGui.getInstance().blue.getValue()));
+        if (waterMark.getValue()) {
             String string = (String) command.getPlannedValue()+" "+"v"+version.getPlannedValue();
-            if (((Boolean) (ClickGui.getInstance()).rainbow.getValue()).booleanValue()) {
+            if (ClickGui.getInstance().rainbow.getValue()) {
                 if ((ClickGui.getInstance()).rainbowModeHud.getValue() == ClickGui.rainbowMode.Static) {
-                    renderer.drawString(string, 2.0F, ((Integer) waterMarkY.getValue()).intValue(), ColorUtil.rainbow(((Integer) (ClickGui.getInstance()).rainbowHue.getValue()).intValue()).getRGB(), true);
+                    renderer.drawString(string, 2.0F, ((Integer) waterMarkY.getValue()), ColorUtil.rainbow(((Integer) ClickGui.getInstance().rainbowHue.getValue())).getRGB(), true);
                 } else {
                     int[] arrayOfInt = {1};
                     char[] stringToCharArray = string.toCharArray();
                     float f = 0.0F;
                     for (char c : stringToCharArray) {
-                        renderer.drawString(String.valueOf(c), 2.0F + f, ((Integer) waterMarkY.getValue()).intValue(), ColorUtil.rainbow(arrayOfInt[0] * ((Integer) (ClickGui.getInstance()).rainbowHue.getValue()).intValue()).getRGB(), true);
+                        renderer.drawString(String.valueOf(c), 2.0F + f, ((Integer) waterMarkY.getValue()), ColorUtil.rainbow(arrayOfInt[0] * (Integer) (ClickGui.getInstance()).rainbowHue.getValue()).getRGB(), true);
                         f += renderer.getStringWidth(String.valueOf(c));
                         arrayOfInt[0] = arrayOfInt[0] + 1;
                     }
                 }
             } else {
-                renderer.drawString(string, 2.0F, ((Integer) waterMarkY.getValue()).intValue(), color, true);
+                renderer.drawString(string, 2.0F, ((Integer) waterMarkY.getValue()), color, true);
             }
         }
 

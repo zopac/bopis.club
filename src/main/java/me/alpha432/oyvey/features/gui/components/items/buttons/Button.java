@@ -1,7 +1,7 @@
 package me.alpha432.oyvey.features.gui.components.items.buttons;
 
 import me.alpha432.oyvey.Bopis;
-import me.alpha432.oyvey.features.gui.OyVeyGui;
+import me.alpha432.oyvey.features.gui.ClickGuiScreen;
 import me.alpha432.oyvey.features.gui.components.Component;
 import me.alpha432.oyvey.features.gui.components.items.Item;
 import me.alpha432.oyvey.features.modules.client.ClickGui;
@@ -21,7 +21,7 @@ public class Button
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         RenderUtil.drawRect(this.x, this.y, this.x + (float) this.width, this.y + (float) this.height - 0.5f, this.getState() ? (!this.isHovering(mouseX, mouseY) ? Bopis.colorManager.getColorWithAlpha(Bopis.moduleManager.getModuleByClass(ClickGui.class).hoverAlpha.getValue()) : Bopis.colorManager.getColorWithAlpha(Bopis.moduleManager.getModuleByClass(ClickGui.class).alpha.getValue())) : (!this.isHovering(mouseX, mouseY) ? 0x11555555 : -2007673515));
-        Bopis.textManager.drawStringWithShadow(this.getName(), this.x + 2.3f, this.y - 2.0f - (float) OyVeyGui.getClickGui().getTextOffset(), this.getState() ? -1 : -5592406);
+        Bopis.textManager.drawStringWithShadow(this.getName(), this.x + 2.3f, this.y - 2.0f - (float) ClickGuiScreen.getClickGui().getTextOffset(), this.getState() ? -1 : -5592406);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class Button
     }
 
     public boolean isHovering(int mouseX, int mouseY) {
-        for (Component component : OyVeyGui.getClickGui().getComponents()) {
+        for (Component component : ClickGuiScreen.getClickGui().getComponents()) {
             if (!component.drag) continue;
             return false;
         }

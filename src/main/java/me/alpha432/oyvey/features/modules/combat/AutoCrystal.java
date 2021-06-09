@@ -8,7 +8,7 @@ import me.alpha432.oyvey.event.events.PacketEvent;
 import me.alpha432.oyvey.event.events.Render3DEvent;
 import me.alpha432.oyvey.event.events.UpdateWalkingPlayerEvent;
 import me.alpha432.oyvey.features.command.Command;
-import me.alpha432.oyvey.features.gui.OyVeyGui;
+import me.alpha432.oyvey.features.gui.ClickGuiScreen;
 import me.alpha432.oyvey.features.modules.Module;
 import me.alpha432.oyvey.features.modules.client.ClickGui;
 import me.alpha432.oyvey.features.modules.misc.NoSoundLag;
@@ -456,7 +456,7 @@ public class AutoCrystal
 
     @SubscribeEvent
     public void onKeyInput(InputEvent.KeyInputEvent event) {
-        if (Keyboard.getEventKeyState() && !(AutoCrystal.mc.currentScreen instanceof OyVeyGui) && this.switchBind.getValue().getKey() == Keyboard.getEventKey()) {
+        if (Keyboard.getEventKeyState() && !(AutoCrystal.mc.currentScreen instanceof ClickGuiScreen) && this.switchBind.getValue().getKey() == Keyboard.getEventKey()) {
             if (this.switchBack.getValue().booleanValue() && this.offhandSwitch.getValue().booleanValue() && this.offHand) {
                 AutoTotem module = Bopis.moduleManager.getModuleByClass(AutoTotem.class);
                 if (module.isOff()) {
@@ -1144,19 +1144,19 @@ public class AutoCrystal
 
     private boolean isDoublePoppable(EntityPlayer player, float damage) {
         float health;
-        if (this.doublePop.getValue().booleanValue() && (double) (health = EntityUtil.getHealth(player)) <= this.popHealth.getValue() && (double) damage > (double) health + 0.5 && damage <= this.popDamage.getValue().floatValue()) {
+        if (this.doublePop.getValue() && (double) (health = EntityUtil.getHealth(player)) <= this.popHealth.getValue() && (double) damage > (double) health + 0.5 && damage <= this.popDamage.getValue().floatValue()) {
             Timer timer = this.totemPops.get(player);
-            return timer == null || timer.passedMs(this.popTime.getValue().intValue());
+            return timer == null || timer.passedMs(this.popTime.getValue());
         }
         return false;
     }
 
     private boolean isValid(Entity entity) {
-        return entity != null && AutoCrystal.mc.player.getDistanceSq(entity) <= MathUtil.square(this.breakRange.getValue().floatValue()) && (this.raytrace.getValue() == Raytrace.NONE || this.raytrace.getValue() == Raytrace.PLACE || AutoCrystal.mc.player.canEntityBeSeen(entity) || !AutoCrystal.mc.player.canEntityBeSeen(entity) && AutoCrystal.mc.player.getDistanceSq(entity) <= MathUtil.square(this.breaktrace.getValue().floatValue()));
+        return entity != null && AutoCrystal.mc.player.getDistanceSq(entity) <= MathUtil.square(this.breakRange.getValue()) && (this.raytrace.getValue() == Raytrace.NONE || this.raytrace.getValue() == Raytrace.PLACE || AutoCrystal.mc.player.canEntityBeSeen(entity) || !AutoCrystal.mc.player.canEntityBeSeen(entity) && AutoCrystal.mc.player.getDistanceSq(entity) <= MathUtil.square(this.breaktrace.getValue().floatValue()));
     }
 
     private boolean isEligableForFeetSync(EntityPlayer player, BlockPos pos) {
-        if (this.holySync.getValue().booleanValue()) {
+        if (this.holySync.getValue()) {
             BlockPos playerPos = new BlockPos(player.getPositionVector());
             for (EnumFacing facing : EnumFacing.values()) {
                 BlockPos holyPos;
@@ -1173,7 +1173,6 @@ public class AutoCrystal
         NONE,
         BREAK,
         PREDICT
-
     }
 
     public enum AntiFriendPop {
@@ -1181,7 +1180,6 @@ public class AutoCrystal
         PLACE,
         BREAK,
         ALL
-
     }
 
     public enum ThreadMode {
@@ -1189,14 +1187,12 @@ public class AutoCrystal
         POOL,
         SOUND,
         WHILE
-
     }
 
     public enum AutoSwitch {
         NONE,
         TOGGLE,
         ALWAYS
-
     }
 
     public enum Raytrace {
@@ -1204,27 +1200,23 @@ public class AutoCrystal
         PLACE,
         BREAK,
         FULL
-
     }
 
     public enum Switch {
         ALWAYS,
         BREAKSLOT,
         CALC
-
     }
 
     public enum Logic {
         BREAKPLACE,
         PLACEBREAK
-
     }
 
     public enum Target {
         CLOSEST,
         UNSAFE,
         DAMAGE
-
     }
 
     public enum Rotate {
@@ -1232,14 +1224,12 @@ public class AutoCrystal
         PLACE,
         BREAK,
         ALL
-
     }
 
     public enum DamageSync {
         NONE,
         PLACE,
         BREAK
-
     }
 
     public enum Settings {
@@ -1248,7 +1238,6 @@ public class AutoCrystal
         RENDER,
         MISC,
         DEV
-
     }
 
     public static class PlaceInfo {

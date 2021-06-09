@@ -135,11 +135,11 @@ public class GodModule
     }
 
     private boolean checkPlayers() {
-        if (this.antiIllegal.getValue().booleanValue()) {
+        if (this.antiIllegal.getValue()) {
             for (EntityPlayer player : GodModule.mc.world.playerEntities) {
-                if (!this.checkItem(player.getHeldItemMainhand()) && !this.checkItem(player.getHeldItemOffhand()))
-                    continue;
-                return false;
+                if (this.checkItem(player.getHeldItemMainhand()) && this.checkItem(player.getHeldItemOffhand())) {
+                    return false;
+                }
             }
         }
         return true;

@@ -13,30 +13,30 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-public class OyVeyGui
+public class ClickGuiScreen
         extends GuiScreen {
-    private static OyVeyGui INSTANCE;
+    private static ClickGuiScreen INSTANCE;
 
     static {
-        INSTANCE = new OyVeyGui();
+        INSTANCE = new ClickGuiScreen();
     }
 
     private final ArrayList<Component> components = new ArrayList<>();
 
-    public OyVeyGui() {
+    public ClickGuiScreen() {
         this.setInstance();
         this.load();
     }
 
-    public static OyVeyGui getInstance() {
+    public static ClickGuiScreen getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new OyVeyGui();
+            INSTANCE = new ClickGuiScreen();
         }
         return INSTANCE;
     }
 
-    public static OyVeyGui getClickGui() {
-        return OyVeyGui.getInstance();
+    public static ClickGuiScreen getClickGui() {
+        return ClickGuiScreen.getInstance();
     }
 
     private void setInstance() {
@@ -111,10 +111,10 @@ public class OyVeyGui
 
     public Component getComponentByName(String name) {
         for (Component component : this.components) {
-            if (!component.getName().equalsIgnoreCase(name)) continue;
-            return component;
-        }
-        return null;
+            if (component.getName().equalsIgnoreCase(name)) {
+                return component;
+            }
+        } return null;
     }
 
     public void keyTyped(char typedChar, int keyCode) throws IOException {

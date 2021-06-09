@@ -18,8 +18,8 @@ public class WorldUtil implements Util {
             if (!mc.world.getBlockState(pos.offset(enumFacing)).getBlock().equals(Blocks.AIR) && !isIntercepted(pos)) {
                 final Vec3d vec = new Vec3d(pos.getX() + 0.5 + enumFacing.getXOffset() * 0.5, pos.getY() + 0.5 + enumFacing.getYOffset() * 0.5, pos.getZ() + 0.5 + enumFacing.getZOffset() * 0.5);
                 final float[] old = {mc.player.rotationYaw,  mc.player.rotationPitch };
-                mc.player.connection.sendPacket((Packet)new CPacketPlayer.Rotation((float)Math.toDegrees(Math.atan2(vec.z - mc.player.posZ, vec.x - mc.player.posX)) - 90.0f, (float)(-Math.toDegrees(Math.atan2(vec.y - (mc.player.posY + mc.player.getEyeHeight()), Math.sqrt((vec.x - mc.player.posX) * (vec.x - mc.player.posX) + (vec.z - mc.player.posZ) * (vec.z - mc.player.posZ))))), mc.player.onGround));
-                mc.player.connection.sendPacket((Packet)new CPacketEntityAction((Entity) mc.player, CPacketEntityAction.Action.START_SNEAKING));
+                mc.player.connection.sendPacket(new CPacketPlayer.Rotation((float)Math.toDegrees(Math.atan2(vec.z - mc.player.posZ, vec.x - mc.player.posX)) - 90.0f, (float)(-Math.toDegrees(Math.atan2(vec.y - (mc.player.posY + mc.player.getEyeHeight()), Math.sqrt((vec.x - mc.player.posX) * (vec.x - mc.player.posX) + (vec.z - mc.player.posZ) * (vec.z - mc.player.posZ))))), mc.player.onGround));
+                mc.player.connection.sendPacket(new CPacketEntityAction((Entity) mc.player, CPacketEntityAction.Action.START_SNEAKING));
                 mc.playerController.processRightClickBlock(mc.player, mc.world, pos.offset(enumFacing), enumFacing.getOpposite(), new Vec3d((Vec3i)pos), EnumHand.MAIN_HAND);
                 mc.player.swingArm(EnumHand.MAIN_HAND);
                 mc.player.connection.sendPacket((Packet)new CPacketEntityAction((Entity) mc.player, CPacketEntityAction.Action.STOP_SNEAKING));

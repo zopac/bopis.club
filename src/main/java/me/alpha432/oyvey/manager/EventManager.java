@@ -55,7 +55,7 @@ public class EventManager extends Feature {
         if (!fullNullCheck() && (event.getEntity().getEntityWorld()).isRemote && event.getEntityLiving().equals(mc.player)) {
             Bopis.inventoryManager.update();
             Bopis.moduleManager.onUpdate();
-            if ((HUD.getInstance()).renderingMode.getValue() == HUD.RenderingMode.Length) {
+            if (HUD.getInstance().renderingMode.getValue() == HUD.RenderingMode.Length) {
                 Bopis.moduleManager.sortModules(true);
             } else {
                 Bopis.moduleManager.sortModulesABC();

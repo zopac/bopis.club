@@ -30,12 +30,12 @@ public class AutoTotem extends Module {
     private final Queue<InventoryUtil.Task> taskList = new ConcurrentLinkedQueue<InventoryUtil.Task>();
     private final Timer timer = new Timer();
     private final Timer secondTimer = new Timer();
-    public Setting<Boolean> crystal = register(new Setting<Boolean>("Crystal", true));
-    public Setting<Float> crystalHealth = register(new Setting<Float>("CrystalHP", Float.valueOf(13.0f), Float.valueOf(0.1f), Float.valueOf(36.0f)));
-    public Setting<Float> crystalHoleHealth = register(new Setting<Float>("CrystalHoleHP", Float.valueOf(3.5f), Float.valueOf(0.1f), Float.valueOf(36.0f)));
-    public Setting<Boolean> gapple = register(new Setting<Boolean>("Gapple", true));
-    public Setting<Boolean> armorCheck = register(new Setting<Boolean>("ArmorCheck", true));
-    public Setting<Integer> actions = register(new Setting<Integer>("Packets", 4, 1, 4));
+    public Setting<Boolean> crystal = register(new Setting<>("Crystal", true));
+    public Setting<Float> crystalHealth = register(new Setting<>("CrystalHP", Float.valueOf(13.0f), Float.valueOf(0.1f), Float.valueOf(36.0f)));
+    public Setting<Float> crystalHoleHealth = register(new Setting<>("CrystalHoleHP", Float.valueOf(3.5f), Float.valueOf(0.1f), Float.valueOf(36.0f)));
+    public Setting<Boolean> gapple = register(new Setting<>("Gapple", true));
+    public Setting<Boolean> armorCheck = register(new Setting<>("ArmorCheck", true));
+    public Setting<Integer> actions = register(new Setting<>("Packets", 4, 1, 4));
     public Mode2 currentMode = Mode2.TOTEMS;
     public int totems = 0;
     public int crystals = 0;
@@ -148,25 +148,25 @@ public class AutoTotem extends Module {
 
     public void doSwitch() {
         currentMode = Mode2.TOTEMS;
-        if (gapple.getValue().booleanValue() && AutoTotem.mc.player.getHeldItemMainhand().getItem() instanceof ItemSword && AutoTotem.mc.gameSettings.keyBindUseItem.isKeyDown()) {
+        if (gapple.getValue() && AutoTotem.mc.player.getHeldItemMainhand().getItem() instanceof ItemSword && AutoTotem.mc.gameSettings.keyBindUseItem.isKeyDown()) {
             currentMode = Mode2.GAPPLES;
-        } else if (currentMode != Mode2.CRYSTALS && crystal.getValue().booleanValue() && (EntityUtil.isSafe(AutoTotem.mc.player) && EntityUtil.getHealth(AutoTotem.mc.player, true) > crystalHoleHealth.getValue().floatValue() || EntityUtil.getHealth(AutoTotem.mc.player, true) > crystalHealth.getValue().floatValue())) {
+        } else if (currentMode != Mode2.CRYSTALS && crystal.getValue() && (EntityUtil.isSafe(AutoTotem.mc.player) && EntityUtil.getHealth(AutoTotem.mc.player, true) > crystalHoleHealth.getValue() || EntityUtil.getHealth(AutoTotem.mc.player, true) > crystalHealth.getValue())) {
             currentMode = Mode2.CRYSTALS;
         }
         if (currentMode == Mode2.CRYSTALS && crystals == 0) {
             setMode(Mode2.TOTEMS);
         }
-        if (currentMode == Mode2.CRYSTALS && (!EntityUtil.isSafe(AutoTotem.mc.player) && EntityUtil.getHealth(AutoTotem.mc.player, true) <= crystalHealth.getValue().floatValue() || EntityUtil.getHealth(AutoTotem.mc.player, true) <= crystalHoleHealth.getValue().floatValue())) {
+        if (currentMode == Mode2.CRYSTALS && (!EntityUtil.isSafe(AutoTotem.mc.player) && EntityUtil.getHealth(AutoTotem.mc.player, true) <= crystalHealth.getValue() || EntityUtil.getHealth(AutoTotem.mc.player, true) <= crystalHoleHealth.getValue())) {
             if (currentMode == Mode2.CRYSTALS) {
                 switchedForHealthReason = true;
             }
             setMode(Mode2.TOTEMS);
         }
-        if (switchedForHealthReason && (EntityUtil.isSafe(AutoTotem.mc.player) && EntityUtil.getHealth(AutoTotem.mc.player, true) > crystalHoleHealth.getValue().floatValue() || EntityUtil.getHealth(AutoTotem.mc.player, true) > crystalHealth.getValue().floatValue())) {
+        if (switchedForHealthReason && (EntityUtil.isSafe(AutoTotem.mc.player) && EntityUtil.getHealth(AutoTotem.mc.player, true) > crystalHoleHealth.getValue() || EntityUtil.getHealth(AutoTotem.mc.player, true) > crystalHealth.getValue())) {
             setMode(Mode2.CRYSTALS);
             switchedForHealthReason = false;
         }
-        if (currentMode == Mode2.CRYSTALS && armorCheck.getValue().booleanValue() && (AutoTotem.mc.player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == Items.AIR || AutoTotem.mc.player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == Items.AIR || AutoTotem.mc.player.getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem() == Items.AIR || AutoTotem.mc.player.getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() == Items.AIR)) {
+        if (currentMode == Mode2.CRYSTALS && armorCheck.getValue() && (AutoTotem.mc.player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == Items.AIR || AutoTotem.mc.player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == Items.AIR || AutoTotem.mc.player.getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem() == Items.AIR || AutoTotem.mc.player.getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() == Items.AIR)) {
             setMode(Mode2.TOTEMS);
         }
         if (AutoTotem.mc.currentScreen instanceof GuiContainer && !(AutoTotem.mc.currentScreen instanceof GuiInventory)) {
@@ -243,7 +243,6 @@ public class AutoTotem extends Module {
         TOTEMS,
         GAPPLES,
         CRYSTALS
-
     }
 }
 
