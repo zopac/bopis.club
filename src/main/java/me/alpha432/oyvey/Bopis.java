@@ -2,9 +2,7 @@ package me.alpha432.oyvey;
 
 import me.alpha432.oyvey.event.events.Render3DEvent;
 import me.alpha432.oyvey.features.gui.font.CustomFont;
-import me.alpha432.oyvey.hwid.SystemUtil;
 import me.alpha432.oyvey.manager.*;
-import me.alpha432.oyvey.mixin.OyVeyMixinLoader;
 import me.alpha432.oyvey.util.Enemy;
 import me.alpha432.oyvey.util.IconUtil;
 import me.alpha432.oyvey.util.Title;
