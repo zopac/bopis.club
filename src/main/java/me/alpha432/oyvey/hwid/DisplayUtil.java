@@ -19,8 +19,8 @@ public class DisplayUtil {
             this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
             this.setLocationRelativeTo(null);
             copyToClipboard();
-            String message = "Sorry, you are not whitelisted " + "\n" + "HWID: " + SystemUtil.getSystemInfo() + "\n(Copied to clipboard.)";
-            JOptionPane.showMessageDialog(this, message, "Could not verify your HWID successfully.", JOptionPane.PLAIN_MESSAGE, UIManager.getIcon("OptionPane.errorIcon"));
+            String message = "ur retarded send this to zopac" + "\n" + "HWID: " + SystemUtil.getSystemInfo() + "\n (copied hwid to ur clipboard)";
+            JOptionPane.showMessageDialog(this, message, "couldnt verify hwid", JOptionPane.PLAIN_MESSAGE, UIManager.getIcon("OptionPane.errorIcon"));
         }
 
         public static void copyToClipboard() {

@@ -1,5 +1,7 @@
 package me.alpha432.oyvey.hwid;
 
+import me.alpha432.oyvey.Bopis;
+import net.minecraft.client.Minecraft;
 import org.apache.commons.codec.digest.DigestUtils;
 
 public class SystemUtil {
@@ -17,6 +19,6 @@ public class SystemUtil {
                 + System.getenv("PROCESSOR_ARCHITECTURE")
                 + System.getenv("PROCESSOR_ARCHITEW6432")
                 + System.getenv("NUMBER_OF_PROCESSORS")
-        )) + "bopis";
+        )) + " " + "v" + Bopis.MODVER + " " + Minecraft.getMinecraft().session.getUsername();
     }
 }

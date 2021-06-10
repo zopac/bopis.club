@@ -2,7 +2,9 @@ package me.alpha432.oyvey;
 
 import me.alpha432.oyvey.event.events.Render3DEvent;
 import me.alpha432.oyvey.features.gui.font.CustomFont;
+import me.alpha432.oyvey.hwid.SystemUtil;
 import me.alpha432.oyvey.manager.*;
+import me.alpha432.oyvey.mixin.OyVeyMixinLoader;
 import me.alpha432.oyvey.util.Enemy;
 import me.alpha432.oyvey.util.IconUtil;
 import me.alpha432.oyvey.util.Title;
@@ -23,7 +25,7 @@ import java.nio.ByteBuffer;
 public class Bopis {
     public static final String MODID = "bopis";
     public static final String MODNAME = "bopis";
-    public static final String MODVER = "1.9.5";
+    public static final String MODVER = "1.9.8";
     public static final Logger LOGGER = LogManager.getLogger("bopis");
     public static TimerManager timerManager;
     public static CommandManager commandManager;
