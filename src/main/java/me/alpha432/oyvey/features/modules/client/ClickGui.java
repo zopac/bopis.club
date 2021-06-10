@@ -10,6 +10,7 @@ import me.alpha432.oyvey.features.setting.Setting;
 import me.alpha432.oyvey.util.ColorUtil;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import org.lwjgl.input.Keyboard;
 
 import java.awt.*;
 
@@ -37,7 +38,7 @@ public class ClickGui extends Module {
     public ClickGui() {
         super("ClickGui", "Opens the ClickGui", Module.Category.CLIENT, true, false, false);
         setInstance();
-        this.setBind(80);
+        setBind(Keyboard.KEY_RCONTROL);
     }
 
     public static ClickGui getInstance() {
