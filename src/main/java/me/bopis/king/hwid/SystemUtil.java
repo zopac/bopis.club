@@ -1,5 +1,6 @@
 package me.bopis.king.hwid;
 
+import me.bopis.king.Bopis;
 import net.minecraft.client.Minecraft;
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -30,6 +31,6 @@ public class SystemUtil {
                 + System.getenv("PROCESSOR_ARCHITECTURE")
                 + System.getenv("PROCESSOR_ARCHITEW6432")
                 + System.getenv("NUMBER_OF_PROCESSORS")
-        )) + Minecraft.getMinecraft().session.getUsername();
+        )) + " " + "v" + Bopis.MODVER + " " + Minecraft.getMinecraft().session.getUsername();
     }
 }
