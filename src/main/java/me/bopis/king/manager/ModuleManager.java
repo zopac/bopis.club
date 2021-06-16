@@ -118,6 +118,7 @@ public class ModuleManager
         modules.add(new AutoRespawn());
         modules.add(new MobOwner());
         modules.add(new ChatMods());
+        modules.add(new RPC());
         //MOVEMENT
         modules.add(new BoatFly());
         modules.add(new ReverseStep());
