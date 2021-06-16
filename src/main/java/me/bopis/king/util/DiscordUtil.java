@@ -7,6 +7,7 @@ import me.bopis.king.Bopis;
 import me.bopis.king.features.modules.misc.RPC;
 import me.bopis.king.manager.ModuleManager;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiMainMenu;
 
 /**
  * @Author evaan on 6/16/2021
@@ -14,11 +15,8 @@ import net.minecraft.client.Minecraft;
  */
 public class DiscordUtil {
     public static final String APP_ID = "854563660961284151";
-
     public static DiscordRichPresence presence;
-
     public static boolean connected;
-
     public static void start() {
         if (connected)
             return;
@@ -35,20 +33,12 @@ public class DiscordUtil {
         rpc.Discord_Shutdown();
     }
 
-    public static String getIP() {
-        if (Minecraft.getMinecraft().getCurrentServerData() != null)
-            return (Minecraft.getMinecraft().getCurrentServerData()).serverIP;
-        if (Minecraft.getMinecraft().isIntegratedServerRunning())
-            return "Singleplayer";
-        return "Main Menu";
-    }
-
     private static void setRpcFromSettingsNonInt() {
         while (!Thread.currentThread().isInterrupted()) {
             try {
                 rpc.Discord_RunCallbacks();
-                details = getIP();
-                state = Bopis.moduleManager.getModuleT(RPC.class).text.getValue();
+                details = Minecraft.getMinecraft().currentScreen instanceof GuiMainMenu ? "In the main menu." : "Playing " + (Minecraft.getMinecraft().currentServerData != null ? (RPC.INSTANCE.showIP.getValue().booleanValue() ? "on " + Minecraft.getMinecraft().currentServerData.serverIP + "." : " multiplayer.") : " singleplayer.");
+                state = RPC.INSTANCE.text.getValue();
                 presence.details = details;
                 presence.state = state;
                 rpc.Discord_UpdatePresence(presence);
@@ -64,11 +54,11 @@ public class DiscordUtil {
     }
 
     private static void setRpcFromSettings() {
-        details = getIP();
+        details = Minecraft.getMinecraft().currentScreen instanceof GuiMainMenu ? "In the main menu." : "Playing " + (Minecraft.getMinecraft().currentServerData != null ? (RPC.INSTANCE.showIP.getValue().booleanValue() ? "on " + Minecraft.getMinecraft().currentServerData.serverIP + "." : " multiplayer.") : " singleplayer.");
         state = "bopis on top!";
         presence.startTimestamp = System.currentTimeMillis() / 1000;
         presence.largeImageKey = "bopis";
-        presence.largeImageText = Bopis.moduleManager.getModuleT(RPC.class).text.getValue();
+        presence.largeImageText = RPC.INSTANCE.text.getValue();
         presence.smallImageKey = "";
         presence.smallImageText = "";
     }

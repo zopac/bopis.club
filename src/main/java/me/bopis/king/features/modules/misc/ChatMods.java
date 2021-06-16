@@ -20,6 +20,7 @@ public class ChatMods extends Module {
     public Setting<Boolean> suffix = register(new Setting<Boolean>("Suffix", true));
     public Setting<String> suffixT = register(new Setting<String>("Suffix Text", "\uff5c \u0299\u1d0f\u1d18\u026a\ua731\u002e\u1d04\u029f\u1d1c\u0299"));
     public Setting<Boolean> greenText = register(new Setting<Boolean>("Green Text", false));
+    public Setting<Boolean> resetButton = register(new Setting<Boolean>("Reset", false));
 
     @SubscribeEvent
     public void onSend(PacketEvent.Send event) {
@@ -31,6 +32,14 @@ public class ChatMods extends Module {
             if (suffix.getValue()) message += " " + suffixT.getValue();
             if (message.length() > 255) return;
             else ((CPacketChatMessage) event.getPacket()).message = message;
+        }
+    }
+
+    @Override
+    public void onUpdate() {
+        if (resetButton.getValue()) {
+            suffixT.setValue("\uff5c \u0299\u1d0f\u1d18\u026a\ua731\u002e\u1d04\u029f\u1d1c\u0299");
+            resetButton.setValue(false);
         }
     }
 }
