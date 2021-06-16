@@ -48,6 +48,17 @@ public class WorldUtil implements Util {
         return false;
     }
 
+    public static boolean isInterceptedByOther(final BlockPos pos)
+    {
+        for (final Entity entity : mc.world.loadedEntityList)
+        {
+            if (entity.equals(mc.player)) continue;
+            if (new AxisAlignedBB(pos).intersects(entity.getEntityBoundingBox())) return true;
+        }
+
+        return false;
+    }
+
     public static BlockPos GetLocalPlayerPosFloored() {
         return new BlockPos(Math.floor(mc.player.posX), Math.floor(mc.player.posY), Math.floor(mc.player.posZ));
     }

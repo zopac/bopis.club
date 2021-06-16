@@ -1,8 +1,15 @@
 package me.bopis.king.features.modules.player;
 
+<<<<<<< Updated upstream:src/main/java/me/bopis/king/features/modules/player/MCP.java
 import me.bopis.king.features.modules.Module;
 import me.bopis.king.features.setting.Setting;
 import me.bopis.king.util.InventoryUtil;
+=======
+import me.alpha432.oyvey.features.modules.Module;
+import me.alpha432.oyvey.features.setting.Setting;
+import me.alpha432.oyvey.util.InventoryUtil;
+import net.minecraft.client.settings.KeyBinding;
+>>>>>>> Stashed changes:src/main/java/me/alpha432/oyvey/features/modules/player/MCP.java
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -11,11 +18,16 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import org.lwjgl.input.Mouse;
+import net.minecraft.client.settings.KeyBinding.*;
 
 public class MCP
         extends Module {
+<<<<<<< Updated upstream:src/main/java/me/bopis/king/features/modules/player/MCP.java
     private final Setting <Mode> mode = this.register(new Setting<Mode>("Mode", Mode.MIDDLECLICK));
     private final Setting<Boolean> stopRotation = this.register(new Setting<Boolean>("Rotation", true));
+=======
+    private final Setting<Mode> mode = this.register(new Setting<Mode>("Mode", Mode.MIDDLECLICK));
+>>>>>>> Stashed changes:src/main/java/me/alpha432/oyvey/features/modules/player/MCP.java
     private final Setting<Boolean> antiFriend = this.register(new Setting<Boolean>("AntiFriend", true));
     private boolean clicked = false;
 
