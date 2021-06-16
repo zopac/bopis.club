@@ -30,7 +30,7 @@ public class Burrow extends Module {
     @Override
     public void onEnable () {
         super.onEnable ();
-        this.originalPos = new BlockPos (Burrow.mc.player.posX, Burrow.mc.player.posY, Burrow.mc.player.posZ );
+        this.originalPos = new BlockPos(Burrow.mc.player.posX, Burrow.mc.player.posY, Burrow.mc.player.posZ);
         switch (this.mode.getValue ()) {
             case OBBY: {
                 this.returnBlock = Blocks.OBSIDIAN;
@@ -47,16 +47,17 @@ public class Burrow extends Module {
                 this.returnBlock = Blocks.ANVIL;
             }
         }
-        if ( Burrow.mc.world.getBlockState(new BlockPos(Burrow.mc.player.posX, Burrow.mc.player.posY, Burrow.mc.player.posZ)).getBlock().equals(this.returnBlock) || this.intersectsWithEntity (this.originalPos)) {
-            this.toggle ( );
+        if (Burrow.mc.world.getBlockState(new BlockPos(Burrow.mc.player.posX, Burrow.mc.player.posY, Burrow.mc.player.posZ)).getBlock().equals(this.returnBlock) || this.intersectsWithEntity (this.originalPos)) {
+            this.toggle();
             return;
         }
         this.oldSlot = Burrow.mc.player.inventory.currentItem;
     }
 
     @Override
-    public void onUpdate ( ) {
-        switch (this.mode.getValue ( )) {
+    public void onUpdate() {
+        fullNullCheck();
+        switch (this.mode.getValue()) {
             case OBBY: {
                 if (BurrowUtil.findHotbarBlock(BlockObsidian.class)!=-1) break;
                 Command.sendMessage("Can't find anvil in hotbar!");
@@ -96,20 +97,19 @@ public class Burrow extends Module {
                 BurrowUtil.switchToSlot(BurrowUtil.findHotbarBlock(BlockAnvil.class));
             }
         }
-        Burrow.mc.player.connection.sendPacket ( new CPacketPlayer.Position ( Burrow.mc.player.posX , Burrow.mc.player.posY + 0.41999998688698 , Burrow.mc.player.posZ , true ) );
-        Burrow.mc.player.connection.sendPacket ( new CPacketPlayer.Position ( Burrow.mc.player.posX , Burrow.mc.player.posY + 0.7531999805211997 , Burrow.mc.player.posZ , true ) );
-        Burrow.mc.player.connection.sendPacket ( new CPacketPlayer.Position ( Burrow.mc.player.posX , Burrow.mc.player.posY + 1.00133597911214 , Burrow.mc.player.posZ , true ) );
-        Burrow.mc.player.connection.sendPacket ( new CPacketPlayer.Position ( Burrow.mc.player.posX , Burrow.mc.player.posY + 1.16610926093821 , Burrow.mc.player.posZ , true ) );
+        Burrow.mc.player.connection.sendPacket(new CPacketPlayer.Position(Burrow.mc.player.posX,Burrow.mc.player.posY + 0.41999998688698, Burrow.mc.player.posZ ,true));
+        Burrow.mc.player.connection.sendPacket(new CPacketPlayer.Position(Burrow.mc.player.posX,Burrow.mc.player.posY + 0.7531999805211997, Burrow.mc.player.posZ ,true));
+        Burrow.mc.player.connection.sendPacket(new CPacketPlayer.Position(Burrow.mc.player.posX,Burrow.mc.player.posY + 1.00133597911214, Burrow.mc.player.posZ ,true));
+        Burrow.mc.player.connection.sendPacket(new CPacketPlayer.Position(Burrow.mc.player.posX,Burrow.mc.player.posY + 1.16610926093821, Burrow.mc.player.posZ ,true));
         BurrowUtil.placeBlock (this.originalPos, EnumHand.MAIN_HAND, this.rotate.getValue() ,true ,false);
-        Burrow.mc.player.connection.sendPacket ( new CPacketPlayer.Position ( Burrow.mc.player.posX , Burrow.mc.player.posY + (double)this.offset.getValue().intValue (), Burrow.mc.player.posZ, false ) );
-        Burrow.mc.player.connection.sendPacket ( new CPacketEntityAction ( Burrow.mc.player , CPacketEntityAction.Action.STOP_SNEAKING ) );
+        Burrow.mc.player.connection.sendPacket( new CPacketPlayer.Position(Burrow.mc.player.posX ,Burrow.mc.player.posY + (double)this.offset.getValue().intValue(), Burrow.mc.player.posZ,false ) );
+        Burrow.mc.player.connection.sendPacket( new CPacketEntityAction(Burrow.mc.player, CPacketEntityAction.Action.STOP_SNEAKING));
         Burrow.mc.player.setSneaking(false);
         BurrowUtil.switchToSlot(this.oldSlot);
         this.toggle();
     }
 
-    private
-    boolean intersectsWithEntity ( BlockPos pos ) {
+    private boolean intersectsWithEntity ( BlockPos pos ) {
         for (Entity entity : Burrow.mc.world.loadedEntityList) {
             if (entity.equals(Burrow.mc.player) || entity instanceof EntityItem || ! new AxisAlignedBB (pos).intersects(entity.getEntityBoundingBox())) continue;
             return true;
@@ -117,8 +117,7 @@ public class Burrow extends Module {
         return false;
     }
 
-    public
-    enum Mode {
+    public enum Mode {
         OBBY,
         ECHEST,
         CHEST,
