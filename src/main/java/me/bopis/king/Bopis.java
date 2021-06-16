@@ -131,7 +131,7 @@ public class Bopis {
         if (!unloaded) {
             eventManager.onUnload();
             moduleManager.onUnload();
-            configManager.saveConfig(Bopis.configManager.config.replaceFirst("oyvey/", ""));
+            configManager.saveConfig(Bopis.configManager.config.replaceFirst("bopis/", ""));
             moduleManager.onUnloadPost();
             unloaded = true;
         }
