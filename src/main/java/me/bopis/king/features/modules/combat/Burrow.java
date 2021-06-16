@@ -1,24 +1,13 @@
 package me.bopis.king.features.modules.combat;
-
-<<<<<<< Updated upstream:src/main/java/me/bopis/king/features/modules/combat/Burrow.java
-import com.mojang.realmsclient.gui.ChatFormatting;
-import me.bopis.king.event.events.UpdateEvent;
 import me.bopis.king.features.command.Command;
 import me.bopis.king.features.modules.Module;
 import me.bopis.king.features.setting.Setting;
-import me.bopis.king.util.ItemUtil;
-import me.bopis.king.util.PlaceBlockUtil;
+import me.bopis.king.util.BurrowUtil;
 import net.minecraft.block.BlockEnderChest;
 import net.minecraft.block.BlockObsidian;
-=======
-import me.alpha432.oyvey.features.command.Command;
-import me.alpha432.oyvey.features.modules.Module;
-import me.alpha432.oyvey.features.setting.Setting;
-import me.alpha432.oyvey.util.BurrowUtil;
 import net.minecraft.block.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
->>>>>>> Stashed changes:src/main/java/me/alpha432/oyvey/features/modules/combat/Burrow.java
 import net.minecraft.init.Blocks;
 import net.minecraft.network.play.client.CPacketEntityAction;
 import net.minecraft.network.play.client.CPacketPlayer;
@@ -36,17 +25,9 @@ class Burrow
     private BlockPos originalPos;
     private int oldSlot = - 1;
 
-    public
-    Burrow ( ) {
-        super ( "Burrow" , "TPs you into a block" , Category.COMBAT , true , false , false );
+    public Burrow () {
+        super("Burrow" , "TPs you into a block" , Category.COMBAT , true , false , false );
     }
-<<<<<<< Updated upstream:src/main/java/me/bopis/king/features/modules/combat/Burrow.java
-    public Setting <Float> height = register(new Setting("Height", 5F, -5F, 5F));
-    public Setting<Boolean> preferEChests = register(new Setting("EChests", false));
-    public BlockPos startPos;
-    private int obbySlot = -1;
-=======
->>>>>>> Stashed changes:src/main/java/me/alpha432/oyvey/features/modules/combat/Burrow.java
 
     @Override
     public

@@ -45,7 +45,6 @@ public class Bopis {
     public static TextManager textManager;
     public static CustomFont fontRenderer;
     public static Render3DEvent render3DEvent;
-    public static CapeManager capemanager;
     public static Enemy enemy;
     @Mod.Instance
     public static Bopis INSTANCE;
@@ -96,7 +95,6 @@ public class Bopis {
         textManager.init(true);
         moduleManager.onLoad();
         LOGGER.info("bopis successfully loaded!\n");
-        capemanager = new CapeManager();
     }
 
     public static void unload(boolean unload) {

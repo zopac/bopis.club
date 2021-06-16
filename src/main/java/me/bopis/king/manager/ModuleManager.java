@@ -1,7 +1,6 @@
 package me.bopis.king.manager;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
-<<<<<<< Updated upstream:src/main/java/me/bopis/king/manager/ModuleManager.java
 import me.bopis.king.Bopis;
 import me.bopis.king.event.events.Render2DEvent;
 import me.bopis.king.event.events.Render3DEvent;
@@ -16,23 +15,6 @@ import me.bopis.king.features.modules.misc.*;
 import me.bopis.king.features.modules.movement.*;
 import me.bopis.king.features.modules.player.*;
 import me.bopis.king.features.modules.render.*;
-=======
-import me.alpha432.oyvey.Bopis;
-import me.alpha432.oyvey.event.events.Render2DEvent;
-import me.alpha432.oyvey.event.events.Render3DEvent;
-import me.alpha432.oyvey.features.Feature;
-import me.alpha432.oyvey.features.gui.ClickGuiScreen;
-import me.alpha432.oyvey.features.modules.Module;
-import me.alpha432.oyvey.features.modules.client.*;
-import me.alpha432.oyvey.features.modules.combat.*;
-import me.alpha432.oyvey.features.modules.combat.Burrow;
-import me.alpha432.oyvey.features.modules.misc.*;
-import me.alpha432.oyvey.features.modules.movement.*;
-import me.alpha432.oyvey.features.modules.player.*;
-import me.alpha432.oyvey.features.modules.render.*;
-import me.alpha432.oyvey.features.modules.render.Swing;
-import me.alpha432.oyvey.util.Util;
->>>>>>> Stashed changes:src/main/java/me/alpha432/oyvey/manager/ModuleManager.java
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.EventBus;
 import org.lwjgl.input.Keyboard;

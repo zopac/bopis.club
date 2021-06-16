@@ -34,17 +34,10 @@ public class Announcer extends Module {
     int blocksBroken = 0;
     int eaten = 0;
 
-<<<<<<< Updated upstream:src/main/java/me/bopis/king/features/modules/player/Announcer.java
-    public static String walkMessage = "I just moved {blocks} blocks thanks to zori";
-    public static String breakMessage = "I just broke {amount} {name} thanks to zori";
-    public static String eatMessage = "I just ate {amount} {name} thanks to zori";
-    private final Setting <Boolean> move = register(new Setting("Move", false));
-=======
     public static String walkMessage = "I just moved {blocks} blocks thanks to bopis";
     public static String breakMessage = "I just broke {amount} {name} thanks to bopis";
     public static String eatMessage = "I just ate {amount} {name} thanks to bopis";
     private final Setting<Boolean> move = register(new Setting("Move", false));
->>>>>>> Stashed changes:src/main/java/me/alpha432/oyvey/features/modules/player/Announcer.java
     private final Setting<Boolean> breakBlock = register(new Setting("Break", false));
     private final Setting<Boolean> eat = register(new Setting("Eat", false));
     private final Setting<Double> delay = register(new Setting("Delay", 1d, 1d, 20d));

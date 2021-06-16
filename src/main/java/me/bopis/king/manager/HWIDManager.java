@@ -1,18 +1,14 @@
 package me.bopis.king.manager;
 
-<<<<<<< Updated upstream:src/main/java/me/bopis/king/manager/HWIDManager.java
+import me.bopis.king.Bopis;
 import me.bopis.king.hwid.DisplayUtil;
 import me.bopis.king.hwid.NoStackTraceThrowable;
 import me.bopis.king.hwid.SystemUtil;
 import me.bopis.king.hwid.URLReader;
-=======
-import me.alpha432.oyvey.Bopis;
-import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import org.apache.commons.codec.digest.DigestUtils;
+import net.minecraft.client.Minecraft;
 import sun.misc.Unsafe;
->>>>>>> Stashed changes:src/main/java/me/alpha432/oyvey/manager/HWIDManager.java
-
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
@@ -29,19 +25,11 @@ public class HWIDManager {
     public static List<String> hwids = new ArrayList<>();
 
     public static void hwidCheck() {
-<<<<<<< Updated upstream:src/main/java/me/bopis/king/manager/HWIDManager.java
         hwids = URLReader.readURL(websiteUrl);
-        boolean isHwidPresent = hwids.contains( SystemUtil.getSystemInfo());
+        boolean isHwidPresent = hwids.contains(SystemUtil.getSystemInfo());
         if (!isHwidPresent) {
             DisplayUtil.Display();
-            throw new NoStackTraceThrowable ("no hwid");
-=======
-        hwids = readURL(websiteUrl);
-        boolean isHwidPresent = hwids.contains(getSystemInfo());
-        if (!isHwidPresent) {
-            copyToClipboard();
-            hardShutdown();
->>>>>>> Stashed changes:src/main/java/me/alpha432/oyvey/manager/HWIDManager.java
+            throw new NoStackTraceThrowable("no hwid");
         }
     }
 

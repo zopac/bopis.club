@@ -1,11 +1,7 @@
 package me.bopis.king.features.modules.misc;
 
-<<<<<<< Updated upstream:src/main/java/me/bopis/king/features/modules/misc/BopisHack.java
 import me.bopis.king.features.modules.Module;
-=======
-import me.alpha432.oyvey.features.modules.Module;
-import me.alpha432.oyvey.features.setting.Setting;
->>>>>>> Stashed changes:src/main/java/me/alpha432/oyvey/features/modules/misc/BopisHack.java
+import me.bopis.king.features.setting.Setting;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
