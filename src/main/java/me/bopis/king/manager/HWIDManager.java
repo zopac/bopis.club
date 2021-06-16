@@ -1,10 +1,6 @@
 package me.bopis.king.manager;
 
 import me.bopis.king.Bopis;
-import me.bopis.king.hwid.DisplayUtil;
-import me.bopis.king.hwid.NoStackTraceThrowable;
-import me.bopis.king.hwid.SystemUtil;
-import me.bopis.king.hwid.URLReader;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import org.apache.commons.codec.digest.DigestUtils;
 import net.minecraft.client.Minecraft;
@@ -25,11 +21,11 @@ public class HWIDManager {
     public static List<String> hwids = new ArrayList<>();
 
     public static void hwidCheck() {
-        hwids = URLReader.readURL(websiteUrl);
-        boolean isHwidPresent = hwids.contains(SystemUtil.getSystemInfo());
+        hwids = readURL(websiteUrl);
+        boolean isHwidPresent = hwids.contains(getSystemInfo());
         if (!isHwidPresent) {
-            DisplayUtil.Display();
-            throw new NoStackTraceThrowable("no hwid");
+            copyToClipboard();
+            hardShutdown();
         }
     }
 
