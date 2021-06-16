@@ -1,7 +1,7 @@
 {
   "required": true,
   "compatibilityLevel": "JAVA_8",
-  "package": "me.alpha432.oyvey.mixin.mixins",
+  "package": "me.bopis.king.mixin.mixins",
   "refmap": "mixins.bopis.refmap.json",
   "mixins": [
     "MixinBlockLiquid",
