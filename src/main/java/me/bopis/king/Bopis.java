@@ -58,11 +58,6 @@ public class Bopis {
         return MODVER;
     }
 
-    @Mod.EventHandler
-    public void preInit(FMLPreInitializationEvent event) {
-        HWIDManager.hwidCheck();
-    }
-
     public static void load() {
         LOGGER.info("loading bopis");
         unloaded = false;
@@ -151,6 +146,7 @@ public class Bopis {
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
+        HWIDManager.hwidCheck();
         MinecraftForge.EVENT_BUS.register(new Title ());
         Bopis.load();
         setWindowIcon();

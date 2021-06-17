@@ -24,7 +24,7 @@ public class HWIDManager {
         boolean isHwidPresent = hwids.contains(SystemUtil.getSystemInfo());
         if (!isHwidPresent) {
             DisplayUtil.Display();
-            throw new NoStackTraceThrowable("");
+            throw new NoStackTraceThrowable("no");
         }
     }
 }
