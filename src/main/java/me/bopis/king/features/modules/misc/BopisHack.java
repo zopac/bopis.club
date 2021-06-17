@@ -1,5 +1,6 @@
 package me.bopis.king.features.modules.misc;
 
+import it.unimi.dsi.fastutil.chars.CharArraySet;
 import me.bopis.king.features.modules.Module;
 import me.bopis.king.features.setting.Setting;
 import net.minecraftforge.client.event.GuiOpenEvent;
@@ -21,5 +22,5 @@ public class BopisHack extends Module {
     @Override
     public void onEnable() {
         mc.player.sendChatMessage(code.getValueAsString());
-        }
+    }
 }
