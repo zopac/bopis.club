@@ -37,10 +37,10 @@ public class DiscordUtil {
 
     public static String getIP() {
         if (Minecraft.getMinecraft().getCurrentServerData() != null)
-            return (Minecraft.getMinecraft().getCurrentServerData()).serverIP;
+            return "on " + Minecraft.getMinecraft().getCurrentServerData().serverIP;
         if (Minecraft.getMinecraft().isIntegratedServerRunning())
-            return "Singleplayer";
-        return "Main Menu";
+            return "singleplayer";
+        return "main menu";
     }
 
     private static void setRpcFromSettingsNonInt() {
