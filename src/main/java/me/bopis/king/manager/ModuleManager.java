@@ -43,7 +43,6 @@ public class ModuleManager
         modules.add(new HUD());
         modules.add(new HudComponents());
         modules.add(new NickHider());
-        modules.add(new Colors());
         //RENDER
         modules.add(new Shaders());
         modules.add(new BlockHighlight());
