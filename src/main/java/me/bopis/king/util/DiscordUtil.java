@@ -37,7 +37,7 @@ public class DiscordUtil {
 
     public static String getIP() {
         if (Minecraft.getMinecraft().getCurrentServerData() != null)
-            return "on " + Minecraft.getMinecraft().getCurrentServerData().serverIP;
+            return "playing on " + (Minecraft.getMinecraft().getCurrentServerData()).serverIP;
         if (Minecraft.getMinecraft().isIntegratedServerRunning())
             return "singleplayer";
         return "main menu";
