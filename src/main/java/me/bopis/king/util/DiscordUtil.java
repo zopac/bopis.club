@@ -36,12 +36,10 @@ public class DiscordUtil {
     }
 
     public static String getIP() {
-        if (RPC.INSTANCE.showIP.getValue()) {
-            if (Minecraft.getMinecraft().getCurrentServerData() != null)
-                return (Minecraft.getMinecraft().getCurrentServerData()).serverIP;
-        }
-            if (Minecraft.getMinecraft().isIntegratedServerRunning())
-                return "Singleplayer";
+        if (Minecraft.getMinecraft().getCurrentServerData() != null)
+            return (Minecraft.getMinecraft().getCurrentServerData()).serverIP;
+        if (Minecraft.getMinecraft().isIntegratedServerRunning())
+            return "Singleplayer";
         return "Main Menu";
     }
 
