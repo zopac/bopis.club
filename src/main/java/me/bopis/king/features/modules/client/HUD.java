@@ -46,7 +46,7 @@ public class HUD extends Module {
     private final me.bopis.king.util.Timer timer = new Timer ();
     private final Map<String, Integer> players = new HashMap<>();
     public Setting<String> command = register(new Setting("Command", "bopis.club"));
-    public Setting<String> version = register(new Setting("Version", "v2.1"));
+    public Setting<String> version = register(new Setting("Version", "v2.1.0"));
     public Setting< TextUtil.Color > bracketColor = register(new Setting("BracketColor", TextUtil.Color.LIGHT_PURPLE));
     public Setting<TextUtil.Color> commandColor = register(new Setting("CommandColor", TextUtil.Color.DARK_PURPLE));
     public Setting<Boolean> rainbowPrefix = register(new Setting<Boolean>("GradientChat", false));
