@@ -3,7 +3,8 @@ package me.bopis.king.features.modules.combat;
 import me.bopis.king.features.command.Command;
 import me.bopis.king.features.modules.Module;
 import me.bopis.king.features.setting.Setting;
-import me.bopis.king.util.BurrowUtil;
+import me.bopis.king.util.BlockUtil;
+import me.bopis.king.util.InventoryUtil;
 import net.minecraft.block.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -42,20 +43,20 @@ public class SelfWeb extends Module {
         if (fullNullCheck()) {
             return;
         }
-        if (BurrowUtil.findHotbarBlock(BlockWeb.class) != -1) {
+        if (InventoryUtil.findHotbarBlock(BlockWeb.class) != -1) {
             Command.sendMessage("Can't find cobweb in hotbar!");
             this.toggle();
         }
-        BurrowUtil.switchToSlot(BurrowUtil.findHotbarBlock(BlockWeb.class));
+        BlockUtil.switchToSlot(InventoryUtil.findHotbarBlock(BlockWeb.class));
         Burrow.mc.player.connection.sendPacket(new CPacketPlayer.Position(Burrow.mc.player.posX, Burrow.mc.player.posY + 0.41999998688698, Burrow.mc.player.posZ, true));
         Burrow.mc.player.connection.sendPacket(new CPacketPlayer.Position(Burrow.mc.player.posX, Burrow.mc.player.posY + 0.7531999805211997, Burrow.mc.player.posZ, true));
         Burrow.mc.player.connection.sendPacket(new CPacketPlayer.Position(Burrow.mc.player.posX, Burrow.mc.player.posY + 1.00133597911214, Burrow.mc.player.posZ, true));
         Burrow.mc.player.connection.sendPacket(new CPacketPlayer.Position(Burrow.mc.player.posX, Burrow.mc.player.posY + 1.16610926093821, Burrow.mc.player.posZ, true));
-        BurrowUtil.placeBlock(this.originalPos, EnumHand.MAIN_HAND, this.rotate.getValue(), true, false);
+        BlockUtil.placeBlock(this.originalPos, EnumHand.MAIN_HAND, this.rotate.getValue(), true, false);
         Burrow.mc.player.connection.sendPacket(new CPacketPlayer.Position(Burrow.mc.player.posX, Burrow.mc.player.posY + (double) -2, Burrow.mc.player.posZ, false));
         Burrow.mc.player.connection.sendPacket(new CPacketEntityAction(Burrow.mc.player, CPacketEntityAction.Action.STOP_SNEAKING));
         Burrow.mc.player.setSneaking(false);
-        BurrowUtil.switchToSlot(this.oldSlot);
+        BlockUtil.switchToSlot(this.oldSlot);
         this.toggle();
     }
 

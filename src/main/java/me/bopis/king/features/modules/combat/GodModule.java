@@ -4,7 +4,7 @@ import me.bopis.king.event.events.PacketEvent;
 import me.bopis.king.features.modules.Module;
 import me.bopis.king.features.setting.Setting;
 import me.bopis.king.util.BlockUtil;
-import me.bopis.king.util.MathUtilll;
+import me.bopis.king.util.MathUtil;
 import me.bopis.king.util.Util;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityEnderCrystal;
@@ -150,7 +150,7 @@ public class GodModule
     }
 
     public void rotateTo(BlockPos pos) {
-        float[] angle = MathUtilll.calcAngle(GodModule.mc.player.getPositionEyes(mc.getRenderPartialTicks()), new Vec3d(pos));
+        float[] angle = MathUtil.calcAngle(GodModule.mc.player.getPositionEyes(mc.getRenderPartialTicks()), new Vec3d(pos));
         this.yaw = angle[0];
         this.pitch = angle[1];
         this.rotating = true;

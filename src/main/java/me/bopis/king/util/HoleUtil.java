@@ -1,9 +1,6 @@
 package me.bopis.king.util;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
@@ -25,11 +22,11 @@ public class HoleUtil {
 
 
     public static boolean isInHole() {
-        Vec3d playerPos = CombatUtil.interpolateEntity(mc.player);
+        Vec3d playerPos = BlockUtil.interpolateEntity(mc.player);
         BlockPos blockpos = new BlockPos(playerPos.x, playerPos.y, playerPos.z);
         int size = 0;
         for(BlockPos bPos : holeBlocks) {
-            if(CombatUtil.isHard(mc.world.getBlockState(blockpos.add(bPos)).getBlock())) {
+            if(BlockUtil.isHard(mc.world.getBlockState(blockpos.add(bPos)).getBlock())) {
                 size++;
             }
         }

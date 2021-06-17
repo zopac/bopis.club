@@ -22,8 +22,10 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.ContainerHopper;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemPickaxe;
+import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.CPacketCloseWindow;
 import net.minecraft.network.play.client.CPacketEntityAction;
 import net.minecraft.network.play.client.CPacketPlayer;
@@ -37,44 +39,46 @@ import net.minecraftforge.fml.common.gameevent.InputEvent;
 import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Auto32k extends Module {
+public class Auto32k
+        extends Module {
     private static Auto32k instance;
-    private final Setting <Integer> delay = this.register(new Setting<>("Delay/Place", 25, 0, 250));
-    private final Setting<Float> range = this.register(new Setting<>("PlaceRange", Float.valueOf(4.5f), Float.valueOf(0.0f), Float.valueOf(6.0f)));
-    private final Setting<Boolean> raytrace = this.register(new Setting<>("Raytrace", false));
-    private final Setting<Boolean> rotate = this.register(new Setting<>("Rotate", false));
-    private final Setting<Double> targetRange = this.register(new Setting<>("TargetRange", 6.0, 0.0, 20.0));
-    private final Setting<Boolean> extra = this.register(new Setting<>("ExtraRotation", false));
-    private final Setting<PlaceType> placeType = this.register(new Setting<>("Place", PlaceType.CLOSE));
-    private final Setting<Boolean> freecam = this.register(new Setting<>("Freecam", false));
-    private final Setting<Boolean> onOtherHoppers = this.register(new Setting<>("UseHoppers", false));
-    private final Setting<Boolean> checkForShulker = this.register(new Setting<>("CheckShulker", true));
-    private final Setting<Integer> checkDelay = this.register(new Setting<>("CheckDelay", Integer.valueOf(500), Integer.valueOf(0), Integer.valueOf(500), v -> this.checkForShulker.getValue()));
-    private final Setting<Boolean> drop = this.register(new Setting<>("Drop", false));
-    private final Setting<Boolean> mine = this.register(new Setting<>("Mine", Boolean.valueOf(false), v -> this.drop.getValue()));
-    private final Setting<Boolean> checkStatus = this.register(new Setting<>("CheckState", true));
-    private final Setting<Boolean> packet = this.register(new Setting<>("Packet", false));
-    private final Setting<Boolean> superPacket = this.register(new Setting<>("DispExtra", false));
-    private final Setting<Boolean> secretClose = this.register(new Setting<>("SecretClose", false));
-    private final Setting<Boolean> closeGui = this.register(new Setting<>("CloseGui", Boolean.valueOf(false), v -> this.secretClose.getValue()));
-    private final Setting<Boolean> repeatSwitch = this.register(new Setting<>("SwitchOnFail", true));
-    private final Setting<Float> hopperDistance = this.register(new Setting<>("HopperRange", Float.valueOf(8.0f), Float.valueOf(0.0f), Float.valueOf(20.0f)));
-    private final Setting<Integer> trashSlot = this.register(new Setting<>("32kSlot", 0, 0, 9));
-    private final Setting<Boolean> messages = this.register(new Setting<>("Messages", false));
-    private final Setting<Boolean> antiHopper = this.register(new Setting<>("AntiHopper", false));
+    private final Setting<Integer> delay = this.register(new Setting<Integer>("Delay/Place", 25, 0, 250));
+    private final Setting<Float> range = this.register(new Setting<Float>("PlaceRange", Float.valueOf(4.5f), Float.valueOf(0.0f), Float.valueOf(6.0f)));
+    private final Setting<Boolean> raytrace = this.register(new Setting<Boolean>("Raytrace", false));
+    private final Setting<Boolean> rotate = this.register(new Setting<Boolean>("Rotate", false));
+    private final Setting<Double> targetRange = this.register(new Setting<Double>("TargetRange", 6.0, 0.0, 20.0));
+    private final Setting<Boolean> extra = this.register(new Setting<Boolean>("ExtraRotation", false));
+    private final Setting<PlaceType> placeType = this.register(new Setting<PlaceType>("Place", PlaceType.CLOSE));
+    private final Setting<Boolean> freecam = this.register(new Setting<Boolean>("Freecam", false));
+    private final Setting<Boolean> onOtherHoppers = this.register(new Setting<Boolean>("UseHoppers", false));
+    private final Setting<Boolean> checkForShulker = this.register(new Setting<Boolean>("CheckShulker", true));
+    private final Setting<Integer> checkDelay = this.register(new Setting<Object>("CheckDelay", Integer.valueOf(500), Integer.valueOf(0), Integer.valueOf(500), v -> this.checkForShulker.getValue()));
+    private final Setting<Boolean> drop = this.register(new Setting<Boolean>("Drop", false));
+    private final Setting<Boolean> mine = this.register(new Setting<Object>("Mine", Boolean.valueOf(false), v -> this.drop.getValue()));
+    private final Setting<Boolean> checkStatus = this.register(new Setting<Boolean>("CheckState", true));
+    private final Setting<Boolean> packet = this.register(new Setting<Boolean>("Packet", false));
+    private final Setting<Boolean> superPacket = this.register(new Setting<Boolean>("DispExtra", false));
+    private final Setting<Boolean> secretClose = this.register(new Setting<Boolean>("SecretClose", false));
+    private final Setting<Boolean> closeGui = this.register(new Setting<Object>("CloseGui", Boolean.valueOf(false), v -> this.secretClose.getValue()));
+    private final Setting<Boolean> repeatSwitch = this.register(new Setting<Boolean>("SwitchOnFail", true));
+    private final Setting<Float> hopperDistance = this.register(new Setting<Float>("HopperRange", Float.valueOf(8.0f), Float.valueOf(0.0f), Float.valueOf(20.0f)));
+    private final Setting<Integer> trashSlot = this.register(new Setting<Integer>("32kSlot", 0, 0, 9));
+    private final Setting<Boolean> messages = this.register(new Setting<Boolean>("Messages", false));
+    private final Setting<Boolean> antiHopper = this.register(new Setting<Boolean>("AntiHopper", false));
     private final Timer placeTimer = new Timer();
     public Setting<Mode> mode = this.register(new Setting<Mode>("Mode", Mode.NORMAL));
-    private final Setting<Integer> delayDispenser = this.register(new Setting<>("Blocks/Place", Integer.valueOf(1), Integer.valueOf(1), Integer.valueOf(8), v -> this.mode.getValue() != Mode.NORMAL));
-    private final Setting<Integer> blocksPerPlace = this.register(new Setting<>("Actions/Place", Integer.valueOf(1), Integer.valueOf(1), Integer.valueOf(3), v -> this.mode.getValue() == Mode.NORMAL));
-    private final Setting<Boolean> preferObby = this.register(new Setting<>("UseObby", Boolean.valueOf(false), v -> this.mode.getValue() != Mode.NORMAL));
-    private final Setting<Boolean> simulate = this.register(new Setting<>("Simulate", Boolean.valueOf(true), v -> this.mode.getValue() != Mode.NORMAL));
-    public Setting<Boolean> autoSwitch = this.register(new Setting<>("AutoSwitch", Boolean.valueOf(false), v -> this.mode.getValue() == Mode.NORMAL));
-    public Setting<Boolean> withBind = this.register(new Setting<>("WithBind", Boolean.valueOf(false), v -> this.mode.getValue() == Mode.NORMAL && this.autoSwitch.getValue() != false));
-    public Setting< Bind > switchBind = this.register(new Setting<>("SwitchBind", new Bind(-1), v -> this.autoSwitch.getValue() != false && this.mode.getValue() == Mode.NORMAL && this.withBind.getValue() != false));
+    private final Setting<Integer> delayDispenser = this.register(new Setting<Object>("Blocks/Place", Integer.valueOf(1), Integer.valueOf(1), Integer.valueOf(8), v -> this.mode.getValue() != Mode.NORMAL));
+    private final Setting<Integer> blocksPerPlace = this.register(new Setting<Object>("Actions/Place", Integer.valueOf(1), Integer.valueOf(1), Integer.valueOf(3), v -> this.mode.getValue() == Mode.NORMAL));
+    private final Setting<Boolean> preferObby = this.register(new Setting<Object>("UseObby", Boolean.valueOf(false), v -> this.mode.getValue() != Mode.NORMAL));
+    private final Setting<Boolean> simulate = this.register(new Setting<Object>("Simulate", Boolean.valueOf(true), v -> this.mode.getValue() != Mode.NORMAL));
+    public Setting<Boolean> autoSwitch = this.register(new Setting<Object>("AutoSwitch", Boolean.valueOf(false), v -> this.mode.getValue() == Mode.NORMAL));
+    public Setting<Boolean> withBind = this.register(new Setting<Object>("WithBind", Boolean.valueOf(false), v -> this.mode.getValue() == Mode.NORMAL && this.autoSwitch.getValue() != false));
+    public Setting<Bind> switchBind = this.register(new Setting<Object>("SwitchBind", new Bind(-1), v -> this.autoSwitch.getValue() != false && this.mode.getValue() == Mode.NORMAL && this.withBind.getValue() != false));
     public boolean switching;
     public Step currentStep = Step.PRE;
     private float yaw;
@@ -97,7 +101,7 @@ public class Auto32k extends Module {
     private boolean rotationprepared = false;
 
     public Auto32k() {
-        super("Auto32k", "idk", Module.Category.COMBAT, true, false, false);
+        super("Auto32k", "Auto32ks", Module.Category.COMBAT, true, false, false);
         instance = this;
     }
 
@@ -199,7 +203,7 @@ public class Auto32k extends Module {
     }
 
     @SubscribeEvent
-    public void onSettingChange( ClientEvent event) {
+    public void onSettingChange(ClientEvent event) {
         Setting setting;
         if (event.getStage() == 2 && (setting = event.getSetting()) != null && setting.getFeature().equals(this) && setting.equals(this.mode)) {
             this.resetFields();
@@ -309,7 +313,11 @@ public class Auto32k extends Module {
                     break;
                 }
                 default: {
-                    Command.sendMessage("\u00a7cyikes");
+                    Command.sendMessage("\u00a7cThis shouldnt happen, report to 3arthqu4ke!!!");
+                    Command.sendMessage("\u00a7cThis shouldnt happen, report to 3arthqu4ke!!!");
+                    Command.sendMessage("\u00a7cThis shouldnt happen, report to 3arthqu4ke!!!");
+                    Command.sendMessage("\u00a7cThis shouldnt happen, report to 3arthqu4ke!!!");
+                    Command.sendMessage("\u00a7cThis shouldnt happen, report to 3arthqu4ke!!!");
                     this.currentStep = Step.PRE;
                 }
             }
@@ -323,7 +331,7 @@ public class Auto32k extends Module {
         PlaceType type = this.placeType.getValue();
         if (Freecam.getInstance().isOn() && !this.freecam.getValue().booleanValue()) {
             if (this.messages.getValue().booleanValue()) {
-                Command.sendMessage("\u00a7cturn off freecam fucker");
+                Command.sendMessage("\u00a7c<Auto32k> Disable Freecam.");
             }
             if (this.autoSwitch.getValue().booleanValue()) {
                 this.resetFields();
@@ -348,7 +356,7 @@ public class Auto32k extends Module {
         }
         if (this.shulkerSlot == -1 || this.hopperSlot == -1) {
             if (this.messages.getValue().booleanValue()) {
-                Command.sendMessage("\u00a7cget a fucking shulker and hopper brainlet");
+                Command.sendMessage("\u00a7c<Auto32k> Materials not found.");
             }
             if (this.autoSwitch.getValue().booleanValue()) {
                 this.resetFields();
@@ -378,7 +386,7 @@ public class Auto32k extends Module {
             this.currentStep = Auto32k.mc.world.getBlockState(this.hopperPos).getBlock() instanceof BlockHopper ? Step.SHULKER : Step.HOPPER;
         } else {
             if (this.messages.getValue().booleanValue()) {
-                Command.sendMessage("\u00a7cfucker get hoppers");
+                Command.sendMessage("\u00a7c<Auto32k> Block not found.");
             }
             if (this.autoSwitch.getValue().booleanValue()) {
                 this.resetFields();
@@ -872,7 +880,7 @@ public class Auto32k extends Module {
         }
         if (Freecam.getInstance().isOn() && !this.freecam.getValue().booleanValue()) {
             if (this.messages.getValue().booleanValue()) {
-                Command.sendMessage("\u00a7cturn off freecam retard");
+                Command.sendMessage("\u00a7c<Auto32k> Disable Freecam.");
             }
             this.disable();
             return;
@@ -897,7 +905,7 @@ public class Auto32k extends Module {
         }
         if (this.shulkerSlot == -1 || this.hopperSlot == -1 || this.dispenserSlot == -1 || this.redstoneSlot == -1) {
             if (this.messages.getValue().booleanValue()) {
-                Command.sendMessage("\u00a7cget some blocks brainlet");
+                Command.sendMessage("\u00a7c<Auto32k> Materials not found.");
             }
             this.disable();
             return;
@@ -908,7 +916,7 @@ public class Auto32k extends Module {
             this.currentStep = Auto32k.mc.world.getBlockState(this.hopperPos).getBlock() instanceof BlockHopper ? Step.DISPENSER : Step.HOPPER;
         } else {
             if (this.messages.getValue().booleanValue()) {
-                Command.sendMessage("\u00a7cget a fucking hopper");
+                Command.sendMessage("\u00a7c<Auto32k> Block not found.");
             }
             this.disable();
         }

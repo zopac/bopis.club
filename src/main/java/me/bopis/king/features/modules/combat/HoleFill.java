@@ -4,7 +4,6 @@ import me.bopis.king.features.modules.Module;
 import me.bopis.king.features.setting.Setting;
 import me.bopis.king.util.BlockUtil;
 import me.bopis.king.util.InventoryUtil;
-import me.bopis.king.util.TestUtil;
 import me.bopis.king.util.Timer;
 import net.minecraft.block.BlockEnderChest;
 import net.minecraft.block.BlockObsidian;
@@ -125,7 +124,7 @@ public class HoleFill extends Module {
             final int originalSlot = HoleFill.mc.player.inventory.currentItem;
             HoleFill.mc.player.inventory.currentItem = ((obbySlot == -1) ? eChestSot : obbySlot);
             HoleFill.mc.playerController.updateController();
-            TestUtil.placeBlock(pos);
+            BlockUtil.placeBlockFill(pos);
             if (HoleFill.mc.player.inventory.currentItem != originalSlot) {
                 HoleFill.mc.player.inventory.currentItem = originalSlot;
                 HoleFill.mc.playerController.updateController();

@@ -33,6 +33,7 @@ public class ClickGui extends Module {
     public Setting<Integer> rainbowHue = register(new Setting<>("Delay", Integer.valueOf(240), Integer.valueOf(0), Integer.valueOf(600), v -> rainbow.getValue()));
     public Setting<Float> rainbowBrightness = register(new Setting<>("Brightness ", Float.valueOf(150.0f), Float.valueOf(1.0f), Float.valueOf(255.0f), v -> rainbow.getValue()));
     public Setting<Float> rainbowSaturation = register(new Setting<>("Saturation", Float.valueOf(150.0f), Float.valueOf(1.0f), Float.valueOf(255.0f), v -> rainbow.getValue()));
+    public Setting<Boolean> colorSync = this.register(new Setting<Boolean>("Sync", false));
     public float hue;
 
     public ClickGui() {
@@ -60,8 +61,8 @@ public class ClickGui extends Module {
     }
 
     public Color getCurrentColor() {
-        if (this.rainbow.getValue()) {
-            return Color.getHSBColor(this.hue, (float)this.rainbowSaturation.getValue().intValue() / 255.0f, (float)this.rainbowBrightness.getValue().intValue() / 255.0f);
+        if (this.rainbow.getValue().booleanValue()) {
+            return Color.getHSBColor(this.hue, (float) this.rainbowSaturation.getValue().intValue() / 255.0f, (float) this.rainbowBrightness.getValue().intValue() / 255.0f);
         }
         return new Color(this.red.getValue(), this.green.getValue(), this.blue.getValue(), this.alpha.getValue());
     }

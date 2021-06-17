@@ -12,6 +12,17 @@ public class ColorUtil
         return new Color(r, g, b, a).getRGB();
     }
 
+    public static int GenRainbow() {
+        int color;
+        float[] hue = new float[]{(float) (System.currentTimeMillis() % 11520L) / 11520.0f};
+        int rgb = Color.HSBtoRGB(hue[0], 1.0f, 1.0f);
+        int red = rgb >> 16 & 255;
+        int green = rgb >> 8 & 255;
+        int blue = rgb & 255;
+        color = toRGBA(red, green, blue, 255);
+        return color;
+    }
+
 
     public static int toRGBA(final int r, final int g, final int b) {
         return toRGBA(r, g, b, 255);

@@ -1,4 +1,4 @@
-package me.bopis.king.mixin.mixins;
+package me.bopis.king.mixin.mixins.accessors;
 
 import net.minecraft.entity.EntityLivingBase;
 import org.spongepowered.asm.mixin.Mixin;

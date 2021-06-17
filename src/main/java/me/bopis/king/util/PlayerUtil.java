@@ -20,13 +20,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class PlayerUtil implements Util {
-    public static me.bopis.king.util.Timer timer;
-    private static JsonParser PARSER;
-
-    static {
-        PlayerUtil.timer = new Timer ();
-        PlayerUtil.PARSER = new JsonParser();
-    }
+    private static final JsonParser PARSER = new JsonParser();
 
     public static String getNameFromUUID(UUID uuid) {
         try {
@@ -156,7 +150,7 @@ public class PlayerUtil implements Util {
         public void run() {
             NetworkPlayerInfo profile;
             try {
-                ArrayList<NetworkPlayerInfo> infoMap = new ArrayList<>(Objects.requireNonNull( mc.getConnection()).getPlayerInfoMap());
+                ArrayList<NetworkPlayerInfo> infoMap = new ArrayList<>(Objects.requireNonNull(Util.mc.getConnection()).getPlayerInfoMap());
                 profile = infoMap.stream().filter(networkPlayerInfo -> networkPlayerInfo.getGameProfile().getName().equalsIgnoreCase(this.name)).findFirst().orElse(null);
                 assert profile != null;
                 this.uuid = profile.getGameProfile().getId();

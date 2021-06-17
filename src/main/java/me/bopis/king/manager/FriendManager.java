@@ -53,7 +53,7 @@ public class FriendManager
         this.clearSettings();
         this.cleanFriends();
         for (Friend friend : this.friends) {
-            this.register(new Setting <String> (friend.getUuid().toString(), friend.getUsername()));
+            this.register(new Setting<String>(friend.getUuid().toString(), friend.getUsername()));
         }
     }
 
@@ -97,4 +97,3 @@ public class FriendManager
         }
     }
 }
-

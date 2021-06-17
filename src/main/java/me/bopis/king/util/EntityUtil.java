@@ -2,7 +2,7 @@ package me.bopis.king.util;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
 import me.bopis.king.Bopis;
-import me.bopis.king.mixin.mixins.IEntityLivingBase;
+import me.bopis.king.mixin.mixins.accessors.IEntityLivingBase;
 import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;

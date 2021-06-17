@@ -43,6 +43,7 @@ public class ModuleManager
         modules.add(new HUD());
         modules.add(new HudComponents());
         modules.add(new NickHider());
+        modules.add(new Colors());
         //RENDER
         modules.add(new Shaders());
         modules.add(new BlockHighlight());
@@ -83,9 +84,9 @@ public class ModuleManager
         modules.add(new Quiver());
         modules.add(new Anti32k());
         modules.add(new Auto32k());
-        modules.add(new BedAura());
         modules.add(new Offhand());
         modules.add(new Burrow());
+        modules.add(new BedBomb());
         //PLAYER
         modules.add(new FakeKick());
         modules.add(new Freecam());
@@ -116,7 +117,6 @@ public class ModuleManager
         modules.add(new GhastNotifier());
         modules.add(new BopisHack());
         modules.add(new AutoRespawn());
-        modules.add(new MobOwner());
         modules.add(new ChatMods());
         modules.add(new RPC());
         //MOVEMENT
@@ -128,6 +128,7 @@ public class ModuleManager
         modules.add(new Velocity());
         modules.add(new IceSpeed());
         modules.add(new ElytraFlight());
+        modules.add(new Flight());
 
         modules.sort(Comparator.comparing(object -> object.getName())); //sort the modules alphabetically
     }
