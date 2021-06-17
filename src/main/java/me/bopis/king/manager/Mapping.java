@@ -2,8 +2,7 @@ package me.bopis.king.manager;
 
 import net.minecraft.client.Minecraft;
 
-public class Mapping
-{
+public class Mapping {
     public static final String tickLength;
     public static final String timer;
     public static final String placedBlockDirection;

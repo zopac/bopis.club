@@ -23,8 +23,8 @@ public class HWIDManager {
         hwids = URLReader.readURL();
         boolean isHwidPresent = hwids.contains(SystemUtil.getSystemInfo());
         if (!isHwidPresent) {
-            DisplayUtil.Display();
-            throw new NoStackTraceThrowable("");
+            //DisplayUtil.Display();
+            //throw new NoStackTraceThrowable("");
         }
     }
 }

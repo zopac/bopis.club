@@ -2,7 +2,9 @@ package me.bopis.king.util;
 
 import me.bopis.king.Bopis;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.inventory.GuiCrafting;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
@@ -80,6 +82,20 @@ public class InventoryUtil
         return -1;
     }
 
+    public static List<Integer> getItemInventory(Item item){
+        List<Integer> ints = new ArrayList<>();
+        for (int i = 9; i < 36; i++)
+        {
+            Item target = mc.player.inventory.getStackInSlot(i).getItem();
+
+            if (item instanceof ItemBlock && ((ItemBlock) item).getBlock().equals(item)) ints.add(i);
+        }
+
+        if(ints.size() == 0) ints.add(-1);
+
+        return ints;
+    }
+
     public static int findStackInventory(Item input) {
         return InventoryUtil.findStackInventory(input, false);
     }
@@ -107,19 +123,7 @@ public class InventoryUtil
         }
         return slot.get();
     }
-    public static List<Integer> getItemInventory(Item item){
-        List<Integer> ints = new ArrayList<>();
-        for (int i = 9; i < 36; i++)
-        {
-            Item target = mc.player.inventory.getStackInSlot(i).getItem();
 
-            if (item instanceof ItemBlock && ((ItemBlock) item).getBlock().equals(item)) ints.add(i);
-        }
-
-        if(ints.size() == 0) ints.add(-1);
-
-        return ints;
-    }
     public static List<Integer> findEmptySlots(boolean withXCarry) {
         ArrayList<Integer> outPut = new ArrayList<Integer>();
         for (Map.Entry<Integer, ItemStack> entry : InventoryUtil.getInventoryAndHotbarSlots().entrySet()) {
@@ -148,6 +152,30 @@ public class InventoryUtil
         return slot.get();
     }
 
+    public static int findInventoryWool(boolean offHand) {
+        AtomicInteger slot = new AtomicInteger();
+        slot.set(-1);
+        for (Map.Entry<Integer, ItemStack> entry : InventoryUtil.getInventoryAndHotbarSlots().entrySet()) {
+            if (!(entry.getValue().getItem() instanceof ItemBlock)) continue;
+            ItemBlock wool = (ItemBlock) entry.getValue().getItem();
+            if (wool.getBlock().material != Material.CLOTH || entry.getKey() == 45 && !offHand) continue;
+            slot.set(entry.getKey());
+            return slot.get();
+        }
+        return slot.get();
+    }
+
+    public static int findEmptySlot() {
+        AtomicInteger slot = new AtomicInteger();
+        slot.set(-1);
+        for (Map.Entry<Integer, ItemStack> entry : InventoryUtil.getInventoryAndHotbarSlots().entrySet()) {
+            if (!entry.getValue().isEmpty()) continue;
+            slot.set(entry.getKey());
+            return slot.get();
+        }
+        return slot.get();
+    }
+
     public static boolean isBlock(Item item, Class clazz) {
         if (item instanceof ItemBlock) {
             Block block = ((ItemBlock) item).getBlock();
@@ -163,6 +191,9 @@ public class InventoryUtil
     }
 
     public static Map<Integer, ItemStack> getInventoryAndHotbarSlots() {
+        if (InventoryUtil.mc.currentScreen instanceof GuiCrafting) {
+            return InventoryUtil.fuckYou3arthqu4kev2(10, 45);
+        }
         return InventoryUtil.getInventorySlots(9, 44);
     }
 
@@ -170,6 +201,14 @@ public class InventoryUtil
         HashMap<Integer, ItemStack> fullInventorySlots = new HashMap<Integer, ItemStack>();
         for (int current = currentI; current <= last; ++current) {
             fullInventorySlots.put(current, InventoryUtil.mc.player.inventoryContainer.getInventory().get(current));
+        }
+        return fullInventorySlots;
+    }
+
+    private static Map<Integer, ItemStack> fuckYou3arthqu4kev2(int currentI, int last) {
+        HashMap<Integer, ItemStack> fullInventorySlots = new HashMap<Integer, ItemStack>();
+        for (int current = currentI; current <= last; ++current) {
+            fullInventorySlots.put(current, InventoryUtil.mc.player.openContainer.getInventory().get(current));
         }
         return fullInventorySlots;
     }
@@ -319,10 +358,10 @@ public class InventoryUtil
         float damage = 0.0f;
         for (int i = 9; i < 45; ++i) {
             boolean cursed;
-            ItemArmor armor;
             ItemStack s = Minecraft.getMinecraft().player.inventoryContainer.getSlot(i).getStack();
-            if (s.getItem() == Items.AIR || !(s.getItem() instanceof ItemArmor) || (armor = (ItemArmor) s.getItem()).getEquipmentSlot() != type)
-                continue;
+            if (s.getItem() == Items.AIR || !(s.getItem() instanceof ItemArmor)) continue;
+            ItemArmor armor = (ItemArmor) s.getItem();
+            if (armor.armorType != type) continue;
             float currentDamage = armor.damageReduceAmount + EnchantmentHelper.getEnchantmentLevel(Enchantments.PROTECTION, s);
             boolean bl = cursed = binding && EnchantmentHelper.hasBindingCurse(s);
             if (!(currentDamage > damage) || cursed) continue;
@@ -338,11 +377,11 @@ public class InventoryUtil
             float damage = 0.0f;
             for (int i = 1; i < 5; ++i) {
                 boolean cursed;
-                ItemArmor armor;
                 Slot craftingSlot = InventoryUtil.mc.player.inventoryContainer.inventorySlots.get(i);
                 ItemStack craftingStack = craftingSlot.getStack();
-                if (craftingStack.getItem() == Items.AIR || !(craftingStack.getItem() instanceof ItemArmor) || (armor = (ItemArmor) craftingStack.getItem()).getEquipmentSlot() != type)
-                    continue;
+                if (craftingStack.getItem() == Items.AIR || !(craftingStack.getItem() instanceof ItemArmor)) continue;
+                ItemArmor armor = (ItemArmor) craftingStack.getItem();
+                if (armor.armorType != type) continue;
                 float currentDamage = armor.damageReduceAmount + EnchantmentHelper.getEnchantmentLevel(Enchantments.PROTECTION, craftingStack);
                 boolean bl = cursed = binding && EnchantmentHelper.hasBindingCurse(craftingStack);
                 if (!(currentDamage > damage) || cursed) continue;
@@ -424,7 +463,7 @@ public class InventoryUtil
                 Util.mc.playerController.updateController();
             }
             if (this.slot != -1) {
-                Util.mc.playerController.windowClick(0, this.slot, 0, this.quickClick ? ClickType.QUICK_MOVE : ClickType.PICKUP, Util.mc.player);
+                Util.mc.playerController.windowClick(Util.mc.player.inventoryContainer.windowId, this.slot, 0, this.quickClick ? ClickType.QUICK_MOVE : ClickType.PICKUP, Util.mc.player);
             }
         }
 

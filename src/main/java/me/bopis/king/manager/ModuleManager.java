@@ -124,7 +124,6 @@ public class ModuleManager
         modules.add(new ReverseStep());
         modules.add(new Static());
         modules.add(new NoSlowDown());
-        modules.add(new NoSlowBypass());
         modules.add(new Sprint());
         modules.add(new Velocity());
         modules.add(new IceSpeed());

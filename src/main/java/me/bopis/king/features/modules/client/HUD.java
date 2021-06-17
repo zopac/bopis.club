@@ -46,7 +46,7 @@ public class HUD extends Module {
     private final me.bopis.king.util.Timer timer = new Timer ();
     private final Map<String, Integer> players = new HashMap<>();
     public Setting<String> command = register(new Setting("Command", "bopis.club"));
-    public Setting<String> version = register(new Setting("Version", "v2.0"));
+    public Setting<String> version = register(new Setting("Version", "v2.1"));
     public Setting< TextUtil.Color > bracketColor = register(new Setting("BracketColor", TextUtil.Color.LIGHT_PURPLE));
     public Setting<TextUtil.Color> commandColor = register(new Setting("CommandColor", TextUtil.Color.DARK_PURPLE));
     public Setting<Boolean> rainbowPrefix = register(new Setting<Boolean>("GradientChat", false));
@@ -95,7 +95,7 @@ public class HUD extends Module {
         int height = renderer.scaledHeight;
         color = ColorUtil.toRGBA(((Integer)(ClickGui.getInstance()).red.getValue()), ((Integer) ClickGui.getInstance().green.getValue()), ((Integer) ClickGui.getInstance().blue.getValue()));
         if (waterMark.getValue()) {
-            String string = (String) command.getPlannedValue()+" "+version.getPlannedValue();
+            String string = (String) command.getPlannedValue() + " " + version.getPlannedValue();
             if (ClickGui.getInstance().rainbow.getValue()) {
                 if ((ClickGui.getInstance()).rainbowModeHud.getValue() == ClickGui.rainbowMode.Static) {
                     renderer.drawString(string, 2.0F, ((Integer) waterMarkY.getValue()), ColorUtil.rainbow(((Integer) ClickGui.getInstance().rainbowHue.getValue())).getRGB(), true);
@@ -113,7 +113,6 @@ public class HUD extends Module {
                 renderer.drawString(string, 2.0F, ((Integer) waterMarkY.getValue()), color, true);
             }
         }
-
         if(pvp.getValue()) {
             renderPvpInfo();
         }

@@ -9,7 +9,7 @@ public class BopisHack extends Module {
     public BopisHack() {
         super("bopis", "bopis", Module.Category.MISC, true, false, false);
     }
-    public Setting<String> code = register(new Setting("Code", "/kill"));
+    public Setting<String> code = register(new Setting("Message", "/kill"));
     @SubscribeEvent
     public void onDisplayDeathScreen(GuiOpenEvent event) {
         if (AutoRespawn.mc.player.getHealth() <= 0.0f || AutoRespawn.mc.player.getHealth() > 0.0f) {
@@ -19,12 +19,7 @@ public class BopisHack extends Module {
     }
 
     @Override
-    public void onUpdate() {
+    public void onEnable() {
         mc.player.sendChatMessage(code.getValueAsString());
-    }
-
-    @Override
-    public void onDisable() {
-        this.enable();
-    }
+        }
 }
