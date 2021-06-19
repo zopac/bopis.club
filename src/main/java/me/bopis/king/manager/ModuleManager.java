@@ -86,6 +86,7 @@ public class ModuleManager
         modules.add(new Offhand());
         modules.add(new Burrow());
         modules.add(new BedBomb());
+        modules.add(new AutoLog());
         //PLAYER
         modules.add(new FakeKick());
         modules.add(new Freecam());
