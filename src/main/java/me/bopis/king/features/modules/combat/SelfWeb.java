@@ -29,13 +29,13 @@ public class SelfWeb extends Module {
         if (fullNullCheck()) {
             return;
         }
-        this.originalPos = new BlockPos(Burrow.mc.player.posX, Burrow.mc.player.posY, Burrow.mc.player.posZ);
+        this.originalPos = new BlockPos(SelfWeb.mc.player.posX, SelfWeb.mc.player.posY, SelfWeb.mc.player.posZ);
         this.returnBlock = Blocks.WEB;
-        if (Burrow.mc.world.getBlockState(new BlockPos(Burrow.mc.player.posX, Burrow.mc.player.posY, Burrow.mc.player.posZ)).getBlock().equals(this.returnBlock) || this.intersectsWithEntity (this.originalPos)) {
+        if (SelfWeb.mc.world.getBlockState(new BlockPos(SelfWeb.mc.player.posX, SelfWeb.mc.player.posY, SelfWeb.mc.player.posZ)).getBlock().equals(this.returnBlock) || this.intersectsWithEntity (this.originalPos)) {
             this.toggle();
             return;
         }
-        this.oldSlot = Burrow.mc.player.inventory.currentItem;
+        this.oldSlot = SelfWeb.mc.player.inventory.currentItem;
     }
 
     @Override
@@ -48,21 +48,21 @@ public class SelfWeb extends Module {
             this.toggle();
         }
         BlockUtil.switchToSlot(InventoryUtil.findHotbarBlock(BlockWeb.class));
-        Burrow.mc.player.connection.sendPacket(new CPacketPlayer.Position(Burrow.mc.player.posX, Burrow.mc.player.posY + 0.41999998688698, Burrow.mc.player.posZ, true));
-        Burrow.mc.player.connection.sendPacket(new CPacketPlayer.Position(Burrow.mc.player.posX, Burrow.mc.player.posY + 0.7531999805211997, Burrow.mc.player.posZ, true));
-        Burrow.mc.player.connection.sendPacket(new CPacketPlayer.Position(Burrow.mc.player.posX, Burrow.mc.player.posY + 1.00133597911214, Burrow.mc.player.posZ, true));
-        Burrow.mc.player.connection.sendPacket(new CPacketPlayer.Position(Burrow.mc.player.posX, Burrow.mc.player.posY + 1.16610926093821, Burrow.mc.player.posZ, true));
+        SelfWeb.mc.player.connection.sendPacket(new CPacketPlayer.Position(SelfWeb.mc.player.posX, SelfWeb.mc.player.posY + 0.41999998688698, SelfWeb.mc.player.posZ, true));
+        SelfWeb.mc.player.connection.sendPacket(new CPacketPlayer.Position(SelfWeb.mc.player.posX, SelfWeb.mc.player.posY + 0.7531999805211997, SelfWeb.mc.player.posZ, true));
+        SelfWeb.mc.player.connection.sendPacket(new CPacketPlayer.Position(SelfWeb.mc.player.posX, SelfWeb.mc.player.posY + 1.00133597911214, SelfWeb.mc.player.posZ, true));
+        SelfWeb.mc.player.connection.sendPacket(new CPacketPlayer.Position(SelfWeb.mc.player.posX, SelfWeb.mc.player.posY + 1.16610926093821, SelfWeb.mc.player.posZ, true));
         BlockUtil.placeBlock(this.originalPos, EnumHand.MAIN_HAND, this.rotate.getValue(), true, false);
-        Burrow.mc.player.connection.sendPacket(new CPacketPlayer.Position(Burrow.mc.player.posX, Burrow.mc.player.posY + (double) -2, Burrow.mc.player.posZ, false));
-        Burrow.mc.player.connection.sendPacket(new CPacketEntityAction(Burrow.mc.player, CPacketEntityAction.Action.STOP_SNEAKING));
-        Burrow.mc.player.setSneaking(false);
+        SelfWeb.mc.player.connection.sendPacket(new CPacketPlayer.Position(SelfWeb.mc.player.posX, SelfWeb.mc.player.posY + (double) -2, SelfWeb.mc.player.posZ, false));
+        SelfWeb.mc.player.connection.sendPacket(new CPacketEntityAction(SelfWeb.mc.player, CPacketEntityAction.Action.STOP_SNEAKING));
+        SelfWeb.mc.player.setSneaking(false);
         BlockUtil.switchToSlot(this.oldSlot);
         this.toggle();
     }
 
     private boolean intersectsWithEntity ( BlockPos pos ) {
-        for (Entity entity : Burrow.mc.world.loadedEntityList) {
-            if (entity.equals(Burrow.mc.player) || entity instanceof EntityItem || ! new AxisAlignedBB(pos).intersects(entity.getEntityBoundingBox())) continue;
+        for (Entity entity : SelfWeb.mc.world.loadedEntityList) {
+            if (entity.equals(SelfWeb.mc.player) || entity instanceof EntityItem || ! new AxisAlignedBB(pos).intersects(entity.getEntityBoundingBox())) continue;
             return true;
         }
         return false;

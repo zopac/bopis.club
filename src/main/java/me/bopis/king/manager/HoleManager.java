@@ -13,7 +13,7 @@ import java.util.List;
 
 public class HoleManager
         extends Feature {
-    private static final BlockPos[] surroundOffset = BlockUtil.toBlockPos( EntityUtil.getOffsets(0, true));
+    private static final BlockPos[] surroundOffset = BlockUtil.toBlockPos(EntityUtil.getOffsets(0, true, true));
     private final List<BlockPos> midSafety = new ArrayList<BlockPos>();
     private List<BlockPos> holes = new ArrayList<BlockPos>();
 

@@ -1,55 +1,103 @@
 package me.bopis.king.features.modules.player;
 
 import com.mojang.authlib.GameProfile;
-import me.bopis.king.features.command.Command;
+import me.bopis.king.Bopis;
 import me.bopis.king.features.modules.Module;
 import me.bopis.king.features.setting.Setting;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
-import net.minecraft.world.GameType;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.network.FMLNetworkEvent;
+import net.minecraft.potion.PotionEffect;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class FakePlayer extends Module {
+    private static FakePlayer INSTANCE = new FakePlayer();
+    private final List<EntityOtherPlayerMP> fakeEntities = new ArrayList<EntityOtherPlayerMP>();
+    public Setting<Boolean> multi = this.register(new Setting<Boolean>("Multi", false));
+    public Setting<String> name = register(new Setting("Name", "3911"));
+    public List<Integer> fakePlayerIdList = new ArrayList<Integer>();
+    private final Setting<Boolean> copyInv = this.register(new Setting<Boolean>("CopyInv", true));
+    private final Setting<Integer> players = this.register(new Setting<Object>("Players", 1, 1, 9, v -> this.multi.getValue()));
+    public static final String[][] multiPlayer = new String[][]{{"4538d5ab-ff77-407c-9a1e-1b713ef99a0d", FakePlayer.getInstance().name.getValue(), "3", "0"}, {"4538d5ab-ff77-407c-9a1e-1b713ef99a0d", FakePlayer.getInstance().name.getValue(), "-3", "0"}, {"4538d5ab-ff77-407c-9a1e-1b713ef99a0d", FakePlayer.getInstance().name.getValue(), "0", "-3"}, {"4538d5ab-ff77-407c-9a1e-1b713ef99a0d", FakePlayer.getInstance().name.getValue(), "0", "3"}, {"4538d5ab-ff77-407c-9a1e-1b713ef99a0d", FakePlayer.getInstance().name.getValue(), "6", "0"}, {"4538d5ab-ff77-407c-9a1e-1b713ef99a0d", FakePlayer.getInstance().name.getValue(), "-6", "0"}, {"4538d5ab-ff77-407c-9a1e-1b713ef99a0d", FakePlayer.getInstance().name.getValue(), "0", "-6"}, {"4538d5ab-ff77-407c-9a1e-1b713ef99a0d", FakePlayer.getInstance().name.getValue(), "0", "6"}, {"4538d5ab-ff77-407c-9a1e-1b713ef99a0d", FakePlayer.getInstance().name.getValue(), "0", "9"}, {"4538d5ab-ff77-407c-9a1e-1b713ef99a0d", FakePlayer.getInstance().name.getValue(), "0", "-9"}};
+    private static final String[] singlePlayer = new String[]{"4538d5ab-ff77-407c-9a1e-1b713ef99a0d", FakePlayer.getInstance().name.getValue()};
+
     public FakePlayer() {
-        super("FakePlayer", "Spawns a literal fake player", Module.Category.PLAYER, false, false, false);
+        super("FakePlayer", "Spawns in a fake player", Module.Category.PLAYER, true, false, false);
+        this.setInstance();
     }
 
-    public Setting <String> fakename = register(new Setting("Name", "Skitttyy"));
+    public static FakePlayer getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new FakePlayer();
+        }
+        return INSTANCE;
+    }
 
-    private EntityOtherPlayerMP clonedPlayer;
+    private void setInstance() {
+        INSTANCE = this;
+    }
 
+    @Override
+    public void onLoad() {
+        this.disable();
+    }
+
+    @Override
     public void onEnable() {
-        Command.sendMessage("FakePlayer by the name of " + fakename.getValueAsString() + " has been spawned!");
-        if (mc.player == null || mc.player.isDead) {
-            disable();
+        if (FakePlayer.fullNullCheck()) {
+            this.disable();
             return;
         }
-
-        clonedPlayer = new EntityOtherPlayerMP(mc.world, new GameProfile(UUID.fromString("48efc40f-56bf-42c3-aa24-28e0c053f325"), fakename.getValueAsString()));
-        clonedPlayer.copyLocationAndAnglesFrom(mc.player);
-        clonedPlayer.rotationYawHead = mc.player.rotationYawHead;
-        clonedPlayer.rotationYaw = mc.player.rotationYaw;
-        clonedPlayer.rotationPitch = mc.player.rotationPitch;
-        clonedPlayer.setGameType(GameType.SURVIVAL);
-        clonedPlayer.setHealth(20);
-        mc.world.addEntityToWorld(-12345, clonedPlayer);
-        clonedPlayer.onLivingUpdate();
+        this.fakePlayerIdList = new ArrayList<Integer>();
+        if (this.multi.getValue().booleanValue()) {
+            int amount = 0;
+            int entityId = -101;
+            for (String[] data : multiPlayer) {
+                this.addFakePlayer(data[0], data[1], entityId, Integer.parseInt(data[2]), Integer.parseInt(data[3]));
+                if (++amount >= this.players.getValue()) {
+                    return;
+                }
+                entityId -= amount;
+            }
+        } else {
+            this.addFakePlayer(singlePlayer[0], singlePlayer[1], -100, 0, 0);
+        }
     }
 
+    @Override
     public void onDisable() {
-        if (mc.world != null) {
-            mc.world.removeEntityFromWorld(-12345);
+        if (FakePlayer.fullNullCheck()) {
+            return;
+        }
+        for (int id : this.fakePlayerIdList) {
+            FakePlayer.mc.world.removeEntityFromWorld(id);
         }
     }
 
-    @SubscribeEvent
-    public void onClientDisconnect(final FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
-        if (isEnabled()){
-            disable();
+    @Override
+    public void onLogout() {
+        if (this.isOn()) {
+            this.disable();
         }
     }
 
+    private void addFakePlayer(String uuid, String name, int entityId, int offsetX, int offsetZ) {
+        GameProfile profile = new GameProfile(UUID.fromString(uuid), name);
+        EntityOtherPlayerMP fakePlayer = new EntityOtherPlayerMP(FakePlayer.mc.world, profile);
+        fakePlayer.copyLocationAndAnglesFrom(FakePlayer.mc.player);
+        fakePlayer.posX += offsetX;
+        fakePlayer.posZ += offsetZ;
+        if (this.copyInv.getValue().booleanValue()) {
+            for (PotionEffect potionEffect : Bopis.potionManager.getOwnPotions()) {
+                fakePlayer.addPotionEffect(potionEffect);
+            }
+            fakePlayer.inventory.copyInventory(FakePlayer.mc.player.inventory);
+        }
+        fakePlayer.setHealth(FakePlayer.mc.player.getHealth() + FakePlayer.mc.player.getAbsorptionAmount());
+        this.fakeEntities.add(fakePlayer);
+        FakePlayer.mc.world.addEntityToWorld(entityId, fakePlayer);
+        this.fakePlayerIdList.add(entityId);
+    }
 }
 
