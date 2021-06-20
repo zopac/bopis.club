@@ -7,6 +7,7 @@ import me.bopis.king.features.command.Command;
 import me.bopis.king.features.gui.ClickGuiScreen;
 import me.bopis.king.features.modules.Module;
 import me.bopis.king.features.setting.Setting;
+import me.bopis.king.manager.HWIDManager;
 import me.bopis.king.util.ColorUtil;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -39,7 +40,6 @@ public class ClickGui extends Module {
     public ClickGui() {
         super("ClickGui", "Opens the ClickGui", Module.Category.CLIENT, true, false, false);
         setInstance();
-        setBind(Keyboard.KEY_RCONTROL);
     }
 
     public static ClickGui getInstance() {

@@ -1,5 +1,7 @@
 package me.bopis.king.hwid;
 
+import me.bopis.king.Bopis;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
