@@ -39,14 +39,9 @@ public class FakePlayer extends Module {
     }
 
     @Override
-    public void onLoad() {
-        this.disable();
-    }
-
-    @Override
     public void onEnable() {
-        if (FakePlayer.fullNullCheck()) {
-            this.disable();
+        if (mc.player.equals(null)) {
+            disable();
             return;
         }
         this.fakePlayerIdList = new ArrayList<Integer>();
@@ -67,7 +62,7 @@ public class FakePlayer extends Module {
 
     @Override
     public void onDisable() {
-        if (FakePlayer.fullNullCheck()) {
+        if (mc.player.equals(null)) {
             return;
         }
         for (int id : this.fakePlayerIdList) {
@@ -77,8 +72,8 @@ public class FakePlayer extends Module {
 
     @Override
     public void onLogout() {
-        if (this.isOn()) {
-            this.disable();
+        if (isOn()) {
+            disable();
         }
     }
 

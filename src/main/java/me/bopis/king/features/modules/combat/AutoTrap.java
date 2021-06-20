@@ -28,8 +28,7 @@ import java.util.*;
 public class AutoTrap
         extends Module {
     public static boolean isPlacing = false;
-    private final Setting<Boolean> server = this.register(new Setting<Boolean>("Server", false));
-    private final Setting<Integer> delay = this.register(new Setting<Integer>("Delay/Place", 50, 0, 250));
+    private final Setting<Integer> delay = this.register(new Setting<Integer>("Delay/Place", 0, 0, 250));
     private final Setting<Integer> blocksPerPlace = this.register(new Setting<Integer>("Block/Place", 8, 1, 30));
     private final Setting<Double> targetRange = this.register(new Setting<Double>("TargetRange", 10.0, 0.0, 20.0));
     private final Setting<Double> range = this.register(new Setting<Double>("PlaceRange", 6.0, 0.0, 10.0));
@@ -42,18 +41,18 @@ public class AutoTrap
     private final Setting<Boolean> antiScaffold = this.register(new Setting<Boolean>("AntiScaffold", false));
     private final Setting<Boolean> antiStep = this.register(new Setting<Boolean>("AntiStep", false));
     private final Setting<Boolean> face = this.register(new Setting<Boolean>("Face", true));
-    private final Setting<Boolean> legs = this.register(new Setting<Object>("Legs", Boolean.valueOf(false), v -> this.pattern.getValue() != Pattern.OPEN));
+    private final Setting<Boolean> legs = this.register(new Setting<Object>("Legs", Boolean.valueOf(true), v -> this.pattern.getValue() != Pattern.OPEN));
     private final Setting<Boolean> platform = this.register(new Setting<Object>("Platform", Boolean.valueOf(false), v -> this.pattern.getValue() != Pattern.OPEN));
     private final Setting<Boolean> antiDrop = this.register(new Setting<Boolean>("AntiDrop", false));
-    private final Setting<Double> speed = this.register(new Setting<Double>("Speed", 10.0, 0.0, 30.0));
-    private final Setting<Boolean> antiSelf = this.register(new Setting<Boolean>("AntiSelf", false));
+    private final Setting<Double> speed = this.register(new Setting<Double>("Speed", 30.0, 0.0, 30.0));
+    private final Setting<Boolean> antiSelf = this.register(new Setting<Boolean>("AntiSelf", true));
     private final Setting<Integer> eventMode = this.register(new Setting<Integer>("Updates", 3, 1, 3));
     private final Setting<Boolean> freecam = this.register(new Setting<Boolean>("Freecam", false));
     private final Setting<Boolean> info = this.register(new Setting<Boolean>("Info", false));
     private final Setting<Boolean> entityCheck = this.register(new Setting<Boolean>("NoBlock", true));
     private final Setting<Boolean> noScaffoldExtend = this.register(new Setting<Boolean>("NoScaffoldExtend", false));
     private final Setting<Boolean> disable = this.register(new Setting<Boolean>("TSelfMove", false));
-    private final Setting<Boolean> packet = this.register(new Setting<Boolean>("Packet", false));
+    private final Setting<Boolean> packet = this.register(new Setting<Boolean>("Packet", true));
     private final Setting<Boolean> airPacket = this.register(new Setting<Object>("AirPacket", Boolean.valueOf(false), v -> this.packet.getValue()));
     private final Setting<Integer> retryer = this.register(new Setting<Integer>("Retries", 4, 1, 15));
     private final Setting<Boolean> endPortals = this.register(new Setting<Boolean>("EndPortals", false));

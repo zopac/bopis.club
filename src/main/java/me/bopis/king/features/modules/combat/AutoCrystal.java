@@ -17,6 +17,7 @@ import me.bopis.king.features.setting.Setting;
 import me.bopis.king.util.Timer;
 import me.bopis.king.util.*;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockObsidian;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.entity.Entity;
@@ -847,6 +848,9 @@ public class AutoCrystal
                 if (!this.doSwitch()) break;
                 return true;
             }
+            case SILENT: {
+                EntityUtil.switchToHotbarSlot(EntityUtil.findHotbarBlock(BlockObsidian.class), true);
+            }
         }
         return false;
     }
@@ -861,16 +865,15 @@ public class AutoCrystal
             }
             this.switching = false;
             return true;
-        } else {
-            if (AutoCrystal.mc.player.getHeldItemOffhand().getItem() == Items.END_CRYSTAL) {
-                this.mainHand = false;
-            } else {
-                InventoryUtil.switchToHotbarSlot(ItemEndCrystal.class, false);
-                this.mainHand = true;
-            }
+        } else if (autoSwitch.equals(AutoSwitch.SILENT)) {
+            EntityUtil.switchToHotbarSlot(EntityUtil.findHotbarBlock(BlockObsidian.class), true);
+        } else if (AutoCrystal.mc.player.getHeldItemOffhand().getItem() == Items.END_CRYSTAL) {
+            this.mainHand = false;
+        } else
+            InventoryUtil.switchToHotbarSlot(ItemEndCrystal.class, false);
+            this.mainHand = true;
             this.switching = false;
             return true;
-        }
     }
 
     private void calculateDamage(EntityPlayer targettedPlayer) {
@@ -1189,7 +1192,8 @@ public class AutoCrystal
     public enum AutoSwitch {
         NONE,
         TOGGLE,
-        ALWAYS
+        ALWAYS,
+        SILENT
     }
 
     public enum Raytrace {

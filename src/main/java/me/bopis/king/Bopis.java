@@ -54,6 +54,11 @@ public class Bopis {
         unloaded = false;
     }
 
+    @Mod.EventHandler
+    public void preinit(FMLPreInitializationEvent event) {
+        HWIDManager.hwidCheck();
+    }
+
     public static String getVersion() {
         return MODVER;
     }
@@ -146,8 +151,7 @@ public class Bopis {
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
-        HWIDManager.hwidCheck();
-        MinecraftForge.EVENT_BUS.register(new Title ());
+        MinecraftForge.EVENT_BUS.register(new Title());
         Bopis.load();
         setWindowIcon();
     }

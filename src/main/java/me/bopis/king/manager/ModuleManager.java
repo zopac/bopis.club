@@ -79,11 +79,9 @@ public class ModuleManager
         modules.add(new HoleFill());
         modules.add(new AutoArmor());
         modules.add(new Selftrap());
-        modules.add(new SelfWeb());
         modules.add(new Quiver());
         modules.add(new Anti32k());
         modules.add(new Auto32k());
-        modules.add(new Offhand());
         modules.add(new Burrow());
         modules.add(new BedBomb());
         modules.add(new AutoLog());

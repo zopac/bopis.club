@@ -25,9 +25,9 @@ import java.util.Set;
 
 public class Burrow extends Module {
     private final Setting<Integer> offset = this.register(new Setting<Integer>("Offset", 2, -5, 5));
-    private final Setting<Boolean> packet = this.register(new Setting<Boolean>("Packet", true));
     private final Setting<Boolean> rotate = this.register(new Setting<Boolean>("Rotate", false));
     public final Setting<Boolean> auto = this.register(new Setting("Auto", false));
+    private final Setting<Boolean> autoDisable = this.register(new Setting<Boolean>("Disable", false));
     private final Setting<Integer> range = this.register(new Setting<Integer>("Range", 3, 1, 10, v -> this.auto.getValue()));
     private final Setting<Mode> mode = this.register(new Setting<Mode>("Mode", Mode.Obsidian));
     Block returnBlock = null;
@@ -69,9 +69,6 @@ public class Burrow extends Module {
             }
             case Stone: {
                 this.returnBlock = Blocks.STONE;
-            }
-            case Cobweb: {
-                this.returnBlock = Blocks.WEB;
             }
             case Dispenser: {
                 this.returnBlock = Blocks.DISPENSER;
@@ -147,11 +144,6 @@ public class Burrow extends Module {
                 Command.sendMessage("Can't find anvil in hotbar!");
                 this.disable();
             }
-            case Cobweb: {
-                if (InventoryUtil.findHotbarBlock(BlockWeb.class) != -1) break;
-                Command.sendMessage("Can't find anvil in hotbar!");
-                this.disable();
-            }
             case Dispenser: {
                 if (InventoryUtil.findHotbarBlock(BlockDispenser.class) != -1) break;
                 Command.sendMessage("Can't find anvil in hotbar!");
@@ -198,10 +190,6 @@ public class Burrow extends Module {
                 BlockUtil.switchToSlot(InventoryUtil.findHotbarBlock(BlockStone.class));
                 break;
             }
-            case Cobweb: {
-                BlockUtil.switchToSlot(InventoryUtil.findHotbarBlock(BlockWeb.class));
-                break;
-            }
             case Dropper: {
                 BlockUtil.switchToSlot(InventoryUtil.findHotbarBlock(BlockDropper.class));
                 break;
@@ -218,12 +206,14 @@ public class Burrow extends Module {
         Burrow.mc.player.connection.sendPacket(new CPacketPlayer.Position(Burrow.mc.player.posX, Burrow.mc.player.posY + 0.7531999805211997, Burrow.mc.player.posZ, true));
         Burrow.mc.player.connection.sendPacket(new CPacketPlayer.Position(Burrow.mc.player.posX, Burrow.mc.player.posY + 1.00133597911214, Burrow.mc.player.posZ, true));
         Burrow.mc.player.connection.sendPacket(new CPacketPlayer.Position(Burrow.mc.player.posX, Burrow.mc.player.posY + 1.16610926093821, Burrow.mc.player.posZ, true));
-        BlockUtil.placeBlock(this.originalPos, EnumHand.MAIN_HAND, this.rotate.getValue(), packet.getValue(), false);
+        BlockUtil.placeBlock(this.originalPos, EnumHand.MAIN_HAND, this.rotate.getValue(), true, false);
         Burrow.mc.player.connection.sendPacket(new CPacketPlayer.Position(Burrow.mc.player.posX, Burrow.mc.player.posY + (double) this.offset.getValue().intValue(), Burrow.mc.player.posZ, false));
         Burrow.mc.player.connection.sendPacket(new CPacketEntityAction(Burrow.mc.player, CPacketEntityAction.Action.STOP_SNEAKING));
         Burrow.mc.player.setSneaking(false);
         BlockUtil.switchToSlot(this.oldSlot);
-        this.toggle();
+        if (autoDisable.getValue()) {
+            this.disable();
+        }
     }
 
 
@@ -243,7 +233,6 @@ public class Burrow extends Module {
         EnchantingTable,
         DragonEgg,
         Stone,
-        Cobweb,
         Dropper,
         Dispenser,
         Hopper

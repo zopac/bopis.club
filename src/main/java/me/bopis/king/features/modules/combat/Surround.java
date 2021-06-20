@@ -35,7 +35,6 @@ public class Surround
     private final Setting<Boolean> center = this.register(new Setting<Boolean>("Center", false));
     private final Setting<Boolean> helpingBlocks = this.register(new Setting<Boolean>("HelpingBlocks", true));
     private final Setting<Boolean> intelligent = this.register(new Setting<Object>("Intelligent", Boolean.valueOf(false), v -> this.helpingBlocks.getValue()));
-    private final Setting<Boolean> antiPedo = this.register(new Setting<Boolean>("NoPedo", false));
     private final Setting<Integer> extender = this.register(new Setting<Integer>("Extend", 1, 1, 4));
     private final Setting<Boolean> extendMove = this.register(new Setting<Object>("MoveExtend", Boolean.valueOf(false), v -> this.extender.getValue() > 1));
     private final Setting<MovementMode> movementMode = this.register(new Setting<MovementMode>("Movement", MovementMode.STATIC));
@@ -170,9 +169,6 @@ public class Surround
             this.placeBlocks(Surround.mc.player.getPositionVector(), EntityUtil.getUnsafeBlockArray(Surround.mc.player, 0, this.floor.getValue(), true), this.helpingBlocks.getValue(), false, false);
         } else if (!EntityUtil.isSafe(Surround.mc.player, -1, false, true)) {
             this.isSafe = 1;
-            if (this.antiPedo.getValue().booleanValue()) {
-                this.placeBlocks(Surround.mc.player.getPositionVector(), EntityUtil.getUnsafeBlockArray(Surround.mc.player, -1, false, true), false, false, true);
-            }
         } else {
             this.isSafe = 2;
         }

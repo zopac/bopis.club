@@ -29,12 +29,14 @@ import net.minecraft.entity.projectile.EntityShulkerBullet;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Enchantments;
 import net.minecraft.item.ItemAxe;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.CPacketEntityAction;
+import net.minecraft.network.play.client.CPacketHeldItemChange;
 import net.minecraft.network.play.client.CPacketUseEntity;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumHand;
@@ -71,6 +73,46 @@ public class EntityUtil implements Util {
         offsetsNoHead = new Vec3d[]{new Vec3d(1.0, 1.0, 0.0), new Vec3d(-1.0, 1.0, 0.0), new Vec3d(0.0, 1.0, 1.0), new Vec3d(0.0, 1.0, -1.0)};
         antiStepOffsetList = new Vec3d[]{new Vec3d(-1.0, 2.0, 0.0), new Vec3d(1.0, 2.0, 0.0), new Vec3d(0.0, 2.0, 1.0), new Vec3d(0.0, 2.0, -1.0)};
         antiScaffoldOffsetList = new Vec3d[]{new Vec3d(0.0, 3.0, 0.0)};
+    }
+
+    public static void switchToHotbarSlot(final int slot, final boolean silent) {
+        if (InventoryUtil.mc.player.inventory.currentItem == slot || slot < 0) {
+            return;
+        }
+        if (silent) {
+            InventoryUtil.mc.player.connection.sendPacket((Packet)new CPacketHeldItemChange(slot));
+            InventoryUtil.mc.playerController.updateController();
+        }
+        else {
+            InventoryUtil.mc.player.connection.sendPacket((Packet)new CPacketHeldItemChange(slot));
+            InventoryUtil.mc.player.inventory.currentItem = slot;
+            InventoryUtil.mc.playerController.updateController();
+        }
+    }
+
+    public static void switchToHotbarSlot(final Class clazz, final boolean silent) {
+        final int slot = findHotbarBlock(clazz);
+        if (slot > -1) {
+            switchToHotbarSlot(slot, silent);
+        }
+    }
+
+    public static int findHotbarBlock(final Class clazz) {
+        for (int i = 0; i < 9; ++i) {
+            final ItemStack stack = InventoryUtil.mc.player.inventory.getStackInSlot(i);
+            if (stack != ItemStack.EMPTY) {
+                if (clazz.isInstance(stack.getItem())) {
+                    return i;
+                }
+                if (stack.getItem() instanceof ItemBlock) {
+                    final Block block = ((ItemBlock)stack.getItem()).getBlock();
+                    if (clazz.isInstance(block)) {
+                        return i;
+                    }
+                }
+            }
+        }
+        return -1;
     }
 
     public static void attackEntity(final Entity entity, final boolean packet, final boolean swingArm) {
@@ -659,13 +701,14 @@ public class EntityUtil implements Util {
     public static EntityPlayer getClosestEnemy(final double distance) {
         EntityPlayer closest = null;
         for (final EntityPlayer player : EntityUtil.mc.world.playerEntities) {
-            if (isntValid(player, distance)) {
+            if (isntValid((Entity)player, distance)) {
                 continue;
             }
             if (closest == null) {
                 closest = player;
-            } else {
-                if (EntityUtil.mc.player.getDistanceSq(player) >= EntityUtil.mc.player.getDistanceSq(closest)) {
+            }
+            else {
+                if (EntityUtil.mc.player.getDistanceSq((Entity)player) >= EntityUtil.mc.player.getDistanceSq((Entity)closest)) {
                     continue;
                 }
                 closest = player;

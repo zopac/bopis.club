@@ -1,6 +1,7 @@
 package me.bopis.king.hwid;
 
 import me.bopis.king.manager.HWIDManager;
+import net.minecraftforge.fml.common.FMLLog;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -29,7 +30,7 @@ public class URLReader {
              * Optional logging below.
              */
 
-            //FMLLog.log.info(e);
+            FMLLog.log.info(e);
         }
         return s;
     }
