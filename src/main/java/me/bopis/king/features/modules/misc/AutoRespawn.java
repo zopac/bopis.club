@@ -21,13 +21,17 @@ public class AutoRespawn
     public void onDisplayDeathScreen(GuiOpenEvent event) {
         if (event.getGui() instanceof GuiGameOver) {
             if (this.deathCoords.getValue().booleanValue() && event.getGui() instanceof GuiGameOver) {
-                Command.sendMessage(String.format("You died at x %d y %d z %d", (int) AutoRespawn.mc.player.posX, (int) AutoRespawn.mc.player.posY, (int) AutoRespawn.mc.player.posZ));
+                chatMessage();
             }
             if (this.respawn.getValue() != false && AutoRespawn.mc.player.getHealth() <= 0.0f || this.antiDeathScreen.getValue().booleanValue() && AutoRespawn.mc.player.getHealth() > 0.0f) {
                 event.setCanceled(true);
                 AutoRespawn.mc.player.respawnPlayer();
             }
         }
+    }
+
+    public void chatMessage() {
+        Command.sendMessage(String.format("You died at x %d y %d z %d", (int) AutoRespawn.mc.player.posX, (int) AutoRespawn.mc.player.posY, (int) AutoRespawn.mc.player.posZ));
     }
 }
 

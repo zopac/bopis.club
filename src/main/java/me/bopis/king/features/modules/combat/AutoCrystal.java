@@ -1,19 +1,24 @@
 package me.bopis.king.features.modules.combat;
 
 import com.mojang.authlib.GameProfile;
+import com.sun.org.apache.bcel.internal.generic.SWAP;
 import io.netty.util.internal.ConcurrentSet;
 import me.bopis.king.Bopis;
 import me.bopis.king.event.events.ClientEvent;
 import me.bopis.king.event.events.PacketEvent;
 import me.bopis.king.event.events.Render3DEvent;
 import me.bopis.king.event.events.UpdateWalkingPlayerEvent;
+import me.bopis.king.features.command.Command;
 import me.bopis.king.features.modules.Module;
 import me.bopis.king.features.modules.client.ClickGui;
 import me.bopis.king.features.modules.misc.NoSoundLag;
+import me.bopis.king.features.modules.player.Speedmine;
 import me.bopis.king.features.setting.Setting;
 import me.bopis.king.util.Timer;
 import me.bopis.king.util.*;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockAnvil;
+import net.minecraft.block.BlockObsidian;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.entity.Entity;
@@ -24,6 +29,7 @@ import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemEndCrystal;
 import net.minecraft.network.play.client.CPacketAnimation;
+import net.minecraft.network.play.client.CPacketHeldItemChange;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.network.play.client.CPacketUseEntity;
 import net.minecraft.network.play.server.*;
@@ -131,7 +137,6 @@ public class AutoCrystal
     public Setting<Target> targetMode = this.register(new Setting<Object>("Target", Target.DAMAGE, v -> this.setting.getValue() == Settings.MISC));
     public Setting<Integer> minArmor = this.register(new Setting<Object>("MinArmor", Integer.valueOf(5), Integer.valueOf(0), Integer.valueOf(125), v -> this.setting.getValue() == Settings.MISC));
     public Setting<Boolean> autoSwitch = this.register(new Setting<Object>("AutoSwitch", true, v -> this.setting.getValue() == Settings.MISC));
-    public Setting<Boolean> silentSwitch = this.register(new Setting<Object>("SilentSwitch", Boolean.valueOf(false), v -> this.setting.getValue() == Settings.MISC && this.autoSwitch.getValue()));
     public Setting<Boolean> lethalSwitch = this.register(new Setting<Object>("LethalSwitch", Boolean.valueOf(false), v -> this.setting.getValue() == Settings.MISC && this.autoSwitch.getValue()));
     public Setting<Rotate> rotate = this.register(new Setting<Object>("Rotate", Rotate.OFF, v -> this.setting.getValue() == Settings.MISC));
     public Setting<Boolean> suicide = this.register(new Setting<Object>("Suicide", Boolean.valueOf(false), v -> this.setting.getValue() == Settings.MISC));
@@ -209,6 +214,7 @@ public class AutoCrystal
     private PlaceInfo placeInfo;
     private boolean addTolowDmg;
     private Object BlockPos;
+    private int oldSlot = -1;
 
     public AutoCrystal() {
         super("AutoCrystal", "Best CA on the market", Category.COMBAT, true, false, false);
@@ -227,6 +233,17 @@ public class AutoCrystal
         if (this.threadMode.getValue() == ThreadMode.NONE && this.eventMode.getValue() == 3) {
             this.doAutoCrystal();
         }
+    }
+
+    public int silentSwapCrystal() {
+        for (int i = 0; i < 9; ) {
+            if (mc.player.inventory.getStackInSlot(i).getItem() != Items.END_CRYSTAL) {
+                i++;
+                continue;
+            }
+            return i;
+        }
+        return -1;
     }
 
     @SubscribeEvent
@@ -282,9 +299,6 @@ public class AutoCrystal
 
     @Override
     public String getDisplayInfo() {
-        if (this.switching) {
-            return "\u00a7aSwitch";
-        }
         if (target != null) {
             return target.getName();
         }
@@ -726,8 +740,10 @@ public class AutoCrystal
     }
 
     private void placeCrystal() {
-        if (autoSwitch.getValue()) {
-            InventoryUtil.switchToHotbarSlot(ItemEndCrystal.class, false);
+        if (target != null) {
+            if (autoSwitch.getValue()) {
+                InventoryUtil.switchToHotbarSlot(ItemEndCrystal.class, false);
+            }
         }
         int crystalLimit = this.wasteAmount.getValue();
         if (this.placeTimer.passedMs(this.placeDelay.getValue().intValue()) && this.place.getValue().booleanValue() && (this.offHand || this.mainHand || this.switchMode.getValue() == Switch.ALWAYS || this.switchMode.getValue() == Switch.CALC || this.switchMode.getValue() == Switch.BREAKSLOT && this.switching)) {

@@ -82,7 +82,6 @@ public class Burrow extends Module {
         }
         if (mc.world.getBlockState(new BlockPos(mc.player.posX, mc.player.posY, mc.player.posZ)).getBlock().equals(this.returnBlock) || this.intersectsWithEntity(this.originalPos)) {
             this.toggle();
-            
         }
         this.oldSlot = mc.player.inventory.currentItem;
     }

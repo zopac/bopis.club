@@ -100,7 +100,6 @@ public class ModuleManager
         modules.add(new XCarry());
         //MISC
         modules.add(new ExtraTab());
-        modules.add(new NoHitBox());
         modules.add(new Timestamps());
         modules.add(new NoSoundLag());
         modules.add(new NoHandShake());

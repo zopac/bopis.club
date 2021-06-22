@@ -46,7 +46,7 @@ public class HUD extends Module {
     private final me.bopis.king.util.Timer timer = new Timer();
     private final Map<String, Integer> players = new HashMap<>();
     public Setting<String> command = register(new Setting("Command", "bopis.club"));
-    public Setting<String> version = register(new Setting("Version", "v1.1.0"));
+    public Setting<String> version = register(new Setting("Version", "v1.2.0"));
     public Setting<TextUtil.Color> commandColor = register(new Setting("CommandColor", TextUtil.Color.DARK_PURPLE));
     public Setting<Boolean> notifyToggles = register(new Setting("ChatNotify", Boolean.valueOf(false), "notifys in chat"));
     public Setting<Boolean> manateeImage = register(new Setting("Manatee", Boolean.valueOf(false), "draws magen david"));
