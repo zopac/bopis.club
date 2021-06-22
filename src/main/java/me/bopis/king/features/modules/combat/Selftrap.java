@@ -17,17 +17,17 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import java.util.*;
 
 public class Selftrap extends Module {
-    private final Setting <Integer> blocksPerTick = register(new Setting<Integer>("BlocksPerTick", 8, 1, 20));
+    private final Setting<Integer> blocksPerTick = register(new Setting<Integer>("BlocksPerTick", 8, 1, 20));
     private final Setting<Integer> delay = register(new Setting<Integer>("Delay", 50, 0, 250));
     private final Setting<Boolean> rotate = register(new Setting<Boolean>("Rotate", true));
     private final Setting<Integer> disableTime = register(new Setting<Integer>("DisableTime", 200, 50, 300));
     private final Setting<Boolean> disable = register(new Setting<Boolean>("AutoDisable", true));
     private final Setting<Boolean> packet = register(new Setting<Boolean>("Packet", false));
-    private final me.bopis.king.util.Timer offTimer = new me.bopis.king.util.Timer ();
-    private final me.bopis.king.util.Timer timer = new me.bopis.king.util.Timer ();
-    private boolean hasOffhand = false;
+    private final me.bopis.king.util.Timer offTimer = new me.bopis.king.util.Timer();
+    private final me.bopis.king.util.Timer timer = new me.bopis.king.util.Timer();
+    private final boolean hasOffhand = false;
     private final Map<BlockPos, Integer> retries = new HashMap<BlockPos, Integer>();
-    private final me.bopis.king.util.Timer retryTimer = new Timer ();
+    private final me.bopis.king.util.Timer retryTimer = new Timer();
     private int blocksThisTick = 0;
     private boolean isSneaking;
     private boolean offHand = false;

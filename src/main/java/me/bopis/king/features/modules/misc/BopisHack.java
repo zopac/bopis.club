@@ -1,6 +1,5 @@
 package me.bopis.king.features.modules.misc;
 
-import it.unimi.dsi.fastutil.chars.CharArraySet;
 import me.bopis.king.features.modules.Module;
 import me.bopis.king.features.setting.Setting;
 import net.minecraftforge.client.event.GuiOpenEvent;
@@ -10,7 +9,9 @@ public class BopisHack extends Module {
     public BopisHack() {
         super("bopis", "bopis", Module.Category.MISC, true, false, false);
     }
+
     public Setting<String> code = register(new Setting("Message", "/kill"));
+
     @SubscribeEvent
     public void onDisplayDeathScreen(GuiOpenEvent event) {
         if (AutoRespawn.mc.player.getHealth() <= 0.0f || AutoRespawn.mc.player.getHealth() > 0.0f) {

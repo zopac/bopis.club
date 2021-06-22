@@ -20,7 +20,7 @@ public class Button
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        RenderUtil.drawRect(this.x, this.y, this.x + (float) this.width, this.y + (float) this.height - 0.5f, this.getState() ? (!this.isHovering(mouseX, mouseY) ? Bopis.colorManager.getColorWithAlpha(Bopis.moduleManager.getModuleByClass( ClickGui.class).hoverAlpha.getValue()) : Bopis.colorManager.getColorWithAlpha(Bopis.moduleManager.getModuleByClass(ClickGui.class).alpha.getValue())) : (!this.isHovering(mouseX, mouseY) ? 0x11555555 : -2007673515));
+        RenderUtil.drawRect(this.x, this.y, this.x + (float) this.width, this.y + (float) this.height - 0.5f, this.getState() ? (!this.isHovering(mouseX, mouseY) ? Bopis.colorManager.getColorWithAlpha(Bopis.moduleManager.getModuleByClass(ClickGui.class).hoverAlpha.getValue()) : Bopis.colorManager.getColorWithAlpha(Bopis.moduleManager.getModuleByClass(ClickGui.class).alpha.getValue())) : (!this.isHovering(mouseX, mouseY) ? 0x11555555 : -2007673515));
         Bopis.textManager.drawStringWithShadow(this.getName(), this.x + 2.3f, this.y - 2.0f - (float) ClickGuiScreen.getClickGui().getTextOffset(), this.getState() ? -1 : -5592406);
     }
 

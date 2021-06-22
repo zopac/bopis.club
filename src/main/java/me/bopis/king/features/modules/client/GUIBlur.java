@@ -27,16 +27,13 @@ public class GUIBlur extends Module {
                     }
                     try {
                         Util.mc.entityRenderer.loadShader(new ResourceLocation("shaders/post/blur.json"));
-                    }
-                    catch (Exception e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
-                }
-                else if (mc.entityRenderer.getShaderGroup() != null && mc.currentScreen == null) {
+                } else if (mc.entityRenderer.getShaderGroup() != null && mc.currentScreen == null) {
                     mc.entityRenderer.getShaderGroup().deleteShaderGroup();
                 }
-            }
-            else if (mc.entityRenderer.getShaderGroup() != null) {
+            } else if (mc.entityRenderer.getShaderGroup() != null) {
                 mc.entityRenderer.getShaderGroup().deleteShaderGroup();
             }
         }

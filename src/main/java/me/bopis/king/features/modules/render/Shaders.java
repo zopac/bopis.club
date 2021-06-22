@@ -7,10 +7,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 
 public class Shaders extends Module {
-    
-    public Setting <Mode> shader = register(new Setting<Mode>("Mode", Mode.green));
 
-    private static Shaders INSTANCE = new Shaders();
+    public Setting<Mode> shader = register(new Setting<Mode>("Mode", Mode.green));
+
+    private static final Shaders INSTANCE = new Shaders();
+
     public Shaders() {
         super("Shaders", "i dont even know anymore", Module.Category.RENDER, false, false, false);
     }
@@ -23,12 +24,10 @@ public class Shaders extends Module {
             }
             try {
                 mc.entityRenderer.loadShader(new ResourceLocation("shaders/post/" + shader.getValue() + ".json"));
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
-        else if (mc.entityRenderer.getShaderGroup() != null && mc.currentScreen == null) {
+        } else if (mc.entityRenderer.getShaderGroup() != null && mc.currentScreen == null) {
             mc.entityRenderer.getShaderGroup().deleteShaderGroup();
         }
     }
@@ -44,7 +43,8 @@ public class Shaders extends Module {
             mc.entityRenderer.getShaderGroup().deleteShaderGroup();
         }
     }
-    public enum Mode{
+
+    public enum Mode {
         notch, antialias, art, bits, blobs, blobs2, blur, bumpy, color_convolve, creeper, deconverge, desaturate, entity_outline, flip, fxaa, green, invert, ntsc, outline, pencil, phosphor, scan_pincusion, sobel, spider, wobble
     }
 }

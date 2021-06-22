@@ -10,13 +10,12 @@ import net.minecraft.init.Blocks;
 import net.minecraft.network.play.server.SPacketEntityStatus;
 import net.minecraft.network.play.server.SPacketEntityVelocity;
 import net.minecraft.network.play.server.SPacketExplosion;
-import net.minecraft.world.World;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class Velocity
         extends Module {
     private static Velocity INSTANCE = new Velocity();
-    public Setting <Boolean> knockBack = this.register(new Setting<Boolean>("KnockBack", true));
+    public Setting<Boolean> knockBack = this.register(new Setting<Boolean>("KnockBack", true));
     public Setting<Boolean> noPush = this.register(new Setting<Boolean>("NoPush", true));
     public Setting<Float> horizontal = this.register(new Setting<Float>("Horizontal", Float.valueOf(0.0f), Float.valueOf(0.0f), Float.valueOf(100.0f)));
     public Setting<Float> vertical = this.register(new Setting<Float>("Vertical", Float.valueOf(0.0f), Float.valueOf(0.0f), Float.valueOf(100.0f)));

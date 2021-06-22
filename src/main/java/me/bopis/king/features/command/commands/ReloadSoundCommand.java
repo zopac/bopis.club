@@ -18,11 +18,11 @@ public class ReloadSoundCommand extends Command {
     @Override
     public void execute(final String[] commands) {
         try {
-            final SoundManager sndManager = (SoundManager) ObfuscationReflectionHelper.getPrivateValue(SoundHandler.class, ReloadSoundCommand.mc.getSoundHandler(), new String[]{"sndManager", "sndManager"});
+            final SoundManager sndManager = ObfuscationReflectionHelper.getPrivateValue(SoundHandler.class, ReloadSoundCommand.mc.getSoundHandler(), new String[]{"sndManager", "sndManager"});
             sndManager.reloadSoundSystem();
             Command.sendMessage(ChatFormatting.GREEN + "Reloaded Sound System.");
         } catch (Exception e) {
-            System.out.println(ChatFormatting.RED + "Could not restart sound manager: " + e.toString());
+            System.out.println(ChatFormatting.RED + "Could not restart sound manager: " + e);
             e.printStackTrace();
             Command.sendMessage(ChatFormatting.RED + "Couldnt Reload Sound System!");
         }

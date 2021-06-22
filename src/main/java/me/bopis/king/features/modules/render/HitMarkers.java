@@ -4,12 +4,13 @@ import me.bopis.king.event.events.Render2DEvent;
 import me.bopis.king.features.modules.Module;
 import me.bopis.king.features.setting.Setting;
 import me.bopis.king.util.RenderUtil;
-import net.minecraft.util.*;
-import net.minecraftforge.common.*;
-import net.minecraftforge.event.entity.player.*;
-import net.minecraftforge.fml.common.eventhandler.*;
-import net.minecraftforge.fml.common.gameevent.*;
-import net.minecraft.client.gui.*;
+import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.AttackEntityEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+
 import java.awt.*;
 
 public final class HitMarkers extends Module {
@@ -23,7 +24,7 @@ public final class HitMarkers extends Module {
         renderTicks = 100;
     }
 
-    public Setting <Integer> red = this.register(new Setting<Integer>("Red", 255, 0, 255));
+    public Setting<Integer> red = this.register(new Setting<Integer>("Red", 255, 0, 255));
     public Setting<Integer> green = this.register(new Setting<Integer>("Green", 255, 0, 255));
     public Setting<Integer> blue = this.register(new Setting<Integer>("Blue", 255, 0, 255));
     public Setting<Integer> alpha = this.register(new Setting<Integer>("Alpha", 255, 0, 255));

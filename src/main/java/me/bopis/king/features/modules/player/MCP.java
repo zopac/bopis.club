@@ -1,4 +1,5 @@
 package me.bopis.king.features.modules.player;
+
 import me.bopis.king.features.modules.Module;
 import me.bopis.king.features.setting.Setting;
 import me.bopis.king.util.InventoryUtil;

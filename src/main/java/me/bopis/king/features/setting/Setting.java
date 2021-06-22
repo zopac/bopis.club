@@ -2,7 +2,6 @@ package me.bopis.king.features.setting;
 
 import me.bopis.king.event.events.ClientEvent;
 import me.bopis.king.features.Feature;
-import net.minecraft.world.BossInfo;
 import net.minecraftforge.common.MinecraftForge;
 
 import java.util.function.Predicate;
@@ -171,7 +170,7 @@ public class Setting<T> {
     }
 
     public void setEnumValue(String value) {
-        for (Enum e : (Enum[]) ((Enum) this.value).getClass().getEnumConstants()) {
+        for (Enum e : ((Enum) this.value).getClass().getEnumConstants()) {
             if (!e.name().equalsIgnoreCase(value)) continue;
             this.value = (T) e;
         }

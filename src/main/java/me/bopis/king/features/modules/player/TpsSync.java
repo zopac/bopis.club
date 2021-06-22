@@ -5,7 +5,7 @@ import me.bopis.king.features.setting.Setting;
 
 public class TpsSync extends Module {
     private static TpsSync INSTANCE = new TpsSync();
-    public Setting <Boolean> attack = register(new Setting<Boolean>("Attack", Boolean.FALSE));
+    public Setting<Boolean> attack = register(new Setting<Boolean>("Attack", Boolean.FALSE));
     public Setting<Boolean> mining = register(new Setting<Boolean>("Mine", Boolean.TRUE));
 
     public TpsSync() {

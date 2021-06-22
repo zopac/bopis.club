@@ -1,11 +1,12 @@
 package me.bopis.king.manager;
 
-import java.util.HashMap;
 import me.bopis.king.features.Feature;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.MathHelper;
+
+import java.util.HashMap;
 
 public class SpeedManager
         extends Feature {
@@ -21,7 +22,7 @@ public class SpeedManager
     public static final double LAST_JUMP_INFO_DURATION_DEFAULT = 3.0;
     public double speedometerCurrentSpeed = 0.0;
     public HashMap<EntityPlayer, Double> playerSpeeds = new HashMap();
-    private int distancer = 20;
+    private final int distancer = 20;
 
     public static void setDidJumpThisTick(boolean val) {
         didJumpThisTick = val;
@@ -32,7 +33,7 @@ public class SpeedManager
     }
 
     public float lastJumpInfoTimeRemaining() {
-        return (float)(Minecraft.getSystemTime() - this.jumpInfoStartTime) / 1000.0f;
+        return (float) (Minecraft.getSystemTime() - this.jumpInfoStartTime) / 1000.0f;
     }
 
     public void updateValues() {
@@ -53,12 +54,13 @@ public class SpeedManager
             this.didJumpLastTick = false;
             this.lastJumpSpeed = 0.0;
         }
-            this.updatePlayers();
+        this.updatePlayers();
     }
 
     public void updatePlayers() {
         for (EntityPlayer player : SpeedManager.mc.world.playerEntities) {
-            if (!(SpeedManager.mc.player.getDistanceSq((Entity)player) < (double)(this.distancer * this.distancer))) continue;
+            if (!(SpeedManager.mc.player.getDistanceSq(player) < (double) (this.distancer * this.distancer)))
+                continue;
             double distTraveledLastTickX = player.posX - player.prevPosX;
             double distTraveledLastTickZ = player.posZ - player.prevPosZ;
             double playerSpeed = distTraveledLastTickX * distTraveledLastTickX + distTraveledLastTickZ * distTraveledLastTickZ;
@@ -74,18 +76,18 @@ public class SpeedManager
     }
 
     public double turnIntoKpH(double input) {
-        return (double)MathHelper.sqrt((double)input) * 71.2729367892;
+        return (double) MathHelper.sqrt(input) * 71.2729367892;
     }
 
     public double getSpeedKpH() {
         double speedometerkphdouble = this.turnIntoKpH(this.speedometerCurrentSpeed);
-        speedometerkphdouble = (double)Math.round(10.0 * speedometerkphdouble) / 10.0;
+        speedometerkphdouble = (double) Math.round(10.0 * speedometerkphdouble) / 10.0;
         return speedometerkphdouble;
     }
 
     public double getSpeedMpS() {
         double speedometerMpsdouble = this.turnIntoKpH(this.speedometerCurrentSpeed) / 3.6;
-        speedometerMpsdouble = (double)Math.round(10.0 * speedometerMpsdouble) / 10.0;
+        speedometerMpsdouble = (double) Math.round(10.0 * speedometerMpsdouble) / 10.0;
         return speedometerMpsdouble;
     }
 }

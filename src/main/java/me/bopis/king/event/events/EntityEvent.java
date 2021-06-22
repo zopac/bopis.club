@@ -5,7 +5,7 @@ import net.minecraft.entity.Entity;
 
 public class EntityEvent extends EventStage {
 
-    private Entity entity;
+    private final Entity entity;
 
     public EntityEvent(Entity entity) {
         super();
@@ -17,7 +17,7 @@ public class EntityEvent extends EventStage {
     }
 
     public static class EntityCollision extends EntityEvent {
-        double x,y,z;
+        double x, y, z;
 
         public EntityCollision(Entity entity, double x, double y, double z) {
             super(entity);

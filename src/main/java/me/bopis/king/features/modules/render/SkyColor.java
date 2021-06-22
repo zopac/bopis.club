@@ -10,10 +10,10 @@ import java.awt.*;
 
 public class SkyColor extends Module {
 
-    private Setting <Integer> red = register(new Setting("Red", 255, 0, 255));
-    private Setting<Integer> green = register(new Setting("Green", 255, 0, 255));
-    private Setting<Integer> blue = register(new Setting("Blue", 255, 0, 255));
-    private Setting<Boolean> rainbow = register(new Setting("Rainbow", true));
+    private final Setting<Integer> red = register(new Setting("Red", 255, 0, 255));
+    private final Setting<Integer> green = register(new Setting("Green", 255, 0, 255));
+    private final Setting<Integer> blue = register(new Setting("Blue", 255, 0, 255));
+    private final Setting<Boolean> rainbow = register(new Setting("Rainbow", true));
 
     private static SkyColor INSTANCE = new SkyColor();
 
@@ -36,12 +36,6 @@ public class SkyColor extends Module {
         event.setRed(red.getValue() / 255f);
         event.setGreen(green.getValue() / 255f);
         event.setBlue(blue.getValue() / 255f);
-    }
-
-    @SubscribeEvent
-    public void fog_density(final EntityViewRenderEvent.FogDensity event) {
-        event.setDensity(0.0f);
-        event.setCanceled(true);
     }
 
     @Override

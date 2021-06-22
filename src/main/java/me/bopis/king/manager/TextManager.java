@@ -59,7 +59,7 @@ public class TextManager
         boolean shouldContinue = false;
         for (int i = 0; i < text.length(); ++i) {
             char currentChar = text.charAt(i);
-            char nextChar = text.charAt( MathUtil.clamp(i + 1, 0, text.length() - 1));
+            char nextChar = text.charAt(MathUtil.clamp(i + 1, 0, text.length() - 1));
             if ((String.valueOf(currentChar) + nextChar).equals("\u00a7r")) {
                 shouldRainbow = false;
             } else if ((String.valueOf(currentChar) + nextChar).equals("\u00a7+")) {

@@ -27,7 +27,7 @@ public abstract class Command
     }
 
     public static void sendMessage(String message) {
-        Command.sendSilentMessage( Bopis.commandManager.getClientMessage() + " " + ChatFormatting.GRAY + message);
+        Command.sendSilentMessage(ChatFormatting.LIGHT_PURPLE + Bopis.commandManager.getClientMessage() + " " + ChatFormatting.DARK_AQUA + message);
     }
 
     public static void sendSilentMessage(String message) {

@@ -8,7 +8,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class Sprint
         extends Module {
     private static Sprint INSTANCE = new Sprint();
-    public Setting <Boolean> sync = this.register(new Setting<Boolean>("Sync", false));
+    public Setting<Boolean> sync = this.register(new Setting<Boolean>("Sync", false));
     public Setting<Mode> mode = this.register(new Setting<Mode>("Mode", Mode.LEGIT));
 
     public Sprint() {
@@ -28,7 +28,7 @@ public class Sprint
     }
 
     @SubscribeEvent
-    public void onSprint( MoveEvent event) {
+    public void onSprint(MoveEvent event) {
         if (event.getStage() == 1 && this.mode.getValue() == Mode.RAGE && (Sprint.mc.player.movementInput.moveForward != 0.0f || Sprint.mc.player.movementInput.moveStrafe != 0.0f)) {
             event.setCanceled(true);
         }

@@ -24,7 +24,7 @@ public class Anti32k extends Module {
         super("Anti32k", "tomfoolery", Module.Category.COMBAT, true, false, false);
     }
 
-    private final Setting <Boolean> LogOut = register(new Setting<Boolean>("LogOut", true));
+    private final Setting<Boolean> LogOut = register(new Setting<Boolean>("LogOut", true));
 
     private final Set<EntityPlayer> sword = Collections.newSetFromMap(new WeakHashMap<>());
 
@@ -36,14 +36,14 @@ public class Anti32k extends Module {
                     return true;
             }
         }
-        return false ;
+        return false;
     }
 
     @Override
     public void onTick() {
         int once = 0;
         for (EntityPlayer player : mc.world.playerEntities) {
-            int Distance = (int)mc.player.getDistance(player);
+            int Distance = (int) mc.player.getDistance(player);
             if (player.equals(mc.player))
                 continue;
             if (is32k(player, player.getHeldItem(EnumHand.MAIN_HAND)) && !this.sword.contains(player)) {
@@ -51,12 +51,14 @@ public class Anti32k extends Module {
                 this.sword.add(player);
             }
             if (is32k(player, player.getHeldItem(EnumHand.MAIN_HAND))) {
-                if(once>0){return;}
+                if (once > 0) {
+                    return;
+                }
                 once++;
-                if(LogOut.getValue()) {
-                    if(! Bopis.friendManager.isFriend(player.getName())){
-                        if(Distance < 8){
-                            Objects.requireNonNull ( Minecraft.getMinecraft ( ).getConnection ( ) ).handleDisconnect(new SPacketDisconnect(new TextComponentString(ChatFormatting.RED + "[32k Detect] Detected 32k near you")));
+                if (LogOut.getValue()) {
+                    if (!Bopis.friendManager.isFriend(player.getName())) {
+                        if (Distance < 8) {
+                            Objects.requireNonNull(Minecraft.getMinecraft().getConnection()).handleDisconnect(new SPacketDisconnect(new TextComponentString(ChatFormatting.RED + "[32k Detect] Detected 32k near you")));
                         }
                     }
                 }

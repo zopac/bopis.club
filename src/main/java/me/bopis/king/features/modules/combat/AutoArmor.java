@@ -1,20 +1,12 @@
 package me.bopis.king.features.modules.combat;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import me.bopis.king.Bopis;
 import me.bopis.king.features.gui.ClickGuiScreen;
 import me.bopis.king.features.modules.Module;
 import me.bopis.king.features.modules.player.XCarry;
 import me.bopis.king.features.setting.Bind;
 import me.bopis.king.features.setting.Setting;
-import me.bopis.king.util.DamageUtil;
-import me.bopis.king.util.EntityUtil;
-import me.bopis.king.util.InventoryUtil;
-import me.bopis.king.util.MathUtil;
-import me.bopis.king.util.Timer;
+import me.bopis.king.util.*;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.entity.Entity;
@@ -28,9 +20,14 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
 import org.lwjgl.input.Keyboard;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
 public class AutoArmor
         extends Module {
-    private final Setting <Integer> delay = this.register(new Setting<Integer>("Delay", 50, 0, 500));
+    private final Setting<Integer> delay = this.register(new Setting<Integer>("Delay", 50, 0, 500));
     private final Setting<Boolean> mendingTakeOff = this.register(new Setting<Boolean>("AutoMend", false));
     private final Setting<Integer> closestEnemy = this.register(new Setting<Object>("Enemy", Integer.valueOf(8), Integer.valueOf(1), Integer.valueOf(20), v -> this.mendingTakeOff.getValue()));
     private final Setting<Integer> helmetThreshold = this.register(new Setting<Object>("Helmet%", Integer.valueOf(80), Integer.valueOf(1), Integer.valueOf(100), v -> this.mendingTakeOff.getValue()));
@@ -39,13 +36,13 @@ public class AutoArmor
     private final Setting<Integer> bootsThreshold = this.register(new Setting<Object>("Boots%", Integer.valueOf(80), Integer.valueOf(1), Integer.valueOf(100), v -> this.mendingTakeOff.getValue()));
     private final Setting<Boolean> curse = this.register(new Setting<Boolean>("CurseOfBinding", false));
     private final Setting<Integer> actions = this.register(new Setting<Integer>("Actions", 3, 1, 12));
-    private final Setting< Bind > elytraBind = this.register(new Setting<Bind>("Elytra", new Bind(-1)));
+    private final Setting<Bind> elytraBind = this.register(new Setting<Bind>("Elytra", new Bind(-1)));
     private final Setting<Boolean> tps = this.register(new Setting<Boolean>("TpsSync", true));
     private final Setting<Boolean> updateController = this.register(new Setting<Boolean>("Update", true));
     private final Setting<Boolean> shiftClick = this.register(new Setting<Boolean>("ShiftClick", false));
     private final Timer timer = new Timer();
     private final Timer elytraTimer = new Timer();
-    private final Queue< InventoryUtil.Task > taskList = new ConcurrentLinkedQueue<InventoryUtil.Task>();
+    private final Queue<InventoryUtil.Task> taskList = new ConcurrentLinkedQueue<InventoryUtil.Task>();
     private final List<Integer> doneSlots = new ArrayList<Integer>();
     private boolean elytraOn = false;
 
@@ -92,7 +89,7 @@ public class AutoArmor
             int slot3;
             ItemStack chest;
             int slot4;
-            if (this.mendingTakeOff.getValue().booleanValue() && InventoryUtil.holdingItem(ItemExpBottle.class) && AutoArmor.mc.gameSettings.keyBindUseItem.isKeyDown() && (this.isSafe() || EntityUtil.isSafe((Entity)AutoArmor.mc.player, 1, false, true))) {
+            if (this.mendingTakeOff.getValue().booleanValue() && InventoryUtil.holdingItem(ItemExpBottle.class) && AutoArmor.mc.gameSettings.keyBindUseItem.isKeyDown() && (this.isSafe() || EntityUtil.isSafe(AutoArmor.mc.player, 1, false, true))) {
                 int bootDamage;
                 int leggingDamage;
                 int chestDamage;
@@ -153,9 +150,9 @@ public class AutoArmor
                     this.elytraTimer.reset();
                 }
             } else if (!this.elytraOn && chest.getItem() == Items.ELYTRA && this.elytraTimer.passedMs(500L) && this.taskList.isEmpty()) {
-                slot3 = InventoryUtil.findItemInventorySlot((Item)Items.DIAMOND_CHESTPLATE, false, XCarry.getInstance().isOn());
-                if (slot3 == -1 && (slot3 = InventoryUtil.findItemInventorySlot((Item)Items.IRON_CHESTPLATE, false, XCarry.getInstance().isOn())) == -1 && (slot3 = InventoryUtil.findItemInventorySlot((Item)Items.GOLDEN_CHESTPLATE, false, XCarry.getInstance().isOn())) == -1 && (slot3 = InventoryUtil.findItemInventorySlot((Item)Items.CHAINMAIL_CHESTPLATE, false, XCarry.getInstance().isOn())) == -1) {
-                    slot3 = InventoryUtil.findItemInventorySlot((Item)Items.LEATHER_CHESTPLATE, false, XCarry.getInstance().isOn());
+                slot3 = InventoryUtil.findItemInventorySlot(Items.DIAMOND_CHESTPLATE, false, XCarry.getInstance().isOn());
+                if (slot3 == -1 && (slot3 = InventoryUtil.findItemInventorySlot(Items.IRON_CHESTPLATE, false, XCarry.getInstance().isOn())) == -1 && (slot3 = InventoryUtil.findItemInventorySlot(Items.GOLDEN_CHESTPLATE, false, XCarry.getInstance().isOn())) == -1 && (slot3 = InventoryUtil.findItemInventorySlot(Items.CHAINMAIL_CHESTPLATE, false, XCarry.getInstance().isOn())) == -1) {
+                    slot3 = InventoryUtil.findItemInventorySlot(Items.LEATHER_CHESTPLATE, false, XCarry.getInstance().isOn());
                 }
                 if (slot3 != -1) {
                     this.taskList.add(new InventoryUtil.Task(slot3));
@@ -174,7 +171,7 @@ public class AutoArmor
                 this.getSlotOn(8, slot);
             }
         }
-        if (this.timer.passedMs((int)((float)this.delay.getValue().intValue() * (this.tps.getValue() != false ? Bopis.serverManager.getTpsFactor() : 1.0f)))) {
+        if (this.timer.passedMs((int) ((float) this.delay.getValue().intValue() * (this.tps.getValue() != false ? Bopis.serverManager.getTpsFactor() : 1.0f)))) {
             if (!this.taskList.isEmpty()) {
                 for (int i = 0; i < this.actions.getValue(); ++i) {
                     InventoryUtil.Task task = this.taskList.poll();
@@ -218,7 +215,7 @@ public class AutoArmor
 
     private void getSlotOn(int slot, int target) {
         if (this.taskList.isEmpty()) {
-            this.doneSlots.remove((Object)target);
+            this.doneSlots.remove((Object) target);
             if (target < 5 && target > 0 || !this.shiftClick.getValue().booleanValue()) {
                 this.taskList.add(new InventoryUtil.Task(target));
                 this.taskList.add(new InventoryUtil.Task(slot));
@@ -236,7 +233,7 @@ public class AutoArmor
         if (closest == null) {
             return true;
         }
-        return AutoArmor.mc.player.getDistanceSq((Entity)closest) >= MathUtil.square(this.closestEnemy.getValue().intValue());
+        return AutoArmor.mc.player.getDistanceSq(closest) >= MathUtil.square(this.closestEnemy.getValue().intValue());
     }
 }
 

@@ -12,7 +12,7 @@ import java.awt.*;
 
 public class FontMod extends Module {
     private static FontMod INSTANCE = new FontMod();
-    public Setting <String> fontName = register(new Setting<String>("FontName", "Arial", "Name of the font."));
+    public Setting<String> fontName = register(new Setting<String>("FontName", "Arial", "Name of the font."));
     public Setting<Boolean> antiAlias = register(new Setting<Boolean>("AntiAlias", Boolean.valueOf(true), "Smoother font."));
     public Setting<Boolean> fractionalMetrics = register(new Setting<Boolean>("Metrics", Boolean.valueOf(true), "Thinner font."));
     public Setting<Boolean> customAll = register(new Setting<Boolean>("CustomAll", Boolean.valueOf(true), "Renders font everywhere"));
@@ -49,7 +49,7 @@ public class FontMod extends Module {
     }
 
     @SubscribeEvent
-    public void onSettingChange( ClientEvent event) {
+    public void onSettingChange(ClientEvent event) {
         Setting setting;
         if (event.getStage() == 2 && (setting = event.getSetting()) != null && setting.getFeature().equals(this)) {
             if (setting.getName().equals("FontName") && !FontMod.checkFont(setting.getPlannedValue().toString(), false)) {

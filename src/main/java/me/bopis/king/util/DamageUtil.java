@@ -15,7 +15,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.Explosion;
-import net.minecraft.world.World;
 
 public class DamageUtil
         implements Util {
@@ -61,7 +60,7 @@ public class DamageUtil
         if (effect != null) {
             strengthAmp = effect.getAmplifier();
         }
-        return ! mc.player.isPotionActive(MobEffects.WEAKNESS) || strengthAmp >= 1 || mc.player.getHeldItemMainhand().getItem() instanceof ItemSword || mc.player.getHeldItemMainhand().getItem() instanceof ItemPickaxe || mc.player.getHeldItemMainhand().getItem() instanceof ItemAxe || mc.player.getHeldItemMainhand().getItem() instanceof ItemSpade;
+        return !mc.player.isPotionActive(MobEffects.WEAKNESS) || strengthAmp >= 1 || mc.player.getHeldItemMainhand().getItem() instanceof ItemSword || mc.player.getHeldItemMainhand().getItem() instanceof ItemPickaxe || mc.player.getHeldItemMainhand().getItem() instanceof ItemAxe || mc.player.getHeldItemMainhand().getItem() instanceof ItemSpade;
     }
 
     public static float calculateDamage(double posX, double posY, double posZ, Entity entity) {
@@ -78,7 +77,7 @@ public class DamageUtil
         float damage = (int) ((v * v + v) / 2.0 * 7.0 * (double) doubleExplosionSize + 1.0);
         double finald = 1.0;
         if (entity instanceof EntityLivingBase) {
-            finald = DamageUtil.getBlastReduction((EntityLivingBase) entity, DamageUtil.getDamageMultiplied(damage), new Explosion( mc.world, null, posX, posY, posZ, 6.0f, false, true));
+            finald = DamageUtil.getBlastReduction((EntityLivingBase) entity, DamageUtil.getDamageMultiplied(damage), new Explosion(mc.world, null, posX, posY, posZ, 6.0f, false, true));
         }
         return (float) finald;
     }
@@ -121,7 +120,7 @@ public class DamageUtil
     }
 
     public static boolean canTakeDamage(boolean suicide) {
-        return ! mc.player.capabilities.isCreativeMode && !suicide;
+        return !mc.player.capabilities.isCreativeMode && !suicide;
     }
 
     public static int getCooldownByWeapon(EntityPlayer player) {

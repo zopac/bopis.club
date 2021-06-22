@@ -1,7 +1,5 @@
 package me.bopis.king.features.modules.misc;
 
-import java.util.HashSet;
-import java.util.Set;
 import me.bopis.king.features.command.Command;
 import me.bopis.king.features.modules.Module;
 import me.bopis.king.features.setting.Setting;
@@ -9,10 +7,13 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.init.SoundEvents;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class GhastNotifier extends Module {
 
-    private Set<Entity> ghasts = new HashSet<Entity>();
-    public Setting <Boolean> Chat = this.register(new Setting<Boolean>("Chat", true));
+    private final Set<Entity> ghasts = new HashSet<Entity>();
+    public Setting<Boolean> Chat = this.register(new Setting<Boolean>("Chat", true));
     public Setting<Boolean> Sound = this.register(new Setting<Boolean>("Sound", true));
 
     public GhastNotifier() {

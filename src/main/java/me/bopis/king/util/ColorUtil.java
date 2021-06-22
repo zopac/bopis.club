@@ -1,10 +1,10 @@
 package me.bopis.king.util;
 
 import me.bopis.king.features.modules.client.ClickGui;
-import java.awt.Color;
 
-public class ColorUtil
-{
+import java.awt.*;
+
+public class ColorUtil {
     public ColorUtil(final int i, final int i1, final int i2, final int i3) {
     }
 
@@ -33,12 +33,12 @@ public class ColorUtil
     }
 
     public static int toRGBA(final float r, final float g, final float b, final float a) {
-        return toRGBA((int)(r * 255.0f), (int)(g * 255.0f), (int)(b * 255.0f), (int)(a * 255.0f));
+        return toRGBA((int) (r * 255.0f), (int) (g * 255.0f), (int) (b * 255.0f), (int) (a * 255.0f));
     }
 
     public static Color rainbow(final int delay) {
         double rainbowState = Math.ceil((System.currentTimeMillis() + delay) / 20.0);
-        return Color.getHSBColor((float)((rainbowState %= 360.0) / 360.0), (float)ClickGui.getInstance().rainbowSaturation.getValue() / 255.0f, (float)ClickGui.getInstance().rainbowBrightness.getValue() / 255.0f);
+        return Color.getHSBColor((float) ((rainbowState %= 360.0) / 360.0), ClickGui.getInstance().rainbowSaturation.getValue() / 255.0f, ClickGui.getInstance().rainbowBrightness.getValue() / 255.0f);
     }
 
     public static int toRGBA(final float[] colors) {
@@ -52,7 +52,7 @@ public class ColorUtil
         if (colors.length != 4) {
             throw new IllegalArgumentException("colors[] must have a length of 4!");
         }
-        return toRGBA((float)colors[0], (float)colors[1], (float)colors[2], (float)colors[3]);
+        return toRGBA((float) colors[0], (float) colors[1], (float) colors[2], (float) colors[3]);
     }
 
     public static int toRGBA(final Color color) {

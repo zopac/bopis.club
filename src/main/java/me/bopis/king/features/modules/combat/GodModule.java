@@ -27,7 +27,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class GodModule
         extends Module {
-    public Setting <Integer> rotations = this.register(new Setting<Integer>("Spoofs", 1, 1, 20));
+    public Setting<Integer> rotations = this.register(new Setting<Integer>("Spoofs", 1, 1, 20));
     public Setting<Boolean> rotate = this.register(new Setting<Boolean>("Rotate", false));
     public Setting<Boolean> render = this.register(new Setting<Boolean>("Render", false));
     public Setting<Boolean> antiIllegal = this.register(new Setting<Boolean>("AntiIllegal", true));
@@ -75,7 +75,7 @@ public class GodModule
         if (event.getStage() == 0 && event.getPacket() instanceof CPacketPlayerTryUseItemOnBlock) {
             CPacketPlayerTryUseItemOnBlock packet = event.getPacket();
             if (GodModule.mc.player.getHeldItem(packet.hand).getItem() instanceof ItemEndCrystal) {
-                if (this.checkPos.getValue().booleanValue() && ! BlockUtil.canPlaceCrystal(packet.position, this.entitycheck.getValue(), this.oneDot15.getValue()) || this.checkPlayers()) {
+                if (this.checkPos.getValue().booleanValue() && !BlockUtil.canPlaceCrystal(packet.position, this.entitycheck.getValue(), this.oneDot15.getValue()) || this.checkPlayers()) {
                     return;
                 }
                 this.updateEntityID();

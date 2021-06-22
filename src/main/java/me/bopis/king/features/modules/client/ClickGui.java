@@ -7,17 +7,15 @@ import me.bopis.king.features.command.Command;
 import me.bopis.king.features.gui.ClickGuiScreen;
 import me.bopis.king.features.modules.Module;
 import me.bopis.king.features.setting.Setting;
-import me.bopis.king.manager.HWIDManager;
 import me.bopis.king.util.ColorUtil;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import org.lwjgl.input.Keyboard;
 
 import java.awt.*;
 
 public class ClickGui extends Module {
     private static ClickGui INSTANCE = new ClickGui();
-    public Setting <String> prefix = register(new Setting<>("Prefix", "-"));
+    public Setting<String> prefix = register(new Setting<>("Prefix", "-"));
     public Setting<Boolean> customFov = register(new Setting<>("CustomFov", false));
     public Setting<Float> fov = register(new Setting<>("Fov", Float.valueOf(150.0f), Float.valueOf(-180.0f), Float.valueOf(180.0f)));
     public Setting<Integer> red = register(new Setting<>("Red", 255, 0, 255));
@@ -75,7 +73,7 @@ public class ClickGui extends Module {
     }
 
     @SubscribeEvent
-    public void onSettingChange( ClientEvent event) {
+    public void onSettingChange(ClientEvent event) {
         if (event.getStage() == 2 && event.getSetting().getFeature().equals(this)) {
             if (event.getSetting().equals(prefix)) {
                 Bopis.commandManager.setPrefix(prefix.getPlannedValue());

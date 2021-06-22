@@ -5,6 +5,7 @@ import me.bopis.king.features.modules.client.ClickGui;
 import me.bopis.king.util.ColorUtil;
 
 import java.awt.*;
+
 //written
 public class ColorManager {
     private float red = 1.0f;
@@ -30,8 +31,8 @@ public class ColorManager {
     }
 
     public int getColorWithAlpha(int alpha) {
-        if ( ClickGui.getInstance().rainbow.getValue().booleanValue()) {
-            return ColorUtil.rainbow( Component.counter1[0] * ClickGui.getInstance().rainbowHue.getValue()).getRGB();
+        if (ClickGui.getInstance().rainbow.getValue().booleanValue()) {
+            return ColorUtil.rainbow(Component.counter1[0] * ClickGui.getInstance().rainbowHue.getValue()).getRGB();
         }
         return ColorUtil.toRGBA(new Color(this.red, this.green, this.blue, (float) alpha / 255.0f));
     }

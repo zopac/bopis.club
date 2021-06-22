@@ -1,14 +1,13 @@
 package me.bopis.king.features.modules.combat;
 
+import me.bopis.king.Bopis;
 import me.bopis.king.features.command.Command;
 import me.bopis.king.features.modules.Module;
 import me.bopis.king.features.setting.Setting;
 import me.bopis.king.util.BlockUtil;
 import me.bopis.king.util.EntityUtil;
+import me.bopis.king.util.HoleUtil;
 import me.bopis.king.util.InventoryUtil;
-import me.bopis.king.util.InventoryUtil;
-import net.minecraft.block.BlockEnderChest;
-import net.minecraft.block.BlockObsidian;
 import net.minecraft.block.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -28,12 +27,12 @@ public class Burrow extends Module {
     private final Setting<Boolean> rotate = this.register(new Setting<Boolean>("Rotate", false));
     public final Setting<Boolean> auto = this.register(new Setting("Auto", false));
     private final Setting<Boolean> autoDisable = this.register(new Setting<Boolean>("Disable", false));
-    private final Setting<Integer> range = this.register(new Setting<Integer>("Range", 3, 1, 10, v -> this.auto.getValue()));
+    private final Setting<Double> range = this.register(new Setting<Double>("Range", 2.5, 1.0, 7.0, v -> this.auto.getValue()));
     private final Setting<Mode> mode = this.register(new Setting<Mode>("Mode", Mode.Obsidian));
     Block returnBlock = null;
     private BlockPos originalPos;
     private int oldSlot = -1;
-    private Set<EntityPlayer> entities;
+    private final Set<EntityPlayer> entities;
 
     public Burrow() {
         super("Burrow", "TPs you into a block", Category.COMBAT, true, false, false);
@@ -42,10 +41,8 @@ public class Burrow extends Module {
 
     @Override
     public void onEnable() {
-        if (fullNullCheck()) {
-            return;
-        }
-        this.originalPos = new BlockPos(Burrow.mc.player.posX, Burrow.mc.player.posY, Burrow.mc.player.posZ);
+        fullNullCheck();
+        this.originalPos = new BlockPos(mc.player.posX, mc.player.posY, mc.player.posZ);
         switch (this.mode.getValue()) {
             case Obsidian: {
                 this.returnBlock = Blocks.OBSIDIAN;
@@ -79,87 +76,103 @@ public class Burrow extends Module {
             case Hopper: {
                 this.returnBlock = Blocks.HOPPER;
             }
+            case Cake: {
+                this.returnBlock = Blocks.CAKE;
+            }
         }
-        if (Burrow.mc.world.getBlockState(new BlockPos(Burrow.mc.player.posX, Burrow.mc.player.posY, Burrow.mc.player.posZ)).getBlock().equals(this.returnBlock) || this.intersectsWithEntity(this.originalPos)) {
+        if (mc.world.getBlockState(new BlockPos(mc.player.posX, mc.player.posY, mc.player.posZ)).getBlock().equals(this.returnBlock) || this.intersectsWithEntity(this.originalPos)) {
             this.toggle();
-            return;
+            
         }
-        this.oldSlot = Burrow.mc.player.inventory.currentItem;
+        this.oldSlot = mc.player.inventory.currentItem;
     }
 
-    @Override
     public void onUpdate() {
-        if (fullNullCheck()) {
-            return;
-        }
-        final EntityPlayer target = EntityUtil.getClosestEnemy(this.range.getValue());
-        if (target == null) {
-            this.entities.clear();
-        }
-        if (this.auto.getValue() && target != null) {
-            if (!this.entities.contains(target)) {
-                this.originalPos = new BlockPos(Burrow.mc.player.posX, Burrow.mc.player.posY, Burrow.mc.player.posZ);
-                this.oldSlot = Burrow.mc.player.inventory.currentItem;
-                this.dotheburrow();
-                this.entities.add(target);
-            }
-        } else if (!this.auto.getValue()) {
-            this.dotheburrow();
-            this.toggle();
-        }
+        if (auto.getValue() && HoleUtil.isInHole(mc.player)) {
+            mc.world.loadedEntityList.stream()
+                    .filter(e -> e instanceof EntityPlayer)
+                    .filter(e -> e != mc.player)
+                    .forEach(e -> {
+                        if (Bopis.friendManager.isFriend(e.getName()))
+                            return;
+
+                        if (e.getDistance(mc.player) + 0.22f <= range.getValue()) {
+                            dotheburrow();
+                        }
+                    });
+        } else
+            dotheburrow();
     }
 
     private void dotheburrow() {
+        fullNullCheck();
         switch (this.mode.getValue()) {
             case Obsidian: {
                 if (InventoryUtil.findHotbarBlock(BlockObsidian.class) != -1) break;
-                Command.sendMessage("Can't find obsidian in hotbar!");
+                Command.sendMessage("Can't find any obsidian in hotbar!");
                 this.disable();
                 break;
             }
             case EnderChest: {
                 if (InventoryUtil.findHotbarBlock(BlockEnderChest.class) != -1) break;
-                Command.sendMessage("Can't find enderchest in hotbar!");
+                Command.sendMessage("Can't find any ender chests in hotbar!");
                 this.disable();
                 break;
             }
             case Chest: {
                 if (InventoryUtil.findHotbarBlock(BlockChest.class) != -1) break;
-                Command.sendMessage("Can't find chest in hotbar!");
+                Command.sendMessage("Can't find any chests in hotbar!");
+                this.disable();
+                break;
+            }
+            case Anvil: {
+                if (InventoryUtil.findHotbarBlock(BlockAnvil.class) != -1) break;
+                Command.sendMessage("Can't find any anvils in hotbar!");
                 this.disable();
                 break;
             }
             case EnchantingTable: {
                 if (InventoryUtil.findHotbarBlock(BlockEnchantmentTable.class) != -1) break;
-                Command.sendMessage("Can't find anvil in hotbar!");
+                Command.sendMessage("Can't find any enchanting tables in hotbar!");
                 this.disable();
+                break;
             }
             case DragonEgg: {
                 if (InventoryUtil.findHotbarBlock(BlockDragonEgg.class) != -1) break;
-                Command.sendMessage("Can't find anvil in hotbar!");
+                Command.sendMessage("Can't find any dragon eggs in hotbar!");
                 this.disable();
+                break;
             }
             case Stone: {
                 if (InventoryUtil.findHotbarBlock(BlockStone.class) != -1) break;
-                Command.sendMessage("Can't find anvil in hotbar!");
+                Command.sendMessage("Can't find any stone in hotbar!");
                 this.disable();
+                break;
             }
             case Dispenser: {
                 if (InventoryUtil.findHotbarBlock(BlockDispenser.class) != -1) break;
-                Command.sendMessage("Can't find anvil in hotbar!");
+                Command.sendMessage("Can't find any dispensers in hotbar!");
                 this.disable();
+                break;
             }
             case Dropper: {
                 if (InventoryUtil.findHotbarBlock(BlockDropper.class) != -1) break;
-                Command.sendMessage("Can't find anvil in hotbar!");
+                Command.sendMessage("Can't find any droppers in hotbar!");
                 this.disable();
+                break;
             }
             case Hopper: {
                 if (InventoryUtil.findHotbarBlock(BlockHopper.class) != -1) break;
-                Command.sendMessage("Can't find anvil in hotbar!");
+                Command.sendMessage("Can't find any hoppers in hotbar!");
                 this.disable();
+                break;
             }
-
+            case Cake: {
+                if (InventoryUtil.findHotbarBlock(BlockCake.class) != -1) break;
+                Command.sendMessage("Can't find any cake in hotbar!");
+                this.disable();
+                break;
+            }
         }
         switch (this.mode.getValue()) {
             case Obsidian: {
@@ -200,6 +213,11 @@ public class Burrow extends Module {
             }
             case Hopper: {
                 BlockUtil.switchToSlot(InventoryUtil.findHotbarBlock(BlockHopper.class));
+                break;
+            }
+            case Cake: {
+                BlockUtil.switchToSlot(InventoryUtil.findHotbarBlock(BlockCake.class));
+                break;
             }
         }
         Burrow.mc.player.connection.sendPacket(new CPacketPlayer.Position(Burrow.mc.player.posX, Burrow.mc.player.posY + 0.41999998688698, Burrow.mc.player.posZ, true));
@@ -217,9 +235,10 @@ public class Burrow extends Module {
     }
 
 
-    private boolean intersectsWithEntity ( BlockPos pos ) {
+    private boolean intersectsWithEntity(BlockPos pos) {
         for (Entity entity : Burrow.mc.world.loadedEntityList) {
-            if (entity.equals(Burrow.mc.player) || entity instanceof EntityItem || ! new AxisAlignedBB (pos).intersects(entity.getEntityBoundingBox())) continue;
+            if (entity.equals(Burrow.mc.player) || entity instanceof EntityItem || !new AxisAlignedBB(pos).intersects(entity.getEntityBoundingBox()))
+                continue;
             return true;
         }
         return false;
@@ -235,6 +254,7 @@ public class Burrow extends Module {
         Stone,
         Dropper,
         Dispenser,
-        Hopper
+        Hopper,
+        Cake
     }
 }

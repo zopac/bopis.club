@@ -6,8 +6,8 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.math.Vec3d;
 
 public class RenderEvent extends EventStage {
-    private Vec3d renderPos;
-    private Tessellator tessellator;
+    private final Vec3d renderPos;
+    private final Tessellator tessellator;
     private final float partialTicks;
 
     public void resetTranslation() {
@@ -36,7 +36,7 @@ public class RenderEvent extends EventStage {
         getBuffer().setTranslation(-paramVec3d.x, -paramVec3d.y, -paramVec3d.z);
     }
 
-    public float getPartialTicks(){
+    public float getPartialTicks() {
         return partialTicks;
     }
 

@@ -5,7 +5,7 @@ import me.bopis.king.features.setting.Setting;
 
 public class TexturedChams extends Module {
 
-    public static Setting <Integer> red;
+    public static Setting<Integer> red;
     public static Setting<Integer> green;
     public static Setting<Integer> blue;
     public static Setting<Integer> alpha;

@@ -53,10 +53,10 @@ public class EventManager extends Feature {
 
     @SubscribeEvent
     public void onUpdate(LivingEvent.LivingUpdateEvent event) {
-        if (!fullNullCheck() && (event.getEntity().getEntityWorld()).isRemote && event.getEntityLiving().equals( Util.mc.player)) {
+        if (!fullNullCheck() && (event.getEntity().getEntityWorld()).isRemote && event.getEntityLiving().equals(Util.mc.player)) {
             Bopis.inventoryManager.update();
             Bopis.moduleManager.onUpdate();
-            if ( HUD.getInstance().renderingMode.getValue() == HUD.RenderingMode.Length) {
+            if (HUD.getInstance().renderingMode.getValue() == HUD.RenderingMode.Length) {
                 Bopis.moduleManager.sortModules(true);
             } else {
                 Bopis.moduleManager.sortModulesABC();
@@ -83,7 +83,7 @@ public class EventManager extends Feature {
         for (EntityPlayer player : Util.mc.world.playerEntities) {
             if (player == null || player.getHealth() > 0.0F)
                 continue;
-            MinecraftForge.EVENT_BUS.post(new DeathEvent (player));
+            MinecraftForge.EVENT_BUS.post(new DeathEvent(player));
             PopCounter.getInstance().onDeath(player);
         }
     }
@@ -104,15 +104,15 @@ public class EventManager extends Feature {
     }
 
     @SubscribeEvent
-    public void onPacketReceive( PacketEvent.Receive event) {
+    public void onPacketReceive(PacketEvent.Receive event) {
         if (event.getStage() != 0)
             return;
         Bopis.serverManager.onPacketReceived();
         if (event.getPacket() instanceof SPacketEntityStatus) {
             SPacketEntityStatus packet = event.getPacket();
-            if (packet.getOpCode() == 35 && packet.getEntity( Util.mc.world) instanceof EntityPlayer) {
-                EntityPlayer player = (EntityPlayer) packet.getEntity( Util.mc.world);
-                MinecraftForge.EVENT_BUS.post(new TotemPopEvent (player));
+            if (packet.getOpCode() == 35 && packet.getEntity(Util.mc.world) instanceof EntityPlayer) {
+                EntityPlayer player = (EntityPlayer) packet.getEntity(Util.mc.world);
+                MinecraftForge.EVENT_BUS.post(new TotemPopEvent(player));
                 PopCounter.getInstance().onTotemPop(player);
             }
         }
@@ -128,7 +128,7 @@ public class EventManager extends Feature {
                         switch (packet.getAction()) {
                             case ADD_PLAYER:
                                 name = data.getProfile().getName();
-                                MinecraftForge.EVENT_BUS.post(new ConnectionEvent (0, id, name));
+                                MinecraftForge.EVENT_BUS.post(new ConnectionEvent(0, id, name));
                                 break;
                             case REMOVE_PLAYER:
                                 entity = Util.mc.world.getPlayerEntityByUUID(id);
@@ -184,7 +184,7 @@ public class EventManager extends Feature {
     @SubscribeEvent(priority = EventPriority.LOW)
     public void onRenderGameOverlayEvent(RenderGameOverlayEvent.Text event) {
         if (event.getType().equals(RenderGameOverlayEvent.ElementType.TEXT)) {
-            ScaledResolution resolution = new ScaledResolution( Util.mc);
+            ScaledResolution resolution = new ScaledResolution(Util.mc);
             Render2DEvent render2DEvent = new Render2DEvent(event.getPartialTicks(), resolution);
             Bopis.moduleManager.onRender2D(render2DEvent);
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
@@ -199,7 +199,7 @@ public class EventManager extends Feature {
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onChatSent(ClientChatEvent event) {
-        if (event.getMessage().startsWith( Command.getCommandPrefix())) {
+        if (event.getMessage().startsWith(Command.getCommandPrefix())) {
             event.setCanceled(true);
             try {
                 Util.mc.ingameGUI.getChatGUI().addToSentMessages(event.getMessage());

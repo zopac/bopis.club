@@ -11,11 +11,12 @@ public class Title {
     int breakTimer = 0;
     String bruh1 = "bopis.club | " + "v" + Bopis.MODVER;
     boolean qwerty = false;
+
     @SubscribeEvent
     public void onTick(TickEvent.ClientTickEvent event) {
         ++ticks;
         if (ticks % 6 == 0) {
-            Display.setTitle((bruh1.substring(0, bruh1.length()-bruh)));
+            Display.setTitle((bruh1.substring(0, bruh1.length() - bruh)));
             if ((bruh == bruh1.length() && breakTimer != 2) || (bruh == 0 && breakTimer != 4)) {
                 breakTimer++;
                 return;

@@ -7,7 +7,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class Chams extends Module {
     private static Chams INSTANCE = new Chams();
-    public Setting <Boolean> rainbow = register(new Setting<Boolean>("Rainbow", Boolean.TRUE));
+    public Setting<Boolean> rainbow = register(new Setting<Boolean>("Rainbow", Boolean.TRUE));
     public Setting<Integer> rainbowHue = register(new Setting<Object>("RBrightness", Integer.valueOf(100), Integer.valueOf(0), Integer.valueOf(600), v -> rainbow.getValue()));
     public Setting<Integer> red = register(new Setting<Integer>("PRed", 168, 0, 255));
     public Setting<Integer> green = register(new Setting<Integer>("PGreen", 0, 0, 255));

@@ -7,14 +7,14 @@ import me.bopis.king.event.events.Render3DEvent;
 import me.bopis.king.features.Feature;
 import me.bopis.king.features.gui.ClickGuiScreen;
 import me.bopis.king.features.modules.Module;
-import me.bopis.king.features.modules.render.Swing;
-import me.bopis.king.util.Util;
 import me.bopis.king.features.modules.client.*;
 import me.bopis.king.features.modules.combat.*;
 import me.bopis.king.features.modules.misc.*;
 import me.bopis.king.features.modules.movement.*;
 import me.bopis.king.features.modules.player.*;
+import me.bopis.king.features.modules.render.Swing;
 import me.bopis.king.features.modules.render.*;
+import me.bopis.king.util.Util;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.EventBus;
 import org.lwjgl.input.Keyboard;
@@ -27,10 +27,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
-	
+
 public class ModuleManager
         extends Feature {
-    public ArrayList< Module > modules = new ArrayList<>();
+    public ArrayList<Module> modules = new ArrayList<>();
     public List<Module> sortedModules = new ArrayList<>();
     public List<String> sortedModulesABC = new ArrayList<>();
     public Animation animationThread;
@@ -62,11 +62,9 @@ public class ModuleManager
         modules.add(new StorageESP());
         modules.add(new NoFog());
         modules.add(new LogoutSpots());
-        modules.add(new NoRender());
         modules.add(new VoidESP());
         modules.add(new PortalESP());
         modules.add(new Nametags());
-        modules.add(new Swing());
         //COMBAT
         modules.add(new AutoTotem());
         modules.add(new Surround());
@@ -86,17 +84,19 @@ public class ModuleManager
         modules.add(new BedBomb());
         modules.add(new AutoLog());
         //PLAYER
-        modules.add(new FakeKick());
-        modules.add(new Freecam());
-        modules.add(new FastPlace());
-        modules.add(new TpsSync());
-        modules.add(new Replenish());
-        modules.add(new FakePlayer());
-        modules.add(new MultiTask());
-        modules.add(new MCP());
-        modules.add(new LiquidInteract());
-        modules.add(new Speedmine());
         modules.add(new Announcer());
+        modules.add(new BlockTweaks());
+        modules.add(new FakeKick());
+        modules.add(new FakePlayer());
+        modules.add(new FastPlace());
+        modules.add(new Freecam());
+        modules.add(new LiquidInteract());
+        modules.add(new MCP());
+        modules.add(new MultiTask());
+        modules.add(new Replenish());
+        modules.add(new Speedmine());
+        modules.add(new Swing());
+        modules.add(new TpsSync());
         modules.add(new XCarry());
         //MISC
         modules.add(new ExtraTab());
@@ -289,7 +289,7 @@ public class ModuleManager
     }
 
     public void onKeyPressed(int eventKey) {
-        if (eventKey == 0 || !Keyboard.getEventKeyState() || ModuleManager.mc.currentScreen instanceof ClickGuiScreen ) {
+        if (eventKey == 0 || !Keyboard.getEventKeyState() || ModuleManager.mc.currentScreen instanceof ClickGuiScreen) {
             return;
         }
         this.modules.forEach(module -> {
@@ -368,7 +368,7 @@ public class ModuleManager
     }
 
     public static boolean isModuleEnablednigger(String name) {
-        return getModules().stream().filter(mm->mm.getName().equalsIgnoreCase(name)).findFirst().orElse(null).isEnabled();
+        return getModules().stream().filter(mm -> mm.getName().equalsIgnoreCase(name)).findFirst().orElse(null).isEnabled();
     }
 
     public static boolean isModuleEnablednigger(Module modulenigger) {

@@ -17,11 +17,11 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class ConfigManager implements Util {
-    public ArrayList< Feature > features = new ArrayList<>();
+    public ArrayList<Feature> features = new ArrayList<>();
 
     public String config = "bopis/config/";
 
-    public static void setValueFromJson( Feature feature, Setting setting, JsonElement element) {
+    public static void setValueFromJson(Feature feature, Setting setting, JsonElement element) {
         String str;
         switch (setting.getType()) {
             case "Boolean":
@@ -41,7 +41,7 @@ public class ConfigManager implements Util {
                 setting.setValue(str.replace("_", " "));
                 return;
             case "Bind":
-                setting.setValue((new Bind.BindConverter ()).doBackward(element));
+                setting.setValue((new Bind.BindConverter()).doBackward(element));
                 return;
             case "Enum":
                 try {
@@ -231,7 +231,7 @@ public class ConfigManager implements Util {
 
     public String getDirectory(Feature feature) {
         String directory = "";
-        if (feature instanceof Module )
+        if (feature instanceof Module)
             directory = directory + ((Module) feature).getCategory().getName() + "/";
         return directory;
     }

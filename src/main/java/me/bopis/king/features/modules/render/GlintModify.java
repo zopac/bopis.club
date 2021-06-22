@@ -7,7 +7,7 @@ import me.bopis.king.features.setting.Setting;
 import java.awt.*;
 
 public class GlintModify extends Module {
-    public Setting <Integer> red = register(new Setting("Red", 255, 0, 255));
+    public Setting<Integer> red = register(new Setting("Red", 255, 0, 255));
     public Setting<Integer> green = register(new Setting("Green", 255, 0, 255));
     public Setting<Integer> blue = register(new Setting("Blue", 255, 0, 255));
     public Setting<Boolean> rainbow = register(new Setting("Rainbow", false));
@@ -17,7 +17,7 @@ public class GlintModify extends Module {
     }
 
     public static Color getColor(long offset, float fade) {
-        if (! Bopis.moduleManager.getModuleT(GlintModify.class).rainbow.getValue()) {
+        if (!Bopis.moduleManager.getModuleT(GlintModify.class).rainbow.getValue()) {
             return new Color(Bopis.moduleManager.getModuleT(GlintModify.class).red.getValue(), Bopis.moduleManager.getModuleT(GlintModify.class).green.getValue(), Bopis.moduleManager.getModuleT(GlintModify.class).blue.getValue());
         }
         float hue = (float) (System.nanoTime() + offset) / 1.0E10F % 1.0F;
@@ -34,13 +34,13 @@ public class GlintModify extends Module {
     }
 
     public void cycleRainbow() {
-            float[] tick_color = {
-                    (System.currentTimeMillis() % (360 * 32)) / (360f * 32)
-            };
-            int color_rgb_o = Color.HSBtoRGB(tick_color[0], 0.8f, 0.8f);
+        float[] tick_color = {
+                (System.currentTimeMillis() % (360 * 32)) / (360f * 32)
+        };
+        int color_rgb_o = Color.HSBtoRGB(tick_color[0], 0.8f, 0.8f);
 
-            red.setValue((color_rgb_o >> 16) & 0xFF);
-            green.setValue((color_rgb_o >> 8) & 0xFF);
-            blue.setValue(color_rgb_o & 0xFF);
+        red.setValue((color_rgb_o >> 16) & 0xFF);
+        green.setValue((color_rgb_o >> 8) & 0xFF);
+        blue.setValue(color_rgb_o & 0xFF);
     }
 }

@@ -1,30 +1,30 @@
 package me.bopis.king.manager;
 
+import me.bopis.king.features.Feature;
+import net.minecraft.entity.player.EntityPlayer;
+
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import me.bopis.king.features.Feature;
-import net.minecraft.entity.player.EntityPlayer;
-
 public class TotemPopManager
         extends Feature {
     private Map<EntityPlayer, Integer> poplist = new ConcurrentHashMap<EntityPlayer, Integer>();
-    private Set<EntityPlayer> toAnnounce = new HashSet<EntityPlayer>();
+    private final Set<EntityPlayer> toAnnounce = new HashSet<EntityPlayer>();
 
     public void onUpdate() {
-            for (EntityPlayer player : this.toAnnounce) {
-                if (player == null) continue;
-                int playerNumber = 0;
-                for (char character : player.getName().toCharArray()) {
-                    playerNumber += character;
-                    playerNumber *= 10;
-                }
-                this.toAnnounce.remove(player);
-                break;
+        for (EntityPlayer player : this.toAnnounce) {
+            if (player == null) continue;
+            int playerNumber = 0;
+            for (char character : player.getName().toCharArray()) {
+                playerNumber += character;
+                playerNumber *= 10;
             }
+            this.toAnnounce.remove(player);
+            break;
         }
+    }
 
     public void onLogout() {
 
@@ -36,19 +36,19 @@ public class TotemPopManager
 
     public void onTotemPop(EntityPlayer player) {
         this.popTotem(player);
-        if (!player.equals((Object)TotemPopManager.mc.player)) {
+        if (!player.equals(TotemPopManager.mc.player)) {
             this.toAnnounce.add(player);
 
         }
     }
 
     public void onDeath(EntityPlayer player) {
-            int playerNumber = 0;
-            for (char character : player.getName().toCharArray()) {
-                playerNumber += character;
-                playerNumber *= 10;
-            }
-            this.toAnnounce.remove(player);
+        int playerNumber = 0;
+        for (char character : player.getName().toCharArray()) {
+            playerNumber += character;
+            playerNumber *= 10;
+        }
+        this.toAnnounce.remove(player);
     }
 
     public void onLogout(EntityPlayer player, boolean clearOnLogout) {

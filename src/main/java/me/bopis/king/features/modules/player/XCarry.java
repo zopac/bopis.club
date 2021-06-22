@@ -12,7 +12,6 @@ import me.bopis.king.util.ReflectionUtil;
 import me.bopis.king.util.Util;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.inventory.Slot;
-
 import net.minecraft.network.play.client.CPacketCloseWindow;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -32,8 +31,8 @@ public class XCarry
         extends Module {
     private static XCarry INSTANCE = new XCarry();
     static final ArrayList playerinv = new ArrayList(100);
-    private final Setting <Boolean> simpleMode = this.register(new Setting<Boolean>("Simple", false));
-    private final Setting< Bind > autoStore = this.register(new Setting<Bind>("AutoDuel", new Bind(-1)));
+    private final Setting<Boolean> simpleMode = this.register(new Setting<Boolean>("Simple", false));
+    private final Setting<Bind> autoStore = this.register(new Setting<Bind>("AutoDuel", new Bind(-1)));
     private final Setting<Integer> obbySlot = this.register(new Setting<Object>("ObbySlot", Integer.valueOf(2), Integer.valueOf(1), Integer.valueOf(9), v -> this.autoStore.getValue().getKey() != -1));
     private final Setting<Integer> slot1 = this.register(new Setting<Object>("Slot1", Integer.valueOf(22), Integer.valueOf(9), Integer.valueOf(44), v -> this.autoStore.getValue().getKey() != -1));
     private final Setting<Integer> slot2 = this.register(new Setting<Object>("Slot2", Integer.valueOf(23), Integer.valueOf(9), Integer.valueOf(44), v -> this.autoStore.getValue().getKey() != -1));
@@ -44,7 +43,7 @@ public class XCarry
     private final Setting<Boolean> withShift = this.register(new Setting<Object>("WithShift", Boolean.valueOf(true), v -> this.shiftClicker.getValue()));
     private final Setting<Bind> keyBind = this.register(new Setting<Object>("ShiftBind", new Bind(-1), v -> this.shiftClicker.getValue()));
     private final AtomicBoolean guiNeedsClose = new AtomicBoolean(false);
-    private final Queue< InventoryUtil.Task > taskList = new ConcurrentLinkedQueue<InventoryUtil.Task>();
+    private final Queue<InventoryUtil.Task> taskList = new ConcurrentLinkedQueue<InventoryUtil.Task>();
     private GuiInventory openedGui = null;
     private boolean guiCloseGuard = false;
     private boolean autoDuelOn = false;
@@ -199,7 +198,7 @@ public class XCarry
     }
 
     @SubscribeEvent
-    public void onSettingChange( ClientEvent event) {
+    public void onSettingChange(ClientEvent event) {
         if (event.getStage() == 2 && event.getSetting() != null && event.getSetting().getFeature() != null && event.getSetting().getFeature().equals(this)) {
             Setting setting = event.getSetting();
             String settingname = event.getSetting().getName();
@@ -253,7 +252,7 @@ public class XCarry
     private class GuiInventoryWrapper
             extends GuiInventory {
         GuiInventoryWrapper() {
-            super( Util.mc.player);
+            super(Util.mc.player);
         }
 
         protected void keyTyped(char typedChar, int keyCode) throws IOException {

@@ -53,7 +53,7 @@ public abstract class Feature
     public boolean isDisabled() {
         return !this.isEnabled();
     }
- 
+
     public Setting register(Setting setting) {
         setting.setFeature(this);
         this.settings.add(setting);

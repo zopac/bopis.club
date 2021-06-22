@@ -12,7 +12,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import java.util.Objects;
 
 public class Criticals extends Module {
-    private final Setting <Integer> packets = register(new Setting<Integer>("Packets", Integer.valueOf(2), Integer.valueOf(1), Integer.valueOf(4), "Amount of packets you want to send."));
+    private final Setting<Integer> packets = register(new Setting<Integer>("Packets", Integer.valueOf(2), Integer.valueOf(1), Integer.valueOf(4), "Amount of packets you want to send."));
     private final Timer timer = new Timer();
     private final boolean resetTimer = false;
 

@@ -17,9 +17,9 @@ public abstract class Module
         extends Feature {
     private final String description;
     private final Category category;
-    public Setting <Boolean> enabled = this.register(new Setting<Boolean>("Enabled", false));
+    public Setting<Boolean> enabled = this.register(new Setting<Boolean>("Enabled", false));
     public Setting<Boolean> drawn = this.register(new Setting<Boolean>("Drawn", true));
-    public Setting< Bind > bind = this.register(new Setting<Bind>("Keybind", new Bind(-1)));
+    public Setting<Bind> bind = this.register(new Setting<Bind>("Keybind", new Bind(-1)));
     public Setting<String> displayName;
     public boolean hasListener;
     public boolean alwaysListening;
@@ -101,8 +101,8 @@ public abstract class Module
         this.enabled.setValue(Boolean.TRUE);
         this.onToggle();
         this.onEnable();
-        if ( HUD.getInstance().notifyToggles.getValue().booleanValue()) {
-            TextComponentString text = new TextComponentString( Bopis.commandManager.getClientMessage() + " " + ChatFormatting.GREEN + this.getDisplayName() + " toggled on.");
+        if (HUD.getInstance().notifyToggles.getValue().booleanValue()) {
+            TextComponentString text = new TextComponentString(Bopis.commandManager.getClientMessage() + " " + ChatFormatting.LIGHT_PURPLE + this.getDisplayName() + ChatFormatting.DARK_AQUA + " has been " + ChatFormatting.GREEN + "enabled");
             Module.mc.ingameGUI.getChatGUI().printChatMessageWithOptionalDeletion(text, 1);
         }
         if (this.isOn() && this.hasListener && !this.alwaysListening) {
@@ -116,7 +116,7 @@ public abstract class Module
         }
         this.enabled.setValue(false);
         if (HUD.getInstance().notifyToggles.getValue().booleanValue()) {
-            TextComponentString text = new TextComponentString(Bopis.commandManager.getClientMessage() + " " + ChatFormatting.RED + this.getDisplayName() + " toggled off.");
+            TextComponentString text = new TextComponentString(Bopis.commandManager.getClientMessage() + " " + ChatFormatting.LIGHT_PURPLE + this.getDisplayName() + ChatFormatting.DARK_AQUA + " has been " + ChatFormatting.RED + "disabled");
             Module.mc.ingameGUI.getChatGUI().printChatMessageWithOptionalDeletion(text, 1);
         }
         this.onToggle();

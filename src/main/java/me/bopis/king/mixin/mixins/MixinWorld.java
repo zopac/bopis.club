@@ -27,7 +27,7 @@ public class MixinWorld {
 
     @Inject(method = {"onEntityAdded"}, at = {@At(value = "HEAD")})
     private void onEntityAdded(Entity entityIn, CallbackInfo ci) {
-        if ( Tracker.getInstance().isOn()) {
+        if (Tracker.getInstance().isOn()) {
             Tracker.getInstance().onSpawnEntity(entityIn);
         }
     }

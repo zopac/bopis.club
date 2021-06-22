@@ -1,9 +1,6 @@
 package me.bopis.king.features.modules.movement;
 
 import me.bopis.king.features.modules.Module;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.math.BlockPos;
 
 public class ReverseStep extends Module {
     private static ReverseStep INSTANCE = new ReverseStep();

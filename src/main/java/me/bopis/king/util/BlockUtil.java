@@ -18,13 +18,12 @@ import net.minecraft.network.play.client.CPacketPlayerTryUseItemOnBlock;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.*;
-import java.util.Collection;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class BlockUtil
@@ -124,7 +123,7 @@ public class BlockUtil
         }
         return false;
     }
-    
+
     public static EnumFacing getFirstFacing(BlockPos pos) {
         Iterator<EnumFacing> iterator = BlockUtil.getPossibleSides(pos).iterator();
         if (iterator.hasNext()) {
@@ -363,7 +362,7 @@ public class BlockUtil
 
     public static List<BlockPos> getBlockSphere(float breakRange, Class clazz) {
         NonNullList positions = NonNullList.create();
-        positions.addAll((Collection)BlockUtil.getSphere(EntityUtil.getPlayerPos((EntityPlayer)BlockUtil.mc.player), breakRange, (int)breakRange, false, true, 0).stream().filter(pos -> clazz.isInstance(BlockUtil.mc.world.getBlockState(pos).getBlock())).collect(Collectors.toList()));
+        positions.addAll(BlockUtil.getSphere(EntityUtil.getPlayerPos(BlockUtil.mc.player), breakRange, (int) breakRange, false, true, 0).stream().filter(pos -> clazz.isInstance(BlockUtil.mc.world.getBlockState(pos).getBlock())).collect(Collectors.toList()));
         return positions;
     }
 

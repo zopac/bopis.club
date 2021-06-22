@@ -1,7 +1,9 @@
 package me.bopis.king.manager;
 
-import me.bopis.king.Bopis;
-import me.bopis.king.hwid.*;
+import me.bopis.king.hwid.DisplayUtil;
+import me.bopis.king.hwid.NoStackTraceThrowable;
+import me.bopis.king.hwid.SystemUtil;
+import me.bopis.king.hwid.URLReader;
 
 import java.util.ArrayList;
 import java.util.List;

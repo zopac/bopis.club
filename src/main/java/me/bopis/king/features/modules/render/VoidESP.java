@@ -4,7 +4,6 @@ import me.bopis.king.event.events.Render3DEvent;
 import me.bopis.king.features.modules.Module;
 import me.bopis.king.features.setting.Setting;
 import me.bopis.king.util.*;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 
@@ -15,7 +14,7 @@ import java.util.stream.Collectors;
 
 public class VoidESP
         extends Module {
-    private final Setting <Float> radius = this.register(new Setting<Float>("Radius", Float.valueOf(8.0f), Float.valueOf(0.0f), Float.valueOf(50.0f)));
+    private final Setting<Float> radius = this.register(new Setting<Float>("Radius", Float.valueOf(8.0f), Float.valueOf(0.0f), Float.valueOf(50.0f)));
     private final Timer timer = new Timer();
     public Setting<Boolean> air = this.register(new Setting<Boolean>("OnlyAir", true));
     public Setting<Boolean> noEnd = this.register(new Setting<Boolean>("NoEnd", true));
@@ -70,7 +69,7 @@ public class VoidESP
             return;
         }
         for (BlockPos pos : this.voidHoles) {
-            if (! RotationUtil.isInFov(pos)) continue;
+            if (!RotationUtil.isInFov(pos)) continue;
             RenderUtil.drawBoxESP(pos, new Color(this.red.getValue(), this.green.getValue(), this.blue.getValue(), this.alpha.getValue()), this.customOutline.getValue(), new Color(this.cRed.getValue(), this.cGreen.getValue(), this.cBlue.getValue(), this.cAlpha.getValue()), this.lineWidth.getValue().floatValue(), this.outline.getValue(), this.box.getValue(), this.boxAlpha.getValue(), true, this.height.getValue(), false, false, false, false, 0);
         }
     }

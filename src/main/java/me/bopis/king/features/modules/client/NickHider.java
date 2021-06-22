@@ -6,7 +6,7 @@ import me.bopis.king.features.modules.Module;
 import me.bopis.king.features.setting.Setting;
 
 public class NickHider extends Module {
-    public final Setting <String> NameString = register(new Setting<Object>("Name", "New Name Here..."));
+    public final Setting<String> NameString = register(new Setting<Object>("Name", "New Name Here..."));
     private static NickHider instance;
 
     public NickHider() {

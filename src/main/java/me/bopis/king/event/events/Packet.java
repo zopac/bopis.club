@@ -4,8 +4,7 @@ import net.minecraftforge.fml.common.eventhandler.Cancelable;
 import net.minecraftforge.fml.common.eventhandler.Event;
 
 @Cancelable
-public class Packet extends Event
-{
+public class Packet extends Event {
     private Object packet;
     private Type type;
 
@@ -30,9 +29,8 @@ public class Packet extends Event
         return this.type;
     }
 
-    public enum Type
-    {
+    public enum Type {
         INCOMING,
-        OUTGOING;
+        OUTGOING
     }
 }

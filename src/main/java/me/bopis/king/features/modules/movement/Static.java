@@ -8,7 +8,7 @@ import net.minecraft.util.math.Vec3d;
 
 public class Static
         extends Module {
-    private final Setting <Mode> mode = this.register(new Setting<Mode>("Mode", Mode.NOVOID));
+    private final Setting<Mode> mode = this.register(new Setting<Mode>("Mode", Mode.NOVOID));
     private final Setting<Boolean> disabler = this.register(new Setting<Object>("Disable", true, v -> this.mode.getValue() == Mode.ROOF));
     private final Setting<Boolean> ySpeed = this.register(new Setting<Object>("YSpeed", false, v -> this.mode.getValue() == Mode.STATIC));
     private final Setting<Float> speed = this.register(new Setting<Object>("Speed", 0.1f, 0.0f, 10.0f, v -> this.ySpeed.getValue() != false && this.mode.getValue() == Mode.STATIC));

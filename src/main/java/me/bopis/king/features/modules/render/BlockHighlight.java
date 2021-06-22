@@ -11,7 +11,7 @@ import net.minecraft.util.math.RayTraceResult;
 import java.awt.*;
 
 public class BlockHighlight extends Module {
-    private final Setting <Float> lineWidth = register(new Setting<Float>("LineWidth", Float.valueOf(1.0f), Float.valueOf(0.1f), Float.valueOf(5.0f)));
+    private final Setting<Float> lineWidth = register(new Setting<Float>("LineWidth", Float.valueOf(1.0f), Float.valueOf(0.1f), Float.valueOf(5.0f)));
     private final Setting<Integer> alpha = register(new Setting<Integer>("Alpha", 255, 0, 255));
     private final Setting<Integer> red = register(new Setting<Integer>("Red", 255, 0, 255));
     private final Setting<Integer> green = register(new Setting<Integer>("Green", 255, 0, 255));

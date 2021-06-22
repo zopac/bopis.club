@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 public class PortalESP extends Module {
     private final ArrayList<BlockPos> blockPosArrayList = new ArrayList();
-    private final Setting <Integer> distance = this.register(new Setting<Integer>("Distance", 60, 10, 100));
+    private final Setting<Integer> distance = this.register(new Setting<Integer>("Distance", 60, 10, 100));
     private final Setting<Boolean> box = this.register(new Setting<Boolean>("Box", false));
     private final Setting<Integer> boxAlpha = this.register(new Setting<Object>("BoxAlpha", Integer.valueOf(125), Integer.valueOf(0), Integer.valueOf(255), v -> this.box.getValue()));
     private final Setting<Boolean> outline = this.register(new Setting<Boolean>("Outline", true));

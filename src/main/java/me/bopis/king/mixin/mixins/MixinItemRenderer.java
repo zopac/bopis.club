@@ -49,7 +49,7 @@ public abstract class MixinItemRenderer {
                 xOffset = offset.offX.getValue().floatValue();
                 yOffset = offset.offY.getValue().floatValue();
             }
-            if ( HandChams.getINSTANCE().isOn() && hand == EnumHand.MAIN_HAND && stack.isEmpty()) {
+            if (HandChams.getINSTANCE().isOn() && hand == EnumHand.MAIN_HAND && stack.isEmpty()) {
                 if (HandChams.getINSTANCE().mode.getValue().equals(HandChams.RenderMode.WIREFRAME)) {
                     this.renderItemInFirstPerson(player, p_187457_2_, p_187457_3_, hand, p_187457_5_ + xOffset, stack, p_187457_7_ + yOffset);
                 }
@@ -68,7 +68,7 @@ public abstract class MixinItemRenderer {
                     GL11.glEnable(2848);
                     GL11.glEnable(3042);
                 }
-                GL11.glColor4f( ClickGui.getInstance().rainbow.getValue() != false ? (float) ColorUtil.rainbow(ClickGui.getInstance().rainbowHue.getValue()).getRed() / 255.0f : (float) HandChams.getINSTANCE().red.getValue().intValue() / 255.0f, ClickGui.getInstance().rainbow.getValue() != false ? (float) ColorUtil.rainbow(ClickGui.getInstance().rainbowHue.getValue()).getGreen() / 255.0f : (float) HandChams.getINSTANCE().green.getValue().intValue() / 255.0f, ClickGui.getInstance().rainbow.getValue() != false ? (float) ColorUtil.rainbow(ClickGui.getInstance().rainbowHue.getValue()).getBlue() / 255.0f : (float) HandChams.getINSTANCE().blue.getValue().intValue() / 255.0f, (float) HandChams.getINSTANCE().alpha.getValue().intValue() / 255.0f);
+                GL11.glColor4f(ClickGui.getInstance().rainbow.getValue() != false ? (float) ColorUtil.rainbow(ClickGui.getInstance().rainbowHue.getValue()).getRed() / 255.0f : (float) HandChams.getINSTANCE().red.getValue().intValue() / 255.0f, ClickGui.getInstance().rainbow.getValue() != false ? (float) ColorUtil.rainbow(ClickGui.getInstance().rainbowHue.getValue()).getGreen() / 255.0f : (float) HandChams.getINSTANCE().green.getValue().intValue() / 255.0f, ClickGui.getInstance().rainbow.getValue() != false ? (float) ColorUtil.rainbow(ClickGui.getInstance().rainbowHue.getValue()).getBlue() / 255.0f : (float) HandChams.getINSTANCE().blue.getValue().intValue() / 255.0f, (float) HandChams.getINSTANCE().alpha.getValue().intValue() / 255.0f);
                 this.renderItemInFirstPerson(player, p_187457_2_, p_187457_3_, hand, p_187457_5_ + xOffset, stack, p_187457_7_ + yOffset);
                 GlStateManager.popAttrib();
                 GlStateManager.popMatrix();

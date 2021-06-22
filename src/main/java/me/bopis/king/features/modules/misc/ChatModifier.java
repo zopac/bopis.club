@@ -9,7 +9,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class ChatModifier extends Module {
     private static ChatModifier INSTANCE = new ChatModifier();
-    public Setting <Boolean> clean = register(new Setting<Boolean>("NoChatBackground", Boolean.valueOf(false), "Cleans your chat"));
+    public Setting<Boolean> clean = register(new Setting<Boolean>("NoChatBackground", Boolean.valueOf(false), "Cleans your chat"));
     public Setting<Boolean> infinite = register(new Setting<Boolean>("InfiniteChat", Boolean.valueOf(false), "Makes your chat infinite."));
     public boolean check;
 
@@ -33,7 +33,7 @@ public class ChatModifier extends Module {
     public void onPacketSend(PacketEvent.Send event) {
         if (event.getPacket() instanceof CPacketChatMessage) {
             String s = ((CPacketChatMessage) event.getPacket()).getMessage();
-            check = !s.startsWith( Bopis.commandManager.getPrefix());
+            check = !s.startsWith(Bopis.commandManager.getPrefix());
         }
     }
 }

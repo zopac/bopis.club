@@ -16,23 +16,24 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(value={EntityPlayer.class})
+@Mixin(value = {EntityPlayer.class})
 public abstract class MixinEntityPlayer extends EntityLivingBase {
     EntityPlayer player;
+
     public MixinEntityPlayer(World worldIn, GameProfile gameProfileIn) {
         super(worldIn);
     }
 
-    @Inject(method={"getCooldownPeriod"}, at={@At(value="HEAD")}, cancellable=true)
+    @Inject(method = {"getCooldownPeriod"}, at = {@At(value = "HEAD")}, cancellable = true)
     private void getCooldownPeriodHook(CallbackInfoReturnable<Float> callbackInfoReturnable) {
-        if ( TpsSync.getInstance().isOn() && TpsSync.getInstance().attack.getValue().booleanValue()) {
-            callbackInfoReturnable.setReturnValue(Float.valueOf((float)(1.0 / ((EntityPlayer)EntityPlayer.class.cast((Object)this)).getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED).getBaseValue() * 20.0 * (double) Bopis.serverManager.getTpsFactor())));
+        if (TpsSync.getInstance().isOn() && TpsSync.getInstance().attack.getValue().booleanValue()) {
+            callbackInfoReturnable.setReturnValue(Float.valueOf((float) (1.0 / (this).getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED).getBaseValue() * 20.0 * (double) Bopis.serverManager.getTpsFactor())));
         }
     }
 
     @Inject(method = "jump", at = @At("HEAD"), cancellable = true)
-    public void onJump(CallbackInfo ci){
-        if (Minecraft.getMinecraft().player.getName() == this.getName()){
+    public void onJump(CallbackInfo ci) {
+        if (Minecraft.getMinecraft().player.getName() == this.getName()) {
             MinecraftForge.EVENT_BUS.post(new PlayerJumpEvent(motionX, motionY));
         }
     }

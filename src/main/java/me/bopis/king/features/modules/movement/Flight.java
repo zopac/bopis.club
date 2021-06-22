@@ -9,7 +9,6 @@ import me.bopis.king.util.MathUtil;
 import me.bopis.king.util.Timer;
 import me.bopis.king.util.Util;
 import net.minecraft.client.gui.GuiDownloadTerrain;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerCapabilities;
 import net.minecraft.init.MobEffects;
 import net.minecraft.network.Packet;
@@ -495,7 +494,7 @@ public class Flight
                 AxisAlignedBB range = Flight.mc.player.getEntityBoundingBox().expand(0.0, -Flight.mc.player.posY, 0.0).contract(0.0, -Flight.mc.player.height, 0.0);
                 List<AxisAlignedBB> collisionBoxes = Flight.mc.player.world.getCollisionBoxes(Flight.mc.player, range);
                 AtomicReference<Double> newHeight = new AtomicReference<Double>(0.0);
-                collisionBoxes.forEach(box -> newHeight.set(Math.max((Double) newHeight.get(), box.maxY)));
+                collisionBoxes.forEach(box -> newHeight.set(Math.max(newHeight.get(), box.maxY)));
                 packet.y = newHeight.get();
                 packet.onGround = true;
             }
@@ -547,7 +546,7 @@ public class Flight
                 AxisAlignedBB range = Flight.mc.player.getEntityBoundingBox().expand(0.0, (double) (256.0f - Flight.mc.player.height) - Flight.mc.player.posY, 0.0).contract(0.0, Flight.mc.player.height, 0.0);
                 List<AxisAlignedBB> collisionBoxes = Flight.mc.player.world.getCollisionBoxes(Flight.mc.player, range);
                 AtomicReference<Double> newY = new AtomicReference<Double>(256.0);
-                collisionBoxes.forEach(box -> newY.set(Math.min((Double) newY.get(), box.minY - (double) Flight.mc.player.height)));
+                collisionBoxes.forEach(box -> newY.set(Math.min(newY.get(), box.minY - (double) Flight.mc.player.height)));
                 packet.y = Math.min(oldY, newY.get());
             }
             if (this.mode.getValue() == Mode.DAMAGE && (this.format.getValue() == Format.PACKET || this.format.getValue() == Format.DELAY) && event.getPacket() instanceof SPacketPlayerPosLook) {

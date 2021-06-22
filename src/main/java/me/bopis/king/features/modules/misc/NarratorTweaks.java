@@ -8,14 +8,13 @@ import me.bopis.king.features.setting.Setting;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.network.play.client.CPacketChatMessage;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.concurrent.ConcurrentHashMap;
 
 public class NarratorTweaks extends Module {
-    public Setting <Boolean> pop = register(new Setting("OwnTotemPop", true));
+    public Setting<Boolean> pop = register(new Setting("OwnTotemPop", true));
     public Setting<Boolean> death = register(new Setting("Death", true));
     public Setting<Boolean> totemPop = register(new Setting("EnemyTotemPop", true));
     public Setting<Boolean> killsay = register(new Setting("Killsay", true));
@@ -32,7 +31,7 @@ public class NarratorTweaks extends Module {
 
     @SubscribeEvent
     public void onTotemPop(TotemPopEvent event) {
-        if(event.getEntity() == mc.player) {
+        if (event.getEntity() == mc.player) {
             narrator.say(totemPopMessage.getValue().replaceAll("<player>", mc.player.getName()));
         }
     }

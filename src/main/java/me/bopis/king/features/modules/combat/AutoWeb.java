@@ -18,7 +18,7 @@ import java.util.List;
 
 public class AutoWeb extends Module {
     public static boolean isPlacing = false;
-    private final Setting <Integer> delay = register(new Setting<Integer>("Delay", 50, 0, 250));
+    private final Setting<Integer> delay = register(new Setting<Integer>("Delay", 50, 0, 250));
     private final Setting<Integer> blocksPerPlace = register(new Setting<Integer>("BlocksPerTick", 8, 1, 30));
     private final Setting<Boolean> packet = register(new Setting<Boolean>("Packet", false));
     private final Setting<Boolean> disable = register(new Setting<Boolean>("AutoDisable", false));

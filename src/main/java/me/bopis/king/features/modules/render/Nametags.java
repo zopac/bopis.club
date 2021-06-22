@@ -25,11 +25,11 @@ import net.minecraft.util.text.TextFormatting;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
-import java.util.*;
+import java.util.Objects;
 
 public class Nametags extends Module {
 
-    private final Setting <Boolean> rect = register(new Setting("Rectangle", true));
+    private final Setting<Boolean> rect = register(new Setting("Rectangle", true));
     private final Setting<Boolean> armor = register(new Setting("Armor", true));
     private final Setting<Boolean> reversed = register(new Setting("ArmorReversed", false, v -> armor.getValue()));
     private final Setting<Boolean> health = register(new Setting("Health", true));
@@ -210,7 +210,7 @@ public class Nametags extends Module {
 
     private int getDisplayColor(EntityPlayer player) {
         int displaycolor = ColorHolder.toHex(255, 255, 255);
-        if ( Bopis.friendManager.isFriend(player) ) {
+        if (Bopis.friendManager.isFriend(player)) {
             return ColorHolder.toHex(FCred.getValue(), FCgreen.getValue(), FCblue.getValue());
         } else if (player.isInvisible() && invisibles.getValue()) {
             displaycolor = ColorHolder.toHex(148, 148, 148);
@@ -272,7 +272,7 @@ public class Nametags extends Module {
         NBTTagList enchants = stack.getEnchantmentTagList();
         if (enchants.tagCount() > 2 && max.getValue()) {
             if (maxText.getValue()) {
-                renderer.drawStringWithShadow("",(float)(x * 2), (float)enchantmentY, ColorHolder.toHex(255, 0, 0));
+                renderer.drawStringWithShadow("", (float) (x * 2), (float) enchantmentY, ColorHolder.toHex(255, 0, 0));
                 enchantmentY -= 8;
             } else {
                 renderer.drawStringWithShadow("max", (float) (x * 2), (float) enchantmentY, ColorHolder.toHex(255, 0, 0));
@@ -295,7 +295,7 @@ public class Nametags extends Module {
             }
         }
 
-        if ( DamageUtil.hasDurability(stack)) {
+        if (DamageUtil.hasDurability(stack)) {
             int percent = DamageUtil.getRoundedDamage(stack);
             String color;
             if (percent >= 60) {
@@ -390,7 +390,8 @@ public class Nametags extends Module {
             try {
                 final int responseTime = Objects.requireNonNull(mc.getConnection()).getPlayerInfo(player.getUniqueID()).getResponseTime();
                 pingStr += responseTime + "ms ";
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) {
+            }
         }
 
         String idString = "";
@@ -422,42 +423,42 @@ public class Nametags extends Module {
     }
 
     public void drawOutlineRect(float x, float y, float w, float h, int color) {
-        float alpha = (float)(color >> 24 & 0xFF) / 255.0f;
-        float red = (float)(color >> 16 & 0xFF) / 255.0f;
-        float green = (float)(color >> 8 & 0xFF) / 255.0f;
-        float blue = (float)(color & 0xFF) / 255.0f;
+        float alpha = (float) (color >> 24 & 0xFF) / 255.0f;
+        float red = (float) (color >> 16 & 0xFF) / 255.0f;
+        float green = (float) (color >> 8 & 0xFF) / 255.0f;
+        float blue = (float) (color & 0xFF) / 255.0f;
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuffer();
         GlStateManager.enableBlend();
         GlStateManager.disableTexture2D();
-        GlStateManager.glLineWidth((float)this.Owidth.getValue().floatValue());
-        GlStateManager.tryBlendFuncSeparate((int)770, (int)771, (int)1, (int)0);
+        GlStateManager.glLineWidth(this.Owidth.getValue().floatValue());
+        GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
         bufferbuilder.begin(2, DefaultVertexFormats.POSITION_COLOR);
-        bufferbuilder.pos((double)x, (double)h, 0.0).color(red, green, blue, alpha).endVertex();
-        bufferbuilder.pos((double)w, (double)h, 0.0).color(red, green, blue, alpha).endVertex();
-        bufferbuilder.pos((double)w, (double)y, 0.0).color(red, green, blue, alpha).endVertex();
-        bufferbuilder.pos((double)x, (double)y, 0.0).color(red, green, blue, alpha).endVertex();
+        bufferbuilder.pos(x, h, 0.0).color(red, green, blue, alpha).endVertex();
+        bufferbuilder.pos(w, h, 0.0).color(red, green, blue, alpha).endVertex();
+        bufferbuilder.pos(w, y, 0.0).color(red, green, blue, alpha).endVertex();
+        bufferbuilder.pos(x, y, 0.0).color(red, green, blue, alpha).endVertex();
         tessellator.draw();
         GlStateManager.enableTexture2D();
         GlStateManager.disableBlend();
     }
 
     public void drawRect(float x, float y, float w, float h, int color) {
-        float alpha = (float)(color >> 24 & 0xFF) / 255.0f;
-        float red = (float)(color >> 16 & 0xFF) / 255.0f;
-        float green = (float)(color >> 8 & 0xFF) / 255.0f;
-        float blue = (float)(color & 0xFF) / 255.0f;
+        float alpha = (float) (color >> 24 & 0xFF) / 255.0f;
+        float red = (float) (color >> 16 & 0xFF) / 255.0f;
+        float green = (float) (color >> 8 & 0xFF) / 255.0f;
+        float blue = (float) (color & 0xFF) / 255.0f;
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuffer();
         GlStateManager.enableBlend();
         GlStateManager.disableTexture2D();
-        GlStateManager.glLineWidth((float)this.Owidth.getValue().floatValue());
-        GlStateManager.tryBlendFuncSeparate((int)770, (int)771, (int)1, (int)0);
+        GlStateManager.glLineWidth(this.Owidth.getValue().floatValue());
+        GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
         bufferbuilder.begin(7, DefaultVertexFormats.POSITION_COLOR);
-        bufferbuilder.pos((double)x, (double)h, 0.0).color(red, green, blue, alpha).endVertex();
-        bufferbuilder.pos((double)w, (double)h, 0.0).color(red, green, blue, alpha).endVertex();
-        bufferbuilder.pos((double)w, (double)y, 0.0).color(red, green, blue, alpha).endVertex();
-        bufferbuilder.pos((double)x, (double)y, 0.0).color(red, green, blue, alpha).endVertex();
+        bufferbuilder.pos(x, h, 0.0).color(red, green, blue, alpha).endVertex();
+        bufferbuilder.pos(w, h, 0.0).color(red, green, blue, alpha).endVertex();
+        bufferbuilder.pos(w, y, 0.0).color(red, green, blue, alpha).endVertex();
+        bufferbuilder.pos(x, y, 0.0).color(red, green, blue, alpha).endVertex();
         tessellator.draw();
         GlStateManager.enableTexture2D();
         GlStateManager.disableBlend();

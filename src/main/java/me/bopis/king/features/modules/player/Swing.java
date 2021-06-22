@@ -3,16 +3,15 @@ package me.bopis.king.features.modules.player;
 import me.bopis.king.event.events.Packet;
 import me.bopis.king.features.modules.Module;
 import me.bopis.king.features.setting.Setting;
-import net.minecraft.item.ItemSword;
 import net.minecraft.network.play.client.CPacketAnimation;
 import net.minecraft.util.EnumHand;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class Swing extends Module {
-    private Setting <Hand> hand = register(new Setting("Hand", Hand.OFFHAND));
+    private final Setting<Hand> hand = register(new Setting("Hand", Hand.OFFHAND));
 
     public Swing() {
-        super("Swing", "Changes the hand you swing with", Module.Category.RENDER, false, false, false);
+        super("Swing", "Changes the hand you swing with", Category.PLAYER, false, false, false);
     }
 
     public void onUpdate() {
@@ -28,13 +27,14 @@ public class Swing extends Module {
 
     @SubscribeEvent
     public void onPacket(final Packet event) {
-        if (nullCheck() || event.getType() == Packet.Type.INCOMING) {
+        if (hand.getValue().equals(Hand.PACKETSWING) && fullNullCheck() || hand.getValue().equals(Hand.PACKETSWING) && event.getType() == Packet.Type.INCOMING) {
             return;
         }
         if (event.getPacket() instanceof CPacketAnimation) {
             event.setCanceled(true);
         }
     }
+
     public enum Hand {
         OFFHAND,
         MAINHAND,

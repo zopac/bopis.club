@@ -6,7 +6,6 @@ import me.bopis.king.features.setting.Setting;
 import net.minecraft.item.ItemAppleGold;
 import net.minecraft.item.ItemFood;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
-import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.text.DecimalFormat;
@@ -74,6 +73,7 @@ public class Announcer extends Module {
             }
         }
     }
+
     @SubscribeEvent
     public void onItemUse(LivingEntityUseItemEvent event) {
         int randomNum = ThreadLocalRandom.current().nextInt(1, 10 + 1);

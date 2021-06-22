@@ -11,7 +11,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.item.ItemSword;
-import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.CPacketEntityAction;
 import net.minecraft.util.EnumHand;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -20,7 +19,7 @@ public class Killaura
         extends Module {
     public static Entity target;
     private final Timer timer = new Timer();
-    public Setting <Float> range = this.register(new Setting<Float>("Range", Float.valueOf(6.0f), Float.valueOf(0.1f), Float.valueOf(7.0f)));
+    public Setting<Float> range = this.register(new Setting<Float>("Range", Float.valueOf(6.0f), Float.valueOf(0.1f), Float.valueOf(7.0f)));
     public Setting<Boolean> autoSwitch = this.register(new Setting<Boolean>("AutoSwitch", false));
     public Setting<Boolean> delay = this.register(new Setting<Boolean>("Delay", true));
     public Setting<Boolean> rotate = this.register(new Setting<Boolean>("Rotate", true));
@@ -72,7 +71,7 @@ public class Killaura
 
     private void doKillaura() {
         int sword;
-        if (this.onlySharp.getValue().booleanValue() && ! EntityUtil.holdingWeapon(Killaura.mc.player)) {
+        if (this.onlySharp.getValue().booleanValue() && !EntityUtil.holdingWeapon(Killaura.mc.player)) {
             target = null;
             return;
         }

@@ -1,24 +1,12 @@
 package me.bopis.king.features.modules.combat;
 
 import com.google.common.util.concurrent.AtomicDouble;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.stream.Collectors;
 import me.bopis.king.Bopis;
 import me.bopis.king.event.events.PacketEvent;
 import me.bopis.king.event.events.UpdateWalkingPlayerEvent;
 import me.bopis.king.features.modules.Module;
 import me.bopis.king.features.setting.Setting;
-import me.bopis.king.util.BlockUtil;
-import me.bopis.king.util.DamageUtil;
-import me.bopis.king.util.EntityUtil;
-import me.bopis.king.util.InventoryUtil;
-import me.bopis.king.util.MathUtil;
-import me.bopis.king.util.RotationUtil;
-import me.bopis.king.util.Timer;
+import me.bopis.king.util.*;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.BlockWorkbench;
 import net.minecraft.block.state.IBlockState;
@@ -31,7 +19,6 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.Packet;
-import net.minecraft.network.play.client.CPacketChatMessage;
 import net.minecraft.network.play.client.CPacketEntityAction;
 import net.minecraft.network.play.client.CPacketHeldItemChange;
 import net.minecraft.network.play.client.CPacketPlayer;
@@ -45,6 +32,13 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
+
 public class BedBomb
         extends Module {
     private final Setting<Boolean> server = this.register(new Setting<Boolean>("Server", false));
@@ -54,7 +48,7 @@ public class BedBomb
     private final Setting<Boolean> extraPacket = this.register(new Setting<Object>("InsanePacket", Boolean.valueOf(false), v -> this.place.getValue()));
     private final Setting<Boolean> packet = this.register(new Setting<Object>("Packet", Boolean.valueOf(false), v -> this.place.getValue()));
     private final Setting<Boolean> explode = this.register(new Setting<Boolean>("Break", true));
-    private final Setting<BreakLogic> breakMode = this.register(new Setting<Object>("BreakMode", (Object)BreakLogic.ALL, v -> this.explode.getValue()));
+    private final Setting<BreakLogic> breakMode = this.register(new Setting<Object>("BreakMode", BreakLogic.ALL, v -> this.explode.getValue()));
     private final Setting<Integer> breakDelay = this.register(new Setting<Object>("Breakdelay", Integer.valueOf(50), Integer.valueOf(0), Integer.valueOf(500), v -> this.explode.getValue()));
     private final Setting<Float> breakRange = this.register(new Setting<Object>("BreakRange", Float.valueOf(6.0f), Float.valueOf(1.0f), Float.valueOf(10.0f), v -> this.explode.getValue()));
     private final Setting<Float> minDamage = this.register(new Setting<Object>("MinDamage", Float.valueOf(5.0f), Float.valueOf(1.0f), Float.valueOf(36.0f), v -> this.explode.getValue()));
@@ -63,7 +57,7 @@ public class BedBomb
     private final Setting<Boolean> removeTiles = this.register(new Setting<Boolean>("RemoveTiles", false));
     private final Setting<Boolean> rotate = this.register(new Setting<Boolean>("Rotate", false));
     private final Setting<Boolean> oneDot15 = this.register(new Setting<Boolean>("1.15", false));
-    private final Setting<Logic> logic = this.register(new Setting<Object>("Logic", (Object)Logic.BREAKPLACE, v -> this.place.getValue() != false && this.explode.getValue() != false));
+    private final Setting<Logic> logic = this.register(new Setting<Object>("Logic", Logic.BREAKPLACE, v -> this.place.getValue() != false && this.explode.getValue() != false));
     private final Setting<Boolean> craft = this.register(new Setting<Boolean>("Craft", false));
     private final Setting<Boolean> placeCraftingTable = this.register(new Setting<Object>("PlaceTable", Boolean.valueOf(false), v -> this.craft.getValue()));
     private final Setting<Boolean> openCraftingTable = this.register(new Setting<Object>("OpenTable", Boolean.valueOf(false), v -> this.craft.getValue()));
@@ -93,7 +87,7 @@ public class BedBomb
     private BlockPos maxPos = null;
     private boolean shouldCraft;
     private int craftStage = 0;
-    private int lastCraftStage = -1;
+    private final int lastCraftStage = -1;
     private int lastHotbarSlot = -1;
     private int bedSlot = -1;
     private BlockPos finalPos;
@@ -105,17 +99,17 @@ public class BedBomb
 
     @Override
     public void onDisable() {
-            if (this.sslot.getValue().booleanValue()) {
-                BedBomb.mc.player.connection.sendPacket((Packet)new CPacketHeldItemChange(BedBomb.mc.player.inventory.currentItem));
+        if (this.sslot.getValue().booleanValue()) {
+            BedBomb.mc.player.connection.sendPacket(new CPacketHeldItemChange(BedBomb.mc.player.inventory.currentItem));
         }
     }
 
     @SubscribeEvent
     public void onPacket(PacketEvent.Send event) {
         if (this.shouldRotate.get() && event.getPacket() instanceof CPacketPlayer) {
-            CPacketPlayer packet = (CPacketPlayer)event.getPacket();
-            packet.yaw = (float)this.yaw.get();
-            packet.pitch = (float)this.pitch.get();
+            CPacketPlayer packet = event.getPacket();
+            packet.yaw = (float) this.yaw.get();
+            packet.pitch = (float) this.pitch.get();
             this.shouldRotate.set(false);
         }
     }
@@ -137,36 +131,36 @@ public class BedBomb
                     return;
                 }
                 if (this.craftStage > 1 && !this.one) {
-                    BedBomb.mc.playerController.windowClick(((GuiContainer)BedBomb.mc.currentScreen).inventorySlots.windowId, woolSlot, 0, ClickType.PICKUP, (EntityPlayer)BedBomb.mc.player);
-                    BedBomb.mc.playerController.windowClick(((GuiContainer)BedBomb.mc.currentScreen).inventorySlots.windowId, 1, 1, ClickType.PICKUP, (EntityPlayer)BedBomb.mc.player);
-                    BedBomb.mc.playerController.windowClick(((GuiContainer)BedBomb.mc.currentScreen).inventorySlots.windowId, woolSlot, 0, ClickType.PICKUP, (EntityPlayer)BedBomb.mc.player);
+                    BedBomb.mc.playerController.windowClick(((GuiContainer) BedBomb.mc.currentScreen).inventorySlots.windowId, woolSlot, 0, ClickType.PICKUP, BedBomb.mc.player);
+                    BedBomb.mc.playerController.windowClick(((GuiContainer) BedBomb.mc.currentScreen).inventorySlots.windowId, 1, 1, ClickType.PICKUP, BedBomb.mc.player);
+                    BedBomb.mc.playerController.windowClick(((GuiContainer) BedBomb.mc.currentScreen).inventorySlots.windowId, woolSlot, 0, ClickType.PICKUP, BedBomb.mc.player);
                     this.one = true;
                 } else if (this.craftStage > 1 + this.craftDelay.getValue() && !this.two) {
-                    BedBomb.mc.playerController.windowClick(((GuiContainer)BedBomb.mc.currentScreen).inventorySlots.windowId, woolSlot, 0, ClickType.PICKUP, (EntityPlayer)BedBomb.mc.player);
-                    BedBomb.mc.playerController.windowClick(((GuiContainer)BedBomb.mc.currentScreen).inventorySlots.windowId, 2, 1, ClickType.PICKUP, (EntityPlayer)BedBomb.mc.player);
-                    BedBomb.mc.playerController.windowClick(((GuiContainer)BedBomb.mc.currentScreen).inventorySlots.windowId, woolSlot, 0, ClickType.PICKUP, (EntityPlayer)BedBomb.mc.player);
+                    BedBomb.mc.playerController.windowClick(((GuiContainer) BedBomb.mc.currentScreen).inventorySlots.windowId, woolSlot, 0, ClickType.PICKUP, BedBomb.mc.player);
+                    BedBomb.mc.playerController.windowClick(((GuiContainer) BedBomb.mc.currentScreen).inventorySlots.windowId, 2, 1, ClickType.PICKUP, BedBomb.mc.player);
+                    BedBomb.mc.playerController.windowClick(((GuiContainer) BedBomb.mc.currentScreen).inventorySlots.windowId, woolSlot, 0, ClickType.PICKUP, BedBomb.mc.player);
                     this.two = true;
                 } else if (this.craftStage > 1 + this.craftDelay.getValue() * 2 && !this.three) {
-                    BedBomb.mc.playerController.windowClick(((GuiContainer)BedBomb.mc.currentScreen).inventorySlots.windowId, woolSlot, 0, ClickType.PICKUP, (EntityPlayer)BedBomb.mc.player);
-                    BedBomb.mc.playerController.windowClick(((GuiContainer)BedBomb.mc.currentScreen).inventorySlots.windowId, 3, 1, ClickType.PICKUP, (EntityPlayer)BedBomb.mc.player);
-                    BedBomb.mc.playerController.windowClick(((GuiContainer)BedBomb.mc.currentScreen).inventorySlots.windowId, woolSlot, 0, ClickType.PICKUP, (EntityPlayer)BedBomb.mc.player);
+                    BedBomb.mc.playerController.windowClick(((GuiContainer) BedBomb.mc.currentScreen).inventorySlots.windowId, woolSlot, 0, ClickType.PICKUP, BedBomb.mc.player);
+                    BedBomb.mc.playerController.windowClick(((GuiContainer) BedBomb.mc.currentScreen).inventorySlots.windowId, 3, 1, ClickType.PICKUP, BedBomb.mc.player);
+                    BedBomb.mc.playerController.windowClick(((GuiContainer) BedBomb.mc.currentScreen).inventorySlots.windowId, woolSlot, 0, ClickType.PICKUP, BedBomb.mc.player);
                     this.three = true;
                 } else if (this.craftStage > 1 + this.craftDelay.getValue() * 3 && !this.four) {
-                    BedBomb.mc.playerController.windowClick(((GuiContainer)BedBomb.mc.currentScreen).inventorySlots.windowId, woodSlot, 0, ClickType.PICKUP, (EntityPlayer)BedBomb.mc.player);
-                    BedBomb.mc.playerController.windowClick(((GuiContainer)BedBomb.mc.currentScreen).inventorySlots.windowId, 4, 1, ClickType.PICKUP, (EntityPlayer)BedBomb.mc.player);
-                    BedBomb.mc.playerController.windowClick(((GuiContainer)BedBomb.mc.currentScreen).inventorySlots.windowId, woodSlot, 0, ClickType.PICKUP, (EntityPlayer)BedBomb.mc.player);
+                    BedBomb.mc.playerController.windowClick(((GuiContainer) BedBomb.mc.currentScreen).inventorySlots.windowId, woodSlot, 0, ClickType.PICKUP, BedBomb.mc.player);
+                    BedBomb.mc.playerController.windowClick(((GuiContainer) BedBomb.mc.currentScreen).inventorySlots.windowId, 4, 1, ClickType.PICKUP, BedBomb.mc.player);
+                    BedBomb.mc.playerController.windowClick(((GuiContainer) BedBomb.mc.currentScreen).inventorySlots.windowId, woodSlot, 0, ClickType.PICKUP, BedBomb.mc.player);
                     this.four = true;
                 } else if (this.craftStage > 1 + this.craftDelay.getValue() * 4 && !this.five) {
-                    BedBomb.mc.playerController.windowClick(((GuiContainer)BedBomb.mc.currentScreen).inventorySlots.windowId, woodSlot, 0, ClickType.PICKUP, (EntityPlayer)BedBomb.mc.player);
-                    BedBomb.mc.playerController.windowClick(((GuiContainer)BedBomb.mc.currentScreen).inventorySlots.windowId, 5, 1, ClickType.PICKUP, (EntityPlayer)BedBomb.mc.player);
-                    BedBomb.mc.playerController.windowClick(((GuiContainer)BedBomb.mc.currentScreen).inventorySlots.windowId, woodSlot, 0, ClickType.PICKUP, (EntityPlayer)BedBomb.mc.player);
+                    BedBomb.mc.playerController.windowClick(((GuiContainer) BedBomb.mc.currentScreen).inventorySlots.windowId, woodSlot, 0, ClickType.PICKUP, BedBomb.mc.player);
+                    BedBomb.mc.playerController.windowClick(((GuiContainer) BedBomb.mc.currentScreen).inventorySlots.windowId, 5, 1, ClickType.PICKUP, BedBomb.mc.player);
+                    BedBomb.mc.playerController.windowClick(((GuiContainer) BedBomb.mc.currentScreen).inventorySlots.windowId, woodSlot, 0, ClickType.PICKUP, BedBomb.mc.player);
                     this.five = true;
                 } else if (this.craftStage > 1 + this.craftDelay.getValue() * 5 && !this.six) {
-                    BedBomb.mc.playerController.windowClick(((GuiContainer)BedBomb.mc.currentScreen).inventorySlots.windowId, woodSlot, 0, ClickType.PICKUP, (EntityPlayer)BedBomb.mc.player);
-                    BedBomb.mc.playerController.windowClick(((GuiContainer)BedBomb.mc.currentScreen).inventorySlots.windowId, 6, 1, ClickType.PICKUP, (EntityPlayer)BedBomb.mc.player);
-                    BedBomb.mc.playerController.windowClick(((GuiContainer)BedBomb.mc.currentScreen).inventorySlots.windowId, woodSlot, 0, ClickType.PICKUP, (EntityPlayer)BedBomb.mc.player);
+                    BedBomb.mc.playerController.windowClick(((GuiContainer) BedBomb.mc.currentScreen).inventorySlots.windowId, woodSlot, 0, ClickType.PICKUP, BedBomb.mc.player);
+                    BedBomb.mc.playerController.windowClick(((GuiContainer) BedBomb.mc.currentScreen).inventorySlots.windowId, 6, 1, ClickType.PICKUP, BedBomb.mc.player);
+                    BedBomb.mc.playerController.windowClick(((GuiContainer) BedBomb.mc.currentScreen).inventorySlots.windowId, woodSlot, 0, ClickType.PICKUP, BedBomb.mc.player);
                     this.recheckBedSlots(woolSlot, woodSlot);
-                    BedBomb.mc.playerController.windowClick(((GuiContainer)BedBomb.mc.currentScreen).inventorySlots.windowId, 0, 0, ClickType.QUICK_MOVE, (EntityPlayer)BedBomb.mc.player);
+                    BedBomb.mc.playerController.windowClick(((GuiContainer) BedBomb.mc.currentScreen).inventorySlots.windowId, 0, 0, ClickType.QUICK_MOVE, BedBomb.mc.player);
                     this.six = true;
                     this.one = false;
                     this.two = false;
@@ -180,11 +174,11 @@ public class BedBomb
                 ++this.craftStage;
             }
         } else if (event.getStage() == 1 && this.finalPos != null) {
-            Vec3d hitVec = new Vec3d((Vec3i)this.finalPos.down()).add(0.5, 0.5, 0.5).add(new Vec3d(this.finalFacing.getOpposite().getDirectionVec()).scale(0.5));
-            BedBomb.mc.player.connection.sendPacket((Packet)new CPacketEntityAction((Entity)BedBomb.mc.player, CPacketEntityAction.Action.START_SNEAKING));
+            Vec3d hitVec = new Vec3d(this.finalPos.down()).add(0.5, 0.5, 0.5).add(new Vec3d(this.finalFacing.getOpposite().getDirectionVec()).scale(0.5));
+            BedBomb.mc.player.connection.sendPacket(new CPacketEntityAction(BedBomb.mc.player, CPacketEntityAction.Action.START_SNEAKING));
             InventoryUtil.switchToHotbarSlot(this.bedSlot, false);
             BlockUtil.rightClickBlock(this.finalPos.down(), hitVec, this.bedSlot == -2 ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND, EnumFacing.UP, this.packet.getValue());
-            BedBomb.mc.player.connection.sendPacket((Packet)new CPacketEntityAction((Entity)BedBomb.mc.player, CPacketEntityAction.Action.STOP_SNEAKING));
+            BedBomb.mc.player.connection.sendPacket(new CPacketEntityAction(BedBomb.mc.player, CPacketEntityAction.Action.STOP_SNEAKING));
             this.placeTimer.reset();
             this.finalPos = null;
         }
@@ -194,15 +188,15 @@ public class BedBomb
         int i;
         for (i = 1; i <= 3; ++i) {
             if (BedBomb.mc.player.openContainer.getInventory().get(i) != ItemStack.EMPTY) continue;
-            BedBomb.mc.playerController.windowClick(1, woolSlot, 0, ClickType.PICKUP, (EntityPlayer)BedBomb.mc.player);
-            BedBomb.mc.playerController.windowClick(1, i, 1, ClickType.PICKUP, (EntityPlayer)BedBomb.mc.player);
-            BedBomb.mc.playerController.windowClick(1, woolSlot, 0, ClickType.PICKUP, (EntityPlayer)BedBomb.mc.player);
+            BedBomb.mc.playerController.windowClick(1, woolSlot, 0, ClickType.PICKUP, BedBomb.mc.player);
+            BedBomb.mc.playerController.windowClick(1, i, 1, ClickType.PICKUP, BedBomb.mc.player);
+            BedBomb.mc.playerController.windowClick(1, woolSlot, 0, ClickType.PICKUP, BedBomb.mc.player);
         }
         for (i = 4; i <= 6; ++i) {
             if (BedBomb.mc.player.openContainer.getInventory().get(i) != ItemStack.EMPTY) continue;
-            BedBomb.mc.playerController.windowClick(1, woodSlot, 0, ClickType.PICKUP, (EntityPlayer)BedBomb.mc.player);
-            BedBomb.mc.playerController.windowClick(1, i, 1, ClickType.PICKUP, (EntityPlayer)BedBomb.mc.player);
-            BedBomb.mc.playerController.windowClick(1, woodSlot, 0, ClickType.PICKUP, (EntityPlayer)BedBomb.mc.player);
+            BedBomb.mc.playerController.windowClick(1, woodSlot, 0, ClickType.PICKUP, BedBomb.mc.player);
+            BedBomb.mc.playerController.windowClick(1, i, 1, ClickType.PICKUP, BedBomb.mc.player);
+            BedBomb.mc.playerController.windowClick(1, woodSlot, 0, ClickType.PICKUP, BedBomb.mc.player);
         }
     }
 
@@ -237,29 +231,30 @@ public class BedBomb
             if (this.breakMode.getValue() == BreakLogic.CALC) {
                 if (this.maxPos != null) {
                     RayTraceResult result;
-                    Vec3d hitVec = new Vec3d((Vec3i)this.maxPos).add(0.5, 0.5, 0.5);
+                    Vec3d hitVec = new Vec3d(this.maxPos).add(0.5, 0.5, 0.5);
                     float[] rotations = RotationUtil.getLegitRotations(hitVec);
-                    this.yaw.set((double)rotations[0]);
+                    this.yaw.set(rotations[0]);
                     if (this.rotate.getValue().booleanValue()) {
                         this.shouldRotate.set(true);
-                        this.pitch.set((double)rotations[1]);
+                        this.pitch.set(rotations[1]);
                     }
-                    EnumFacing facing = (result = BedBomb.mc.world.rayTraceBlocks(new Vec3d(BedBomb.mc.player.posX, BedBomb.mc.player.posY + (double)BedBomb.mc.player.getEyeHeight(), BedBomb.mc.player.posZ), new Vec3d((double)this.maxPos.getX() + 0.5, (double)this.maxPos.getY() - 0.5, (double)this.maxPos.getZ() + 0.5))) == null || result.sideHit == null ? EnumFacing.UP : result.sideHit;
+                    EnumFacing facing = (result = BedBomb.mc.world.rayTraceBlocks(new Vec3d(BedBomb.mc.player.posX, BedBomb.mc.player.posY + (double) BedBomb.mc.player.getEyeHeight(), BedBomb.mc.player.posZ), new Vec3d((double) this.maxPos.getX() + 0.5, (double) this.maxPos.getY() - 0.5, (double) this.maxPos.getZ() + 0.5))) == null || result.sideHit == null ? EnumFacing.UP : result.sideHit;
                     BlockUtil.rightClickBlock(this.maxPos, hitVec, EnumHand.MAIN_HAND, facing, true);
                     this.breakTimer.reset();
                 }
             } else {
                 for (TileEntity entityBed : BedBomb.mc.world.loadedTileEntityList) {
                     RayTraceResult result;
-                    if (!(entityBed instanceof TileEntityBed) || BedBomb.mc.player.getDistanceSq(entityBed.getPos()) > MathUtil.square(this.breakRange.getValue().floatValue())) continue;
-                    Vec3d hitVec = new Vec3d((Vec3i)entityBed.getPos()).add(0.5, 0.5, 0.5);
+                    if (!(entityBed instanceof TileEntityBed) || BedBomb.mc.player.getDistanceSq(entityBed.getPos()) > MathUtil.square(this.breakRange.getValue().floatValue()))
+                        continue;
+                    Vec3d hitVec = new Vec3d(entityBed.getPos()).add(0.5, 0.5, 0.5);
                     float[] rotations = RotationUtil.getLegitRotations(hitVec);
-                    this.yaw.set((double)rotations[0]);
+                    this.yaw.set(rotations[0]);
                     if (this.rotate.getValue().booleanValue()) {
                         this.shouldRotate.set(true);
-                        this.pitch.set((double)rotations[1]);
+                        this.pitch.set(rotations[1]);
                     }
-                    EnumFacing facing = (result = BedBomb.mc.world.rayTraceBlocks(new Vec3d(BedBomb.mc.player.posX, BedBomb.mc.player.posY + (double)BedBomb.mc.player.getEyeHeight(), BedBomb.mc.player.posZ), new Vec3d((double)entityBed.getPos().getX() + 0.5, (double)entityBed.getPos().getY() - 0.5, (double)entityBed.getPos().getZ() + 0.5))) == null || result.sideHit == null ? EnumFacing.UP : result.sideHit;
+                    EnumFacing facing = (result = BedBomb.mc.world.rayTraceBlocks(new Vec3d(BedBomb.mc.player.posX, BedBomb.mc.player.posY + (double) BedBomb.mc.player.getEyeHeight(), BedBomb.mc.player.posZ), new Vec3d((double) entityBed.getPos().getX() + 0.5, (double) entityBed.getPos().getY() - 0.5, (double) entityBed.getPos().getZ() + 0.5))) == null || result.sideHit == null ? EnumFacing.UP : result.sideHit;
                     BlockUtil.rightClickBlock(entityBed.getPos(), hitVec, EnumHand.MAIN_HAND, facing, true);
                     this.breakTimer.reset();
                 }
@@ -274,7 +269,7 @@ public class BedBomb
             ArrayList<BedData> removedBlocks = new ArrayList<BedData>();
             for (TileEntity tile : BedBomb.mc.world.loadedTileEntityList) {
                 if (!(tile instanceof TileEntityBed)) continue;
-                TileEntityBed bed = (TileEntityBed)tile;
+                TileEntityBed bed = (TileEntityBed) tile;
                 BedData data = new BedData(tile.getPos(), BedBomb.mc.world.getBlockState(tile.getPos()), bed, bed.isHeadPiece());
                 removedBlocks.add(data);
             }
@@ -284,10 +279,12 @@ public class BedBomb
             for (BedData data : removedBlocks) {
                 float selfDamage;
                 BlockPos pos;
-                if (!data.isHeadPiece() || !(BedBomb.mc.player.getDistanceSq(pos = data.getPos()) <= MathUtil.square(this.breakRange.getValue().floatValue())) || !((double)(selfDamage = DamageUtil.calculateDamage(pos, (Entity)BedBomb.mc.player)) + 1.0 < (double)EntityUtil.getHealth((Entity)BedBomb.mc.player)) && DamageUtil.canTakeDamage(this.suicide.getValue())) continue;
+                if (!data.isHeadPiece() || !(BedBomb.mc.player.getDistanceSq(pos = data.getPos()) <= MathUtil.square(this.breakRange.getValue().floatValue())) || !((double) (selfDamage = DamageUtil.calculateDamage(pos, BedBomb.mc.player)) + 1.0 < (double) EntityUtil.getHealth(BedBomb.mc.player)) && DamageUtil.canTakeDamage(this.suicide.getValue()))
+                    continue;
                 for (EntityPlayer player : BedBomb.mc.world.playerEntities) {
                     float damage;
-                    if (!(player.getDistanceSq(pos) < MathUtil.square(this.range.getValue().floatValue())) || !EntityUtil.isValid((Entity)player, this.range.getValue().floatValue() + this.breakRange.getValue().floatValue()) || !((damage = DamageUtil.calculateDamage(pos, (Entity)player)) > selfDamage || damage > this.minDamage.getValue().floatValue() && !DamageUtil.canTakeDamage(this.suicide.getValue())) && !(damage > EntityUtil.getHealth((Entity)player)) || !(damage > maxDamage)) continue;
+                    if (!(player.getDistanceSq(pos) < MathUtil.square(this.range.getValue().floatValue())) || !EntityUtil.isValid(player, this.range.getValue().floatValue() + this.breakRange.getValue().floatValue()) || !((damage = DamageUtil.calculateDamage(pos, player)) > selfDamage || damage > this.minDamage.getValue().floatValue() && !DamageUtil.canTakeDamage(this.suicide.getValue())) && !(damage > EntityUtil.getHealth(player)) || !(damage > maxDamage))
+                        continue;
                     maxDamage = damage;
                     this.maxPos = pos;
                 }
@@ -300,10 +297,12 @@ public class BedBomb
                 float selfDamage;
                 BlockPos pos;
                 TileEntityBed bed;
-                if (!(tile instanceof TileEntityBed) || !(bed = (TileEntityBed)tile).isHeadPiece() || !(BedBomb.mc.player.getDistanceSq(pos = bed.getPos()) <= MathUtil.square(this.breakRange.getValue().floatValue())) || !((double)(selfDamage = DamageUtil.calculateDamage(pos, (Entity)BedBomb.mc.player)) + 1.0 < (double)EntityUtil.getHealth((Entity)BedBomb.mc.player)) && DamageUtil.canTakeDamage(this.suicide.getValue())) continue;
+                if (!(tile instanceof TileEntityBed) || !(bed = (TileEntityBed) tile).isHeadPiece() || !(BedBomb.mc.player.getDistanceSq(pos = bed.getPos()) <= MathUtil.square(this.breakRange.getValue().floatValue())) || !((double) (selfDamage = DamageUtil.calculateDamage(pos, BedBomb.mc.player)) + 1.0 < (double) EntityUtil.getHealth(BedBomb.mc.player)) && DamageUtil.canTakeDamage(this.suicide.getValue()))
+                    continue;
                 for (EntityPlayer player : BedBomb.mc.world.playerEntities) {
                     float damage;
-                    if (!(player.getDistanceSq(pos) < MathUtil.square(this.range.getValue().floatValue())) || !EntityUtil.isValid((Entity)player, this.range.getValue().floatValue() + this.breakRange.getValue().floatValue()) || !((damage = DamageUtil.calculateDamage(pos, (Entity)player)) > selfDamage || damage > this.minDamage.getValue().floatValue() && !DamageUtil.canTakeDamage(this.suicide.getValue())) && !(damage > EntityUtil.getHealth((Entity)player)) || !(damage > maxDamage)) continue;
+                    if (!(player.getDistanceSq(pos) < MathUtil.square(this.range.getValue().floatValue())) || !EntityUtil.isValid(player, this.range.getValue().floatValue() + this.breakRange.getValue().floatValue()) || !((damage = DamageUtil.calculateDamage(pos, player)) > selfDamage || damage > this.minDamage.getValue().floatValue() && !DamageUtil.canTakeDamage(this.suicide.getValue())) && !(damage > EntityUtil.getHealth(player)) || !(damage > maxDamage))
+                        continue;
                     maxDamage = damage;
                     this.maxPos = pos;
                 }
@@ -340,8 +339,8 @@ public class BedBomb
         if (BedBomb.mc.world.getBlockState(pos).getBlock() == Blocks.BED) {
             return;
         }
-        float damage = DamageUtil.calculateDamage(pos, (Entity)BedBomb.mc.player);
-        if ((double)damage > (double)EntityUtil.getHealth((Entity)BedBomb.mc.player) + 0.5) {
+        float damage = DamageUtil.calculateDamage(pos, BedBomb.mc.player);
+        if ((double) damage > (double) EntityUtil.getHealth(BedBomb.mc.player) + 0.5) {
             if (firstCheck && this.oneDot15.getValue().booleanValue()) {
                 this.placeBed(pos.up(), false);
             }
@@ -357,7 +356,8 @@ public class BedBomb
         HashMap<BlockPos, EnumFacing> facings = new HashMap<BlockPos, EnumFacing>();
         for (EnumFacing facing : EnumFacing.values()) {
             BlockPos position;
-            if (facing == EnumFacing.DOWN || facing == EnumFacing.UP || !(BedBomb.mc.player.getDistanceSq(position = pos.offset(facing)) <= MathUtil.square(this.placeRange.getValue().floatValue())) || !BedBomb.mc.world.getBlockState(position).getMaterial().isReplaceable() || BedBomb.mc.world.getBlockState(position.down()).getMaterial().isReplaceable()) continue;
+            if (facing == EnumFacing.DOWN || facing == EnumFacing.UP || !(BedBomb.mc.player.getDistanceSq(position = pos.offset(facing)) <= MathUtil.square(this.placeRange.getValue().floatValue())) || !BedBomb.mc.world.getBlockState(position).getMaterial().isReplaceable() || BedBomb.mc.world.getBlockState(position.down()).getMaterial().isReplaceable())
+                continue;
             positions.add(position);
             facings.put(position, facing.getOpposite());
         }
@@ -368,15 +368,15 @@ public class BedBomb
             return;
         }
         positions.sort(Comparator.comparingDouble(pos2 -> BedBomb.mc.player.getDistanceSq(pos2)));
-        this.finalPos = (BlockPos)positions.get(0);
-        this.finalFacing = (EnumFacing)facings.get(this.finalPos);
+        this.finalPos = positions.get(0);
+        this.finalFacing = facings.get(this.finalPos);
         float[] rotation = RotationUtil.simpleFacing(this.finalFacing);
         if (!this.sendRotationPacket && this.extraPacket.getValue().booleanValue()) {
             RotationUtil.faceYawAndPitch(rotation[0], rotation[1]);
             this.sendRotationPacket = true;
         }
-        this.yaw.set((double)rotation[0]);
-        this.pitch.set((double)rotation[1]);
+        this.yaw.set(rotation[0]);
+        this.pitch.set(rotation[1]);
         this.shouldRotate.set(true);
         Bopis.rotationManager.setPlayerRotations(rotation[0], rotation[1]);
     }
@@ -401,8 +401,8 @@ public class BedBomb
             }
             return;
         }
-        if (this.placeCraftingTable.getValue().booleanValue() && BlockUtil.getBlockSphere(this.tableRange.getValue().floatValue() - 1.0f, BlockWorkbench.class).size() == 0 && !(targets = BlockUtil.getSphere(EntityUtil.getPlayerPos((EntityPlayer)BedBomb.mc.player), this.tableRange.getValue().floatValue(), this.tableRange.getValue().intValue(), false, true, 0).stream().filter(pos -> BlockUtil.isPositionPlaceable(pos, false) == 3).sorted(Comparator.comparingInt(pos -> -this.safety((BlockPos)pos))).collect(Collectors.toList())).isEmpty()) {
-            target = (BlockPos)targets.get(0);
+        if (this.placeCraftingTable.getValue().booleanValue() && BlockUtil.getBlockSphere(this.tableRange.getValue().floatValue() - 1.0f, BlockWorkbench.class).size() == 0 && !(targets = BlockUtil.getSphere(EntityUtil.getPlayerPos(BedBomb.mc.player), this.tableRange.getValue().floatValue(), this.tableRange.getValue().intValue(), false, true, 0).stream().filter(pos -> BlockUtil.isPositionPlaceable(pos, false) == 3).sorted(Comparator.comparingInt(pos -> -this.safety(pos))).collect(Collectors.toList())).isEmpty()) {
+            target = (BlockPos) targets.get(0);
             int tableSlot = InventoryUtil.findHotbarBlock(BlockWorkbench.class);
             if (tableSlot != -1) {
                 BedBomb.mc.player.inventory.currentItem = tableSlot;
@@ -423,22 +423,22 @@ public class BedBomb
             if (!tables.isEmpty() && !(BedBomb.mc.currentScreen instanceof GuiCrafting)) {
                 RayTraceResult result;
                 target = tables.get(0);
-                BedBomb.mc.player.connection.sendPacket((Packet)new CPacketEntityAction((Entity)BedBomb.mc.player, CPacketEntityAction.Action.STOP_SNEAKING));
+                BedBomb.mc.player.connection.sendPacket(new CPacketEntityAction(BedBomb.mc.player, CPacketEntityAction.Action.STOP_SNEAKING));
                 if (BedBomb.mc.player.getDistanceSq(target) > MathUtil.square(this.breakRange.getValue().floatValue())) {
                     return;
                 }
-                Vec3d hitVec = new Vec3d((Vec3i)target);
+                Vec3d hitVec = new Vec3d(target);
                 float[] rotations = RotationUtil.getLegitRotations(hitVec);
-                this.yaw.set((double)rotations[0]);
+                this.yaw.set(rotations[0]);
                 if (this.rotate.getValue().booleanValue()) {
                     this.shouldRotate.set(true);
-                    this.pitch.set((double)rotations[1]);
+                    this.pitch.set(rotations[1]);
                 }
-                EnumFacing facing = (result = BedBomb.mc.world.rayTraceBlocks(new Vec3d(BedBomb.mc.player.posX, BedBomb.mc.player.posY + (double)BedBomb.mc.player.getEyeHeight(), BedBomb.mc.player.posZ), new Vec3d((double)target.getX() + 0.5, (double)target.getY() - 0.5, (double)target.getZ() + 0.5))) == null || result.sideHit == null ? EnumFacing.UP : result.sideHit;
+                EnumFacing facing = (result = BedBomb.mc.world.rayTraceBlocks(new Vec3d(BedBomb.mc.player.posX, BedBomb.mc.player.posY + (double) BedBomb.mc.player.getEyeHeight(), BedBomb.mc.player.posZ), new Vec3d((double) target.getX() + 0.5, (double) target.getY() - 0.5, (double) target.getZ() + 0.5))) == null || result.sideHit == null ? EnumFacing.UP : result.sideHit;
                 BlockUtil.rightClickBlock(target, hitVec, EnumHand.MAIN_HAND, facing, true);
                 this.breakTimer.reset();
                 if (BedBomb.mc.player.isSneaking()) {
-                    BedBomb.mc.player.connection.sendPacket((Packet)new CPacketEntityAction((Entity)BedBomb.mc.player, CPacketEntityAction.Action.START_SNEAKING));
+                    BedBomb.mc.player.connection.sendPacket(new CPacketEntityAction(BedBomb.mc.player, CPacketEntityAction.Action.START_SNEAKING));
                 }
             }
             this.shouldCraft = BedBomb.mc.currentScreen instanceof GuiCrafting;
@@ -450,17 +450,17 @@ public class BedBomb
     public void craftTable() {
         int woodSlot = InventoryUtil.findInventoryBlock(BlockPlanks.class, true);
         if (woodSlot != -1) {
-            BedBomb.mc.playerController.windowClick(0, woodSlot, 0, ClickType.PICKUP, (EntityPlayer)BedBomb.mc.player);
-            BedBomb.mc.playerController.windowClick(0, 1, 1, ClickType.PICKUP, (EntityPlayer)BedBomb.mc.player);
-            BedBomb.mc.playerController.windowClick(0, 2, 1, ClickType.PICKUP, (EntityPlayer)BedBomb.mc.player);
-            BedBomb.mc.playerController.windowClick(0, 3, 1, ClickType.PICKUP, (EntityPlayer)BedBomb.mc.player);
-            BedBomb.mc.playerController.windowClick(0, 4, 1, ClickType.PICKUP, (EntityPlayer)BedBomb.mc.player);
-            BedBomb.mc.playerController.windowClick(0, 0, 0, ClickType.QUICK_MOVE, (EntityPlayer)BedBomb.mc.player);
+            BedBomb.mc.playerController.windowClick(0, woodSlot, 0, ClickType.PICKUP, BedBomb.mc.player);
+            BedBomb.mc.playerController.windowClick(0, 1, 1, ClickType.PICKUP, BedBomb.mc.player);
+            BedBomb.mc.playerController.windowClick(0, 2, 1, ClickType.PICKUP, BedBomb.mc.player);
+            BedBomb.mc.playerController.windowClick(0, 3, 1, ClickType.PICKUP, BedBomb.mc.player);
+            BedBomb.mc.playerController.windowClick(0, 4, 1, ClickType.PICKUP, BedBomb.mc.player);
+            BedBomb.mc.playerController.windowClick(0, 0, 0, ClickType.QUICK_MOVE, BedBomb.mc.player);
             int table = InventoryUtil.findInventoryBlock(BlockWorkbench.class, true);
             if (table != -1) {
-                BedBomb.mc.playerController.windowClick(0, table, 0, ClickType.PICKUP, (EntityPlayer)BedBomb.mc.player);
-                BedBomb.mc.playerController.windowClick(0, this.tableSlot.getValue().intValue(), 0, ClickType.PICKUP, (EntityPlayer)BedBomb.mc.player);
-                BedBomb.mc.playerController.windowClick(0, table, 0, ClickType.PICKUP, (EntityPlayer)BedBomb.mc.player);
+                BedBomb.mc.playerController.windowClick(0, table, 0, ClickType.PICKUP, BedBomb.mc.player);
+                BedBomb.mc.playerController.windowClick(0, this.tableSlot.getValue().intValue(), 0, ClickType.PICKUP, BedBomb.mc.player);
+                BedBomb.mc.playerController.windowClick(0, table, 0, ClickType.PICKUP, BedBomb.mc.player);
             }
         }
     }
@@ -495,15 +495,15 @@ public class BedBomb
         return safety;
     }
 
-    public static enum BreakLogic {
+    public enum BreakLogic {
         ALL,
-        CALC;
+        CALC
 
     }
 
-    public static enum Logic {
+    public enum Logic {
         BREAKPLACE,
-        PLACEBREAK;
+        PLACEBREAK
 
     }
 

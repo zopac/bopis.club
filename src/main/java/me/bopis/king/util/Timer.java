@@ -4,15 +4,15 @@ public class Timer {
     private long time = -1L;
 
     public boolean passedS(double s) {
-        return this.passedMs((long)s * 1000L);
+        return this.passedMs((long) s * 1000L);
     }
 
     public boolean passedDms(double dms) {
-        return this.passedMs((long)dms * 10L);
+        return this.passedMs((long) dms * 10L);
     }
 
     public boolean passedDs(double ds) {
-        return this.passedMs((long)ds * 100L);
+        return this.passedMs((long) ds * 100L);
     }
 
     public boolean passedMs(long ms) {

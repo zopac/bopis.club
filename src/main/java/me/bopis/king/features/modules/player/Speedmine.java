@@ -15,7 +15,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemSword;
-import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.CPacketAnimation;
 import net.minecraft.network.play.client.CPacketHeldItemChange;
 import net.minecraft.network.play.client.CPacketPlayerDigging;
@@ -30,7 +29,7 @@ import java.awt.*;
 public class Speedmine
         extends Module {
     private static Speedmine INSTANCE = new Speedmine();
-    private final Setting <Float> range = this.register(new Setting<Float>("Range", Float.valueOf(10.0f), Float.valueOf(0.0f), Float.valueOf(50.0f)));
+    private final Setting<Float> range = this.register(new Setting<Float>("Range", Float.valueOf(10.0f), Float.valueOf(0.0f), Float.valueOf(50.0f)));
     private final Timer timer = new Timer();
     public Setting<Boolean> tweaks = this.register(new Setting<Boolean>("Tweaks", true));
     public Setting<Mode> mode = this.register(new Setting<Object>("Mode", Mode.PACKET, v -> this.tweaks.getValue()));
@@ -157,7 +156,7 @@ public class Speedmine
         }
         if (event.getStage() == 4 && this.tweaks.getValue().booleanValue()) {
             BlockPos above;
-            if ( BlockUtil.canBreak(event.pos)) {
+            if (BlockUtil.canBreak(event.pos)) {
                 if (this.reset.getValue().booleanValue()) {
                     Speedmine.mc.playerController.isHittingBlock = false;
                 }

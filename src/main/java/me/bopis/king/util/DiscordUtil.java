@@ -5,7 +5,6 @@ import club.minnced.discord.rpc.DiscordRPC;
 import club.minnced.discord.rpc.DiscordRichPresence;
 import me.bopis.king.Bopis;
 import me.bopis.king.features.modules.misc.RPC;
-import me.bopis.king.manager.ModuleManager;
 import net.minecraft.client.Minecraft;
 
 /**

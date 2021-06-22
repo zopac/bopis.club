@@ -28,46 +28,46 @@ public class ColorHolder {
         this.a = a;
     }
 
-    public ColorHolder brighter(){
+    public ColorHolder brighter() {
         return new ColorHolder(Math.min(r + 10, 255), Math.min(g + 10, 255), Math.min(b + 10, 255), getA());
     }
 
-    public ColorHolder darker(){
+    public ColorHolder darker() {
         return new ColorHolder(Math.max(r - 10, 0), Math.max(g - 10, 0), Math.max(b - 10, 0), getA());
     }
 
-    public void setGLColour(){
-        setGLColour(-1,-1,-1,-1);
+    public void setGLColour() {
+        setGLColour(-1, -1, -1, -1);
     }
 
-    public void setGLColour(int dr, int dg, int db, int da){
-        GL11.glColor4f((float) (dr == -1 ? r : dr) / 255,(float) (dg == -1 ? g : dg) / 255,(float) (db == -1 ? b : db) / 255,(float) (da == -1 ? a : da) / 255);
+    public void setGLColour(int dr, int dg, int db, int da) {
+        GL11.glColor4f((float) (dr == -1 ? r : dr) / 255, (float) (dg == -1 ? g : dg) / 255, (float) (db == -1 ? b : db) / 255, (float) (da == -1 ? a : da) / 255);
     }
 
-    public void becomeGLColour(){
+    public void becomeGLColour() {
 //        FloatBuffer buffer = FloatBuffer.allocate(16);
 //        GL11.glGetFloat(GL11.GL_CURRENT_COLOR, buffer);
 //        becomeHex((int) buffer.get());
     }
 
-    public void becomeHex(int hex){
+    public void becomeHex(int hex) {
         setR((hex & 0xFF0000) >> 16);
         setG((hex & 0xFF00) >> 8);
         setB((hex & 0xFF));
         setA(255);
     }
 
-    public static ColorHolder fromHex(int hex){
-        ColorHolder n = new ColorHolder(0,0,0);
+    public static ColorHolder fromHex(int hex) {
+        ColorHolder n = new ColorHolder(0, 0, 0);
         n.becomeHex(hex);
         return n;
     }
 
-    public static int toHex(int r, int g, int b){
-        return  (0xff << 24) | ((r&0xff) << 16) | ((g&0xff) << 8) | (b&0xff);
+    public static int toHex(int r, int g, int b) {
+        return (0xff << 24) | ((r & 0xff) << 16) | ((g & 0xff) << 8) | (b & 0xff);
     }
 
-    public int toHex(){
+    public int toHex() {
         return toHex(r, g, b);
     }
 
@@ -108,7 +108,7 @@ public class ColorHolder {
     }
 
     @Override
-    public ColorHolder clone()  {
+    public ColorHolder clone() {
         return new ColorHolder(r, g, b, a);
     }
 

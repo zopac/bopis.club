@@ -17,7 +17,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class BoatFly
         extends Module {
     public static BoatFly INSTANCE;
-    public Setting <Double> speed = this.register(new Setting<Double>("Speed", 3.0, 1.0, 10.0));
+    public Setting<Double> speed = this.register(new Setting<Double>("Speed", 3.0, 1.0, 10.0));
     public Setting<Double> verticalSpeed = this.register(new Setting<Double>("VerticalSpeed", 3.0, 1.0, 10.0));
     public Setting<Boolean> noKick = this.register(new Setting<Boolean>("No-Kick", true));
     public Setting<Boolean> packet = this.register(new Setting<Boolean>("Packet", true));

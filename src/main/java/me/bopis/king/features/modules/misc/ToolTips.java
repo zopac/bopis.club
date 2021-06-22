@@ -29,7 +29,7 @@ public class ToolTips extends Module {
     private static final ResourceLocation SHULKER_GUI_TEXTURE = new ResourceLocation("textures/gui/container/shulker_box.png");
     private static ToolTips INSTANCE = new ToolTips();
     public Map<EntityPlayer, ItemStack> spiedPlayers = new ConcurrentHashMap<EntityPlayer, ItemStack>();
-    public Map<EntityPlayer, Timer > playerTimers = new ConcurrentHashMap<EntityPlayer, Timer>();
+    public Map<EntityPlayer, Timer> playerTimers = new ConcurrentHashMap<EntityPlayer, Timer>();
     private int textRadarY = 0;
 
     public ToolTips() {
@@ -132,7 +132,7 @@ public class ToolTips extends Module {
             RenderUtil.drawTexturedRect(x, y + 16, 0, 16, 176, 57, 500);
             RenderUtil.drawTexturedRect(x, y + 16 + 54, 0, 160, 176, 8, 500);
             GlStateManager.disableDepth();
-            Color color = new Color( ClickGui.getInstance().red.getValue(), ClickGui.getInstance().green.getValue(), ClickGui.getInstance().blue.getValue(), 200);
+            Color color = new Color(ClickGui.getInstance().red.getValue(), ClickGui.getInstance().green.getValue(), ClickGui.getInstance().blue.getValue(), 200);
             renderer.drawStringWithShadow(name == null ? stack.getDisplayName() : name, x + 8, y + 6, ColorUtil.toRGBA(color));
             GlStateManager.enableDepth();
             RenderHelper.enableGUIStandardItemLighting();

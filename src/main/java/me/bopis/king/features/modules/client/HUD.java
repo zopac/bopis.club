@@ -26,10 +26,10 @@ public class HUD extends Module {
     private static final ItemStack totem = new ItemStack(Items.TOTEM_OF_UNDYING);
     private static RenderItem itemRender;
     private static HUD INSTANCE = new HUD();
-    private final Setting <Boolean> grayNess = register(new Setting("Gray", Boolean.valueOf(true)));
+    private final Setting<Boolean> grayNess = register(new Setting("Gray", Boolean.valueOf(true)));
     private final Setting<Boolean> renderingUp = register(new Setting("RenderingUp", Boolean.valueOf(false), "Orientation of the HUD-Elements."));
     private final Setting<Boolean> waterMark = register(new Setting("Watermark", Boolean.valueOf(true), "displays watermark"));
-    public Setting<Integer> waterMarkY = register(new Setting("WatermarkPosY", 2, 0, 20, v -> ((Boolean)waterMark.getValue()).booleanValue()));
+    public Setting<Integer> waterMarkY = register(new Setting("WatermarkPosY", 2, 0, 20, v -> waterMark.getValue().booleanValue()));
     private final Setting<Boolean> arrayList = register(new Setting("ActiveModules", Boolean.valueOf(false), "Lists the active modules."));
     private final Setting<Boolean> pvp = register(new Setting("PvpInfo", false));
     private final Setting<Boolean> coords = register(new Setting("Coords", Boolean.valueOf(false), "Your current coordinates"));
@@ -43,15 +43,11 @@ public class HUD extends Module {
     private final Setting<Boolean> tps = register(new Setting("TPS", Boolean.valueOf(false), "Ticks per second of the server."));
     private final Setting<Boolean> fps = register(new Setting("FPS", Boolean.valueOf(false), "Your frames per second."));
     private final Setting<Boolean> lag = register(new Setting("LagNotifier", Boolean.valueOf(false), "The time"));
-    private final me.bopis.king.util.Timer timer = new Timer ();
+    private final me.bopis.king.util.Timer timer = new Timer();
     private final Map<String, Integer> players = new HashMap<>();
     public Setting<String> command = register(new Setting("Command", "bopis.club"));
-    public Setting<String> version = register(new Setting("Version", "v1.0.0"));
-    public Setting< TextUtil.Color > bracketColor = register(new Setting("BracketColor", TextUtil.Color.LIGHT_PURPLE));
+    public Setting<String> version = register(new Setting("Version", "v1.1.0"));
     public Setting<TextUtil.Color> commandColor = register(new Setting("CommandColor", TextUtil.Color.DARK_PURPLE));
-    public Setting<Boolean> rainbowPrefix = register(new Setting<Boolean>("GradientChat", false));
-    public Setting<String> commandBracket = register(new Setting("Bracket", "["));
-    public Setting<String> commandBracket2 = register(new Setting("Bracket2", "]"));
     public Setting<Boolean> notifyToggles = register(new Setting("ChatNotify", Boolean.valueOf(false), "notifys in chat"));
     public Setting<Boolean> manateeImage = register(new Setting("Manatee", Boolean.valueOf(false), "draws magen david"));
     public Setting<Integer> animationHorizontalTime = register(new Setting("AnimationHTime", Integer.valueOf(500), Integer.valueOf(1), Integer.valueOf(1000), v -> arrayList.getValue().booleanValue()));
@@ -93,27 +89,27 @@ public class HUD extends Module {
             return;
         int width = renderer.scaledWidth;
         int height = renderer.scaledHeight;
-        color = ColorUtil.toRGBA(((Integer)(ClickGui.getInstance()).red.getValue()), ((Integer) ClickGui.getInstance().green.getValue()), ((Integer) ClickGui.getInstance().blue.getValue()));
+        color = ColorUtil.toRGBA((ClickGui.getInstance()).red.getValue(), ClickGui.getInstance().green.getValue(), ClickGui.getInstance().blue.getValue());
         if (waterMark.getValue()) {
-            String string = (String) command.getPlannedValue() + " " + version.getPlannedValue();
+            String string = command.getPlannedValue() + " " + version.getPlannedValue();
             if (ClickGui.getInstance().rainbow.getValue()) {
                 if ((ClickGui.getInstance()).rainbowModeHud.getValue() == ClickGui.rainbowMode.Static) {
-                    renderer.drawString(string, 2.0F, ((Integer) waterMarkY.getValue()), ColorUtil.rainbow(((Integer) ClickGui.getInstance().rainbowHue.getValue())).getRGB(), true);
+                    renderer.drawString(string, 2.0F, waterMarkY.getValue(), ColorUtil.rainbow(ClickGui.getInstance().rainbowHue.getValue()).getRGB(), true);
                 } else {
                     int[] arrayOfInt = {1};
                     char[] stringToCharArray = string.toCharArray();
                     float f = 0.0F;
                     for (char c : stringToCharArray) {
-                        renderer.drawString(String.valueOf(c), 2.0F + f, ((Integer) waterMarkY.getValue()), ColorUtil.rainbow(arrayOfInt[0] * (Integer) (ClickGui.getInstance()).rainbowHue.getValue()).getRGB(), true);
+                        renderer.drawString(String.valueOf(c), 2.0F + f, waterMarkY.getValue(), ColorUtil.rainbow(arrayOfInt[0] * (ClickGui.getInstance()).rainbowHue.getValue()).getRGB(), true);
                         f += renderer.getStringWidth(String.valueOf(c));
                         arrayOfInt[0] = arrayOfInt[0] + 1;
                     }
                 }
             } else {
-                renderer.drawString(string, 2.0F, ((Integer) waterMarkY.getValue()), color, true);
+                renderer.drawString(string, 2.0F, waterMarkY.getValue(), color, true);
             }
         }
-        if(pvp.getValue()) {
+        if (pvp.getValue()) {
             renderPvpInfo();
         }
         int[] counter1 = {1};
@@ -360,6 +356,7 @@ public class HUD extends Module {
             GlStateManager.disableLighting();
         }
     }
+
     public void renderCrystal() {
         int width = renderer.scaledWidth;
         int height = renderer.scaledHeight;
@@ -427,25 +424,25 @@ public class HUD extends Module {
     }
 
     public void renderPvpInfo() {
-        String caOn = (String) "CA:" + ChatFormatting.GREEN + " TRUE";
-        String caOff = (String) "CA:" + ChatFormatting.DARK_RED + " FALSE";
-        String atOn = (String) "AT:" + ChatFormatting.GREEN + " TRUE";
-        String atOff = (String) "AT:" + ChatFormatting.DARK_RED + " FALSE";
-        String suOn = (String) "SU:" + ChatFormatting.GREEN + " TRUE";
-        String suOff = (String) "SU:" + ChatFormatting.DARK_RED + " FALSE";
-        String hfOn = (String) "HF:" + ChatFormatting.GREEN + " TRUE";
-        String hfOff = (String) "HF:" + ChatFormatting.DARK_RED + " FALSE";
+        String caOn = "CA:" + ChatFormatting.GREEN + " TRUE";
+        String caOff = "CA:" + ChatFormatting.DARK_RED + " FALSE";
+        String atOn = "AT:" + ChatFormatting.GREEN + " TRUE";
+        String atOff = "AT:" + ChatFormatting.DARK_RED + " FALSE";
+        String suOn = "SU:" + ChatFormatting.GREEN + " TRUE";
+        String suOff = "SU:" + ChatFormatting.DARK_RED + " FALSE";
+        String hfOn = "HF:" + ChatFormatting.GREEN + " TRUE";
+        String hfOff = "HF:" + ChatFormatting.DARK_RED + " FALSE";
 
         if (Bopis.moduleManager.getModuleByName("AutoCrystal").isEnabled()) {
-            if (((Boolean) (ClickGui.getInstance()).rainbow.getValue()).booleanValue()) {
+            if ((ClickGui.getInstance()).rainbow.getValue().booleanValue()) {
                 if ((ClickGui.getInstance()).rainbowModeHud.getValue() == ClickGui.rainbowMode.Static) {
-                    renderer.drawString(caOn, 2.0F, 10.0f, ColorUtil.rainbow(((Integer) (ClickGui.getInstance()).rainbowHue.getValue()).intValue()).getRGB(), true);
+                    renderer.drawString(caOn, 2.0F, 10.0f, ColorUtil.rainbow((ClickGui.getInstance()).rainbowHue.getValue().intValue()).getRGB(), true);
                 } else {
                     int[] arrayOfInt = {1};
                     char[] stringToCharArray = caOn.toCharArray();
                     float f = 0.0F;
                     for (char c : stringToCharArray) {
-                        renderer.drawString(String.valueOf(c), 2.0F + f, 10.0f, ColorUtil.rainbow(arrayOfInt[0] * ((Integer) (ClickGui.getInstance()).rainbowHue.getValue()).intValue()).getRGB(), true);
+                        renderer.drawString(String.valueOf(c), 2.0F + f, 10.0f, ColorUtil.rainbow(arrayOfInt[0] * (ClickGui.getInstance()).rainbowHue.getValue().intValue()).getRGB(), true);
                         f += renderer.getStringWidth(String.valueOf(c));
                         arrayOfInt[0] = arrayOfInt[0] + 1;
                     }
@@ -455,15 +452,15 @@ public class HUD extends Module {
             }
         }
         if (Bopis.moduleManager.getModuleByName("AutoTrap").isEnabled()) {
-            if (((Boolean) (ClickGui.getInstance()).rainbow.getValue()).booleanValue()) {
+            if ((ClickGui.getInstance()).rainbow.getValue().booleanValue()) {
                 if ((ClickGui.getInstance()).rainbowModeHud.getValue() == ClickGui.rainbowMode.Static) {
-                    renderer.drawString(atOn, 2.0F, 20.0f, ColorUtil.rainbow(((Integer) (ClickGui.getInstance()).rainbowHue.getValue()).intValue()).getRGB(), true);
+                    renderer.drawString(atOn, 2.0F, 20.0f, ColorUtil.rainbow((ClickGui.getInstance()).rainbowHue.getValue().intValue()).getRGB(), true);
                 } else {
                     int[] arrayOfInt = {1};
                     char[] stringToCharArray = atOn.toCharArray();
                     float f = 0.0F;
                     for (char c : stringToCharArray) {
-                        renderer.drawString(String.valueOf(c), 2.0F + f, 20.0f, ColorUtil.rainbow(arrayOfInt[0] * ((Integer) (ClickGui.getInstance()).rainbowHue.getValue()).intValue()).getRGB(), true);
+                        renderer.drawString(String.valueOf(c), 2.0F + f, 20.0f, ColorUtil.rainbow(arrayOfInt[0] * (ClickGui.getInstance()).rainbowHue.getValue().intValue()).getRGB(), true);
                         f += renderer.getStringWidth(String.valueOf(c));
                         arrayOfInt[0] = arrayOfInt[0] + 1;
                     }
@@ -473,15 +470,15 @@ public class HUD extends Module {
             }
         }
         if (Bopis.moduleManager.getModuleByName("Surround").isEnabled()) {
-            if (((Boolean) (ClickGui.getInstance()).rainbow.getValue()).booleanValue()) {
+            if ((ClickGui.getInstance()).rainbow.getValue().booleanValue()) {
                 if ((ClickGui.getInstance()).rainbowModeHud.getValue() == ClickGui.rainbowMode.Static) {
-                    renderer.drawString(suOn, 2.0F, 30.0f, ColorUtil.rainbow(((Integer) (ClickGui.getInstance()).rainbowHue.getValue()).intValue()).getRGB(), true);
+                    renderer.drawString(suOn, 2.0F, 30.0f, ColorUtil.rainbow((ClickGui.getInstance()).rainbowHue.getValue().intValue()).getRGB(), true);
                 } else {
                     int[] arrayOfInt = {1};
                     char[] stringToCharArray = suOn.toCharArray();
                     float f = 0.0F;
                     for (char c : stringToCharArray) {
-                        renderer.drawString(String.valueOf(c), 2.0F + f, 30.0f, ColorUtil.rainbow(arrayOfInt[0] * ((Integer) (ClickGui.getInstance()).rainbowHue.getValue()).intValue()).getRGB(), true);
+                        renderer.drawString(String.valueOf(c), 2.0F + f, 30.0f, ColorUtil.rainbow(arrayOfInt[0] * (ClickGui.getInstance()).rainbowHue.getValue().intValue()).getRGB(), true);
                         f += renderer.getStringWidth(String.valueOf(c));
                         arrayOfInt[0] = arrayOfInt[0] + 1;
                     }
@@ -491,15 +488,15 @@ public class HUD extends Module {
             }
         }
         if (Bopis.moduleManager.getModuleByName("HoleFill").isEnabled()) {
-            if (((Boolean) (ClickGui.getInstance()).rainbow.getValue()).booleanValue()) {
+            if ((ClickGui.getInstance()).rainbow.getValue().booleanValue()) {
                 if ((ClickGui.getInstance()).rainbowModeHud.getValue() == ClickGui.rainbowMode.Static) {
-                    renderer.drawString(hfOn, 2.0F, 40.0f, ColorUtil.rainbow(((Integer) (ClickGui.getInstance()).rainbowHue.getValue()).intValue()).getRGB(), true);
+                    renderer.drawString(hfOn, 2.0F, 40.0f, ColorUtil.rainbow((ClickGui.getInstance()).rainbowHue.getValue().intValue()).getRGB(), true);
                 } else {
                     int[] arrayOfInt = {1};
                     char[] stringToCharArray = hfOn.toCharArray();
                     float f = 0.0F;
                     for (char c : stringToCharArray) {
-                        renderer.drawString(String.valueOf(c), 2.0F + f, 40.0f, ColorUtil.rainbow(arrayOfInt[0] * ((Integer) (ClickGui.getInstance()).rainbowHue.getValue()).intValue()).getRGB(), true);
+                        renderer.drawString(String.valueOf(c), 2.0F + f, 40.0f, ColorUtil.rainbow(arrayOfInt[0] * (ClickGui.getInstance()).rainbowHue.getValue().intValue()).getRGB(), true);
                         f += renderer.getStringWidth(String.valueOf(c));
                         arrayOfInt[0] = arrayOfInt[0] + 1;
                     }
@@ -509,15 +506,15 @@ public class HUD extends Module {
             }
         }
         if (Bopis.moduleManager.getModuleByName("AutoCrystal").isDisabled()) {
-            if (((Boolean) (ClickGui.getInstance()).rainbow.getValue()).booleanValue()) {
+            if ((ClickGui.getInstance()).rainbow.getValue().booleanValue()) {
                 if ((ClickGui.getInstance()).rainbowModeHud.getValue() == ClickGui.rainbowMode.Static) {
-                    renderer.drawString(caOff, 2.0F, 10.0f, ColorUtil.rainbow(((Integer) (ClickGui.getInstance()).rainbowHue.getValue()).intValue()).getRGB(), true);
+                    renderer.drawString(caOff, 2.0F, 10.0f, ColorUtil.rainbow((ClickGui.getInstance()).rainbowHue.getValue().intValue()).getRGB(), true);
                 } else {
                     int[] arrayOfInt = {1};
                     char[] stringToCharArray = caOff.toCharArray();
                     float f = 0.0F;
                     for (char c : stringToCharArray) {
-                        renderer.drawString(String.valueOf(c), 2.0F + f, 10.0f, ColorUtil.rainbow(arrayOfInt[0] * ((Integer) (ClickGui.getInstance()).rainbowHue.getValue()).intValue()).getRGB(), true);
+                        renderer.drawString(String.valueOf(c), 2.0F + f, 10.0f, ColorUtil.rainbow(arrayOfInt[0] * (ClickGui.getInstance()).rainbowHue.getValue().intValue()).getRGB(), true);
                         f += renderer.getStringWidth(String.valueOf(c));
                         arrayOfInt[0] = arrayOfInt[0] + 1;
                     }
@@ -527,15 +524,15 @@ public class HUD extends Module {
             }
         }
         if (Bopis.moduleManager.getModuleByName("AutoTrap").isDisabled()) {
-            if (((Boolean) (ClickGui.getInstance()).rainbow.getValue()).booleanValue()) {
+            if ((ClickGui.getInstance()).rainbow.getValue().booleanValue()) {
                 if ((ClickGui.getInstance()).rainbowModeHud.getValue() == ClickGui.rainbowMode.Static) {
-                    renderer.drawString(atOff, 2.0F, 20.0f, ColorUtil.rainbow(((Integer) (ClickGui.getInstance()).rainbowHue.getValue()).intValue()).getRGB(), true);
+                    renderer.drawString(atOff, 2.0F, 20.0f, ColorUtil.rainbow((ClickGui.getInstance()).rainbowHue.getValue().intValue()).getRGB(), true);
                 } else {
                     int[] arrayOfInt = {1};
                     char[] stringToCharArray = atOff.toCharArray();
                     float f = 0.0F;
                     for (char c : stringToCharArray) {
-                        renderer.drawString(String.valueOf(c), 2.0F + f, 20.0F, ColorUtil.rainbow(arrayOfInt[0] * ((Integer) (ClickGui.getInstance()).rainbowHue.getValue()).intValue()).getRGB(), true);
+                        renderer.drawString(String.valueOf(c), 2.0F + f, 20.0F, ColorUtil.rainbow(arrayOfInt[0] * (ClickGui.getInstance()).rainbowHue.getValue().intValue()).getRGB(), true);
                         f += renderer.getStringWidth(String.valueOf(c));
                         arrayOfInt[0] = arrayOfInt[0] + 1;
                     }
@@ -545,15 +542,15 @@ public class HUD extends Module {
             }
         }
         if (Bopis.moduleManager.getModuleByName("Surround").isDisabled()) {
-            if (((Boolean) (ClickGui.getInstance()).rainbow.getValue()).booleanValue()) {
+            if ((ClickGui.getInstance()).rainbow.getValue().booleanValue()) {
                 if ((ClickGui.getInstance()).rainbowModeHud.getValue() == ClickGui.rainbowMode.Static) {
-                    renderer.drawString(suOff, 2.0F, 30.0f, ColorUtil.rainbow(((Integer) (ClickGui.getInstance()).rainbowHue.getValue()).intValue()).getRGB(), true);
+                    renderer.drawString(suOff, 2.0F, 30.0f, ColorUtil.rainbow((ClickGui.getInstance()).rainbowHue.getValue().intValue()).getRGB(), true);
                 } else {
                     int[] arrayOfInt = {1};
                     char[] stringToCharArray = suOff.toCharArray();
                     float f = 0.0F;
                     for (char c : stringToCharArray) {
-                        renderer.drawString(String.valueOf(c), 2.0F + f, 30.0F, ColorUtil.rainbow(arrayOfInt[0] * ((Integer) (ClickGui.getInstance()).rainbowHue.getValue()).intValue()).getRGB(), true);
+                        renderer.drawString(String.valueOf(c), 2.0F + f, 30.0F, ColorUtil.rainbow(arrayOfInt[0] * (ClickGui.getInstance()).rainbowHue.getValue().intValue()).getRGB(), true);
                         f += renderer.getStringWidth(String.valueOf(c));
                         arrayOfInt[0] = arrayOfInt[0] + 1;
                     }
@@ -563,15 +560,15 @@ public class HUD extends Module {
             }
         }
         if (Bopis.moduleManager.getModuleByName("HoleFill").isDisabled()) {
-            if (((Boolean) (ClickGui.getInstance()).rainbow.getValue()).booleanValue()) {
+            if ((ClickGui.getInstance()).rainbow.getValue().booleanValue()) {
                 if ((ClickGui.getInstance()).rainbowModeHud.getValue() == ClickGui.rainbowMode.Static) {
-                    renderer.drawString(hfOff, 2.0F, 40.0f, ColorUtil.rainbow(((Integer) (ClickGui.getInstance()).rainbowHue.getValue()).intValue()).getRGB(), true);
+                    renderer.drawString(hfOff, 2.0F, 40.0f, ColorUtil.rainbow((ClickGui.getInstance()).rainbowHue.getValue().intValue()).getRGB(), true);
                 } else {
                     int[] arrayOfInt = {1};
                     char[] stringToCharArray = hfOff.toCharArray();
                     float f = 0.0F;
                     for (char c : stringToCharArray) {
-                        renderer.drawString(String.valueOf(c), 2.0F + f, 40.0F, ColorUtil.rainbow(arrayOfInt[0] * ((Integer) (ClickGui.getInstance()).rainbowHue.getValue()).intValue()).getRGB(), true);
+                        renderer.drawString(String.valueOf(c), 2.0F + f, 40.0F, ColorUtil.rainbow(arrayOfInt[0] * (ClickGui.getInstance()).rainbowHue.getValue().intValue()).getRGB(), true);
                         f += renderer.getStringWidth(String.valueOf(c));
                         arrayOfInt[0] = arrayOfInt[0] + 1;
                     }
@@ -592,7 +589,7 @@ public class HUD extends Module {
     }
 
     @SubscribeEvent
-    public void onSettingChange( ClientEvent event) {
+    public void onSettingChange(ClientEvent event) {
         if (event.getStage() == 2 &&
                 equals(event.getSetting().getFeature()))
             Bopis.commandManager.setClientMessage(getCommandMessage());
@@ -600,13 +597,7 @@ public class HUD extends Module {
 
 
     public String getCommandMessage() {
-        if (this.rainbowPrefix.getPlannedValue().booleanValue()) {
-            StringBuilder stringBuilder = new StringBuilder(this.getRawCommandMessage());
-            stringBuilder.insert(0, "\u00a7+");
-            stringBuilder.append("\u00a7r");
-            return stringBuilder.toString();
-        }
-        return TextUtil.coloredString(this.commandBracket.getPlannedValue(), this.bracketColor.getPlannedValue()) + TextUtil.coloredString(this.command.getPlannedValue(), this.commandColor.getPlannedValue()) + TextUtil.coloredString(this.commandBracket2.getPlannedValue(), this.bracketColor.getPlannedValue());
+        return TextUtil.coloredString(this.command.getPlannedValue(), this.commandColor.getPlannedValue());
     }
 
     public String getRainbowCommandMessage() {
@@ -617,7 +608,7 @@ public class HUD extends Module {
     }
 
     public String getRawCommandMessage() {
-        return this.commandBracket.getValue() + this.command.getValue() + this.commandBracket2.getValue();
+        return this.command.getValue();
     }
 
     public void drawTextRadar(int yOffset) {

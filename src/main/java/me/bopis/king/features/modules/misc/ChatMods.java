@@ -6,8 +6,6 @@ import me.bopis.king.features.setting.Setting;
 import net.minecraft.network.play.client.CPacketChatMessage;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import java.util.ArrayList;
-
 /**
  * @Author evaan on 6/16/2021
  * https://github.com/evaan

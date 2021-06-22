@@ -15,7 +15,7 @@ public class OyVeyMixinLoader
     public OyVeyMixinLoader() {
         Bopis.LOGGER.info("\n\nLoading mixins by Alpha432");
         MixinBootstrap.init();
-        Mixins.addConfiguration( "mixins.bopis.json" );
+        Mixins.addConfiguration("mixins.bopis.json");
         MixinEnvironment.getDefaultEnvironment().setObfuscationContext("searge");
         Bopis.LOGGER.info(MixinEnvironment.getDefaultEnvironment().getObfuscationContext());
     }

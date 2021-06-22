@@ -1,4 +1,3 @@
-
 package me.bopis.king.util;
 
 import java.lang.reflect.AccessibleObject;

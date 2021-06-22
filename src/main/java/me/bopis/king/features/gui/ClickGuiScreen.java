@@ -21,7 +21,7 @@ public class ClickGuiScreen
         INSTANCE = new ClickGuiScreen();
     }
 
-    private final ArrayList< Component > components = new ArrayList<>();
+    private final ArrayList<Component> components = new ArrayList<>();
 
     public ClickGuiScreen() {
         this.setInstance();
@@ -53,13 +53,13 @@ public class ClickGuiScreen
                     counter1 = new int[]{1};
                     Bopis.moduleManager.getModulesByCategory(category).forEach(module -> {
                         if (!module.hidden) {
-                            this.addButton(new ModuleButton (module));
+                            this.addButton(new ModuleButton(module));
                         }
                     });
                 }
             });
         }
-        this.components.forEach(components -> components.getItems().sort(Comparator.comparing( Feature::getName)));
+        this.components.forEach(components -> components.getItems().sort(Comparator.comparing(Feature::getName)));
     }
 
     public void updateModule(Module module) {
@@ -114,7 +114,8 @@ public class ClickGuiScreen
             if (component.getName().equalsIgnoreCase(name)) {
                 return component;
             }
-        } return null;
+        }
+        return null;
     }
 
     public void keyTyped(char typedChar, int keyCode) throws IOException {

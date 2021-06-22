@@ -80,11 +80,10 @@ public class EntityUtil implements Util {
             return;
         }
         if (silent) {
-            InventoryUtil.mc.player.connection.sendPacket((Packet)new CPacketHeldItemChange(slot));
+            InventoryUtil.mc.player.connection.sendPacket(new CPacketHeldItemChange(slot));
             InventoryUtil.mc.playerController.updateController();
-        }
-        else {
-            InventoryUtil.mc.player.connection.sendPacket((Packet)new CPacketHeldItemChange(slot));
+        } else {
+            InventoryUtil.mc.player.connection.sendPacket(new CPacketHeldItemChange(slot));
             InventoryUtil.mc.player.inventory.currentItem = slot;
             InventoryUtil.mc.playerController.updateController();
         }
@@ -105,7 +104,7 @@ public class EntityUtil implements Util {
                     return i;
                 }
                 if (stack.getItem() instanceof ItemBlock) {
-                    final Block block = ((ItemBlock)stack.getItem()).getBlock();
+                    final Block block = ((ItemBlock) stack.getItem()).getBlock();
                     if (clazz.isInstance(block)) {
                         return i;
                     }
@@ -701,14 +700,13 @@ public class EntityUtil implements Util {
     public static EntityPlayer getClosestEnemy(final double distance) {
         EntityPlayer closest = null;
         for (final EntityPlayer player : EntityUtil.mc.world.playerEntities) {
-            if (isntValid((Entity)player, distance)) {
+            if (isntValid(player, distance)) {
                 continue;
             }
             if (closest == null) {
                 closest = player;
-            }
-            else {
-                if (EntityUtil.mc.player.getDistanceSq((Entity)player) >= EntityUtil.mc.player.getDistanceSq((Entity)closest)) {
+            } else {
+                if (EntityUtil.mc.player.getDistanceSq(player) >= EntityUtil.mc.player.getDistanceSq(closest)) {
                     continue;
                 }
                 closest = player;
@@ -881,7 +879,7 @@ public class EntityUtil implements Util {
                 distanceSB.append("c");
             }
             distanceSB.append(distance);
-            output.put(healthSB.toString() + " " + (Bopis.friendManager.isFriend(player) ? ChatFormatting.AQUA : ChatFormatting.RED) + player.getName() + " " + distanceSB.toString() + " \u00c2\u00a7f0", (int) mc.player.getDistance(player));
+            output.put(healthSB + " " + (Bopis.friendManager.isFriend(player) ? ChatFormatting.AQUA : ChatFormatting.RED) + player.getName() + " " + distanceSB + " \u00c2\u00a7f0", (int) mc.player.getDistance(player));
             healthSB.setLength(0);
             distanceSB.setLength(0);
         }

@@ -24,7 +24,7 @@ import java.awt.*;
 public class ESP
         extends Module {
     private static ESP INSTANCE = new ESP();
-    private final Setting <Mode> mode = this.register(new Setting<Mode>("Mode", Mode.OUTLINE));
+    private final Setting<Mode> mode = this.register(new Setting<Mode>("Mode", Mode.OUTLINE));
     private final Setting<Boolean> colorSync = this.register(new Setting<Boolean>("Sync", false));
     private final Setting<Boolean> players = this.register(new Setting<Boolean>("Players", true));
     private final Setting<Boolean> animals = this.register(new Setting<Boolean>("Animals", false));

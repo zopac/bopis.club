@@ -29,7 +29,7 @@ public class HudComponents extends Module {
     private static final ResourceLocation box = new ResourceLocation("textures/gui/container/shulker_box.png");
     private static final double HALF_PI = Math.PI / 2;
 
-    public Setting <Boolean> inventory = register(new Setting("Inventory", false));
+    public Setting<Boolean> inventory = register(new Setting("Inventory", false));
     public Setting<Integer> invX = register(new Setting("InvX", 564, 0, 1000, v -> inventory.getValue()));
     public Setting<Integer> invY = register(new Setting("InvY", 467, 0, 1000, v -> inventory.getValue()));
     public Setting<Integer> fineinvX = register(new Setting("InvFineX", 0, v -> inventory.getValue()));
@@ -54,33 +54,33 @@ public class HudComponents extends Module {
 
     @Override
     public void onRender2D(Render2DEvent event) {
-        if(fullNullCheck()) {
+        if (fullNullCheck()) {
             return;
         }
 
-        if(playerViewer.getValue()) {
+        if (playerViewer.getValue()) {
             drawPlayer();
         }
 
-        if(compass.getValue() != Compass.NONE) {
+        if (compass.getValue() != Compass.NONE) {
             drawCompass();
         }
 
-        if(holeHud.getValue()) {
+        if (holeHud.getValue()) {
             drawOverlay(event.partialTicks);
         }
 
-        if(inventory.getValue()) {
+        if (inventory.getValue()) {
             renderInventory();
         }
-        
+
     }
 
     public static EntityPlayer getClosestEnemy() {
         EntityPlayer closestPlayer = null;
         for (EntityPlayer player : mc.world.playerEntities) {
             if (player == mc.player) continue;
-            if ( Bopis.friendManager.isFriend(player)) continue;
+            if (Bopis.friendManager.isFriend(player)) continue;
             if (closestPlayer == null) {
                 closestPlayer = player;
             } else if (mc.player.getDistanceSq(player) < mc.player.getDistanceSq(closestPlayer)) {
@@ -92,7 +92,7 @@ public class HudComponents extends Module {
 
     public void drawCompass() {
         final ScaledResolution sr = new ScaledResolution(mc);
-        if(compass.getValue() == Compass.LINE) {
+        if (compass.getValue() == Compass.LINE) {
             float playerYaw = mc.player.rotationYaw;
             float rotationYaw = MathUtil.wrap(playerYaw);
             RenderUtil.drawRect(compassX.getValue(), compassY.getValue(), compassX.getValue() + 100, compassY.getValue() + renderer.getFontHeight(), 0x75101010);
@@ -139,14 +139,15 @@ public class HudComponents extends Module {
         GlStateManager.rotate(135.0f, 0.0f, 1.0f, 0.0f);
         RenderHelper.enableStandardItemLighting();
         GlStateManager.rotate(-135.0f, 0.0f, 1.0f, 0.0f);
-        GlStateManager.rotate(-(float)Math.atan(playerViewerY.getValue() / 40.0f) * 20.0f, 1.0f, 0.0f, 0.0f);
+        GlStateManager.rotate(-(float) Math.atan(playerViewerY.getValue() / 40.0f) * 20.0f, 1.0f, 0.0f, 0.0f);
         GlStateManager.translate(0.0f, 0.0f, 0.0f);
         final RenderManager rendermanager = mc.getRenderManager();
         rendermanager.setPlayerViewY(180.0f);
         rendermanager.setRenderShadow(false);
         try {
             rendermanager.renderEntity(ent, 0.0, 0.0, 0.0, 0.0f, 1.0f, false);
-        } catch(Exception ignored) {}
+        } catch (Exception ignored) {
+        }
         rendermanager.setRenderShadow(true);
         GlStateManager.popMatrix();
         RenderHelper.disableStandardItemLighting();
@@ -178,14 +179,15 @@ public class HudComponents extends Module {
         GlStateManager.rotate(135.0f, 0.0f, 1.0f, 0.0f);
         RenderHelper.enableStandardItemLighting();
         GlStateManager.rotate(-135.0f, 0.0f, 1.0f, 0.0f);
-        GlStateManager.rotate(-(float)Math.atan(playerViewerY.getValue() / 40.0f) * 20.0f, 1.0f, 0.0f, 0.0f);
+        GlStateManager.rotate(-(float) Math.atan(playerViewerY.getValue() / 40.0f) * 20.0f, 1.0f, 0.0f, 0.0f);
         GlStateManager.translate(0.0f, 0.0f, 0.0f);
         final RenderManager rendermanager = mc.getRenderManager();
         rendermanager.setPlayerViewY(180.0f);
         rendermanager.setRenderShadow(false);
         try {
             rendermanager.renderEntity(ent, 0.0, 0.0, 0.0, 0.0f, 1.0f, false);
-        } catch(Exception ignored) {}
+        } catch (Exception ignored) {
+        }
         rendermanager.setRenderShadow(true);
         GlStateManager.popMatrix();
         RenderHelper.disableStandardItemLighting();
@@ -460,11 +462,11 @@ public class HudComponents extends Module {
             postitemrender();
         }
 
-        if(renderXCarry.getValue()) {
+        if (renderXCarry.getValue()) {
             for (int i = 1; i < 5; i++) {
                 int iX = x + ((i + 4) % 9) * (18) + 8;
                 ItemStack itemStack = mc.player.inventoryContainer.inventorySlots.get(i).getStack();
-                if(itemStack != null && !itemStack.isEmpty) {
+                if (itemStack != null && !itemStack.isEmpty) {
                     preitemrender();
                     mc.getRenderItem().zLevel = 501;
                     RenderUtil.itemRender.renderItemAndEffectIntoGUI(itemStack, iX, y + 1);

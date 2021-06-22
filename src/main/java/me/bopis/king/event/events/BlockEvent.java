@@ -10,6 +10,7 @@ public class BlockEvent
         extends EventStage {
     public BlockPos pos;
     public EnumFacing facing;
+
     public BlockEvent(int stage, BlockPos pos, EnumFacing facing) {
         super(stage);
         this.pos = pos;

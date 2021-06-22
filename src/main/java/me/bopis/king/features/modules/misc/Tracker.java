@@ -37,7 +37,7 @@ public class Tracker extends Module {
             trackedPlayer = EntityUtil.getClosestEnemy(1000.0);
         } else if (usedStacks != usedExp / 64) {
             usedStacks = usedExp / 64;
-            Command.sendMessage( TextUtil.coloredString(trackedPlayer.getName() + " has used " + usedStacks + " stacks of XP!", HUD.getInstance().commandColor.getValue()));
+            Command.sendMessage(TextUtil.coloredString(trackedPlayer.getName() + " has used " + usedStacks + " stacks of XP!", HUD.getInstance().commandColor.getValue()));
         }
     }
 

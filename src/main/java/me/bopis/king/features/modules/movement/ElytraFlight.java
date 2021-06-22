@@ -8,13 +8,11 @@ import me.bopis.king.features.modules.Module;
 import me.bopis.king.features.setting.Setting;
 import me.bopis.king.util.MathUtil;
 import me.bopis.king.util.Timer;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemElytra;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.CPacketEntityAction;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.util.math.MathHelper;
@@ -25,7 +23,7 @@ public class ElytraFlight
     private static ElytraFlight INSTANCE = new ElytraFlight();
     private final Timer timer = new Timer();
     private final Timer bypassTimer = new Timer();
-    public Setting <Mode> mode = this.register(new Setting<Mode>("Mode", Mode.FLY));
+    public Setting<Mode> mode = this.register(new Setting<Mode>("Mode", Mode.FLY));
     public Setting<Integer> devMode = this.register(new Setting<Object>("Type", 2, 1, 3, v -> this.mode.getValue() == Mode.BYPASS || this.mode.getValue() == Mode.BETTER, "EventMode"));
     public Setting<Float> speed = this.register(new Setting<Object>("Speed", Float.valueOf(1.0f), Float.valueOf(0.0f), Float.valueOf(10.0f), v -> this.mode.getValue() != Mode.FLY && this.mode.getValue() != Mode.BOOST && this.mode.getValue() != Mode.BETTER && this.mode.getValue() != Mode.OHARE, "The Speed."));
     public Setting<Float> vSpeed = this.register(new Setting<Object>("VSpeed", Float.valueOf(0.3f), Float.valueOf(0.0f), Float.valueOf(10.0f), v -> this.mode.getValue() == Mode.BETTER || this.mode.getValue() == Mode.OHARE, "Vertical Speed"));
@@ -114,7 +112,7 @@ public class ElytraFlight
     }
 
     @SubscribeEvent
-    public void onMove( MoveEvent event) {
+    public void onMove(MoveEvent event) {
         if (this.mode.getValue() == Mode.OHARE) {
             ItemStack itemstack = ElytraFlight.mc.player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
             if (itemstack.getItem() == Items.ELYTRA && ItemElytra.isUsable(itemstack) && ElytraFlight.mc.player.isElytraFlying()) {
@@ -196,7 +194,7 @@ public class ElytraFlight
             } else {
                 return;
             }
-            if ( Bopis.speedManager.getSpeedKpH() > 180.0) {
+            if (Bopis.speedManager.getSpeedKpH() > 180.0) {
                 return;
             }
             double yaw = Math.toRadians(ElytraFlight.mc.player.rotationYaw);

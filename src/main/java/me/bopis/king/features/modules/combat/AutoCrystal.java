@@ -7,17 +7,13 @@ import me.bopis.king.event.events.ClientEvent;
 import me.bopis.king.event.events.PacketEvent;
 import me.bopis.king.event.events.Render3DEvent;
 import me.bopis.king.event.events.UpdateWalkingPlayerEvent;
-import me.bopis.king.features.command.Command;
-import me.bopis.king.features.gui.ClickGuiScreen;
 import me.bopis.king.features.modules.Module;
 import me.bopis.king.features.modules.client.ClickGui;
 import me.bopis.king.features.modules.misc.NoSoundLag;
-import me.bopis.king.features.setting.Bind;
 import me.bopis.king.features.setting.Setting;
 import me.bopis.king.util.Timer;
 import me.bopis.king.util.*;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockObsidian;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.entity.Entity;
@@ -27,7 +23,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemEndCrystal;
-import net.minecraft.item.ItemPickaxe;
 import net.minecraft.network.play.client.CPacketAnimation;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.network.play.client.CPacketUseEntity;
@@ -41,8 +36,6 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.InputEvent;
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
 import java.awt.*;
@@ -58,23 +51,23 @@ public class AutoCrystal
     public static Set<BlockPos> placedPos = new HashSet<>();
     public static Set<BlockPos> brokenPos = new HashSet<>();
     private static AutoCrystal instance;
-    public final me.bopis.king.util.Timer threadTimer = new me.bopis.king.util.Timer ();
-    private final Setting <Settings> setting = this.register(new Setting<Settings>("Settings", Settings.PLACE));
+    public final me.bopis.king.util.Timer threadTimer = new me.bopis.king.util.Timer();
+    private final Setting<Settings> setting = this.register(new Setting<Settings>("Settings", Settings.PLACE));
     public final Setting<Boolean> attackOppositeHand = this.register(new Setting<Object>("OppositeHand", Boolean.valueOf(false), v -> this.setting.getValue() == Settings.DEV));
     public final Setting<Boolean> removeAfterAttack = this.register(new Setting<Object>("AttackRemove", Boolean.valueOf(false), v -> this.setting.getValue() == Settings.DEV));
     public final Setting<Boolean> antiBlock = this.register(new Setting<Object>("AntiFeetPlace", Boolean.valueOf(false), v -> this.setting.getValue() == Settings.DEV));
     private final Setting<Integer> switchCooldown = this.register(new Setting<Object>("Cooldown", Integer.valueOf(0), Integer.valueOf(0), Integer.valueOf(1000), v -> this.setting.getValue() == Settings.MISC));
     private final Setting<Integer> eventMode = this.register(new Setting<Object>("Updates", Integer.valueOf(3), Integer.valueOf(1), Integer.valueOf(3), v -> this.setting.getValue() == Settings.DEV));
-    private final me.bopis.king.util.Timer switchTimer = new me.bopis.king.util.Timer ();
-    private final me.bopis.king.util.Timer manualTimer = new me.bopis.king.util.Timer ();
-    private final me.bopis.king.util.Timer breakTimer = new me.bopis.king.util.Timer ();
-    private final me.bopis.king.util.Timer placeTimer = new me.bopis.king.util.Timer ();
-    private final me.bopis.king.util.Timer syncTimer = new me.bopis.king.util.Timer ();
-    private final me.bopis.king.util.Timer predictTimer = new me.bopis.king.util.Timer ();
-    private final me.bopis.king.util.Timer renderTimer = new me.bopis.king.util.Timer ();
+    private final me.bopis.king.util.Timer switchTimer = new me.bopis.king.util.Timer();
+    private final me.bopis.king.util.Timer manualTimer = new me.bopis.king.util.Timer();
+    private final me.bopis.king.util.Timer breakTimer = new me.bopis.king.util.Timer();
+    private final me.bopis.king.util.Timer placeTimer = new me.bopis.king.util.Timer();
+    private final me.bopis.king.util.Timer syncTimer = new me.bopis.king.util.Timer();
+    private final me.bopis.king.util.Timer predictTimer = new me.bopis.king.util.Timer();
+    private final me.bopis.king.util.Timer renderTimer = new me.bopis.king.util.Timer();
     private final AtomicBoolean shouldInterrupt = new AtomicBoolean(false);
-    private final me.bopis.king.util.Timer syncroTimer = new me.bopis.king.util.Timer ();
-    private final Map<EntityPlayer, me.bopis.king.util.Timer > totemPops = new ConcurrentHashMap<EntityPlayer, me.bopis.king.util.Timer >();
+    private final me.bopis.king.util.Timer syncroTimer = new me.bopis.king.util.Timer();
+    private final Map<EntityPlayer, me.bopis.king.util.Timer> totemPops = new ConcurrentHashMap<EntityPlayer, me.bopis.king.util.Timer>();
     private final Queue<CPacketUseEntity> packetUseEntities = new LinkedList<CPacketUseEntity>();
     private final AtomicBoolean threadOngoing = new AtomicBoolean(false);
     public Setting<Raytrace> raytrace = this.register(new Setting<Object>("Raytrace", Raytrace.NONE, v -> this.setting.getValue() == Settings.MISC));
@@ -137,12 +130,9 @@ public class AutoCrystal
     public Setting<Float> range = this.register(new Setting<Object>("Range", Float.valueOf(12.0f), Float.valueOf(0.1f), Float.valueOf(20.0f), v -> this.setting.getValue() == Settings.MISC));
     public Setting<Target> targetMode = this.register(new Setting<Object>("Target", Target.DAMAGE, v -> this.setting.getValue() == Settings.MISC));
     public Setting<Integer> minArmor = this.register(new Setting<Object>("MinArmor", Integer.valueOf(5), Integer.valueOf(0), Integer.valueOf(125), v -> this.setting.getValue() == Settings.MISC));
-    public Setting<AutoSwitch> autoSwitch = this.register(new Setting<Object>("Switch", AutoSwitch.TOGGLE, v -> this.setting.getValue() == Settings.MISC));
-    public Setting< Bind > switchBind = this.register(new Setting<Object>("SwitchBind", new Bind(-1), v -> this.setting.getValue() == Settings.MISC && this.autoSwitch.getValue() == AutoSwitch.TOGGLE));
-    public Setting<Boolean> offhandSwitch = this.register(new Setting<Object>("AutoTotem", Boolean.valueOf(true), v -> this.setting.getValue() == Settings.MISC && this.autoSwitch.getValue() != AutoSwitch.NONE));
-    public Setting<Boolean> switchBack = this.register(new Setting<Object>("Switchback", Boolean.valueOf(true), v -> this.setting.getValue() == Settings.MISC && this.autoSwitch.getValue() != AutoSwitch.NONE && this.offhandSwitch.getValue() != false));
-    public Setting<Boolean> lethalSwitch = this.register(new Setting<Object>("LethalSwitch", Boolean.valueOf(false), v -> this.setting.getValue() == Settings.MISC && this.autoSwitch.getValue() != AutoSwitch.NONE));
-    public Setting<Boolean> mineSwitch = this.register(new Setting<Object>("MineSwitch", Boolean.valueOf(true), v -> this.setting.getValue() == Settings.MISC && this.autoSwitch.getValue() != AutoSwitch.NONE));
+    public Setting<Boolean> autoSwitch = this.register(new Setting<Object>("AutoSwitch", true, v -> this.setting.getValue() == Settings.MISC));
+    public Setting<Boolean> silentSwitch = this.register(new Setting<Object>("SilentSwitch", Boolean.valueOf(false), v -> this.setting.getValue() == Settings.MISC && this.autoSwitch.getValue()));
+    public Setting<Boolean> lethalSwitch = this.register(new Setting<Object>("LethalSwitch", Boolean.valueOf(false), v -> this.setting.getValue() == Settings.MISC && this.autoSwitch.getValue()));
     public Setting<Rotate> rotate = this.register(new Setting<Object>("Rotate", Rotate.OFF, v -> this.setting.getValue() == Settings.MISC));
     public Setting<Boolean> suicide = this.register(new Setting<Object>("Suicide", Boolean.valueOf(false), v -> this.setting.getValue() == Settings.MISC));
     public Setting<Boolean> webAttack = this.register(new Setting<Object>("WebAttack", Boolean.valueOf(true), v -> this.setting.getValue() == Settings.MISC && this.targetMode.getValue() != Target.DAMAGE));
@@ -346,7 +336,7 @@ public class AutoCrystal
                 }
                 if (this.predictFriendDmg.getValue().booleanValue() && (this.antiFriendPop.getValue() == AntiFriendPop.BREAK || this.antiFriendPop.getValue() == AntiFriendPop.ALL) && this.isRightThread()) {
                     for (EntityPlayer friend : AutoCrystal.mc.world.playerEntities) {
-                        if (friend == null || AutoCrystal.mc.player.equals(friend) || friend.getDistanceSq(pos) > MathUtil.square(this.range.getValue().floatValue() + this.placeRange.getValue().floatValue()) || ! Bopis.friendManager.isFriend(friend) || !((double) DamageUtil.calculateDamage(pos, friend) > (double) EntityUtil.getHealth(friend) + 0.5))
+                        if (friend == null || AutoCrystal.mc.player.equals(friend) || friend.getDistanceSq(pos) > MathUtil.square(this.range.getValue().floatValue() + this.placeRange.getValue().floatValue()) || !Bopis.friendManager.isFriend(friend) || !((double) DamageUtil.calculateDamage(pos, friend) > (double) EntityUtil.getHealth(friend) + 0.5))
                             continue;
                         return;
                     }
@@ -391,7 +381,7 @@ public class AutoCrystal
         } else if (event.getPacket() instanceof SPacketEntityStatus) {
             SPacketEntityStatus packet5 = event.getPacket();
             if (packet5.getOpCode() == 35 && packet5.getEntity(AutoCrystal.mc.world) instanceof EntityPlayer) {
-                this.totemPops.put((EntityPlayer) packet5.getEntity(AutoCrystal.mc.world), new me.bopis.king.util.Timer ().reset());
+                this.totemPops.put((EntityPlayer) packet5.getEntity(AutoCrystal.mc.world), new me.bopis.king.util.Timer().reset());
             }
         } else if (event.getPacket() instanceof SPacketSoundEffect && (packet = event.getPacket()).getCategory() == SoundCategory.BLOCKS && packet.getSound() == SoundEvents.ENTITY_GENERIC_EXPLODE) {
             BlockPos pos = new BlockPos(packet.getX(), packet.getY(), packet.getZ());
@@ -447,7 +437,7 @@ public class AutoCrystal
 
     public void onRender3D(Render3DEvent event) {
         if ((this.offHand || this.mainHand || this.switchMode.getValue() == Switch.CALC || this.switchMode.getValue() == Switch.ALWAYS || this.switchMode.getValue() == Switch.BREAKSLOT) && this.renderPos != null && this.render.getValue().booleanValue() && (this.box.getValue().booleanValue() || this.text.getValue().booleanValue() || this.outline.getValue().booleanValue())) {
-            RenderUtil.drawBoxESP(this.renderPos, this.colorSync.getValue() != false ? ColorUtil.rainbow((int) ClickGui.getInstance().rainbowHue.getValue()) : new Color(this.red.getValue(), this.green.getValue(), this.blue.getValue(), this.alpha.getValue()), this.customOutline.getValue(), this.colorSync.getValue() != false ? getCurrentColor() : new Color(this.cRed.getValue(), this.cGreen.getValue(), this.cBlue.getValue(), this.cAlpha.getValue()), this.lineWidth.getValue().floatValue(), this.outline.getValue(), this.box.getValue(), this.boxAlpha.getValue(), false);
+            RenderUtil.drawBoxESP(this.renderPos, this.colorSync.getValue() != false ? ColorUtil.rainbow(ClickGui.getInstance().rainbowHue.getValue()) : new Color(this.red.getValue(), this.green.getValue(), this.blue.getValue(), this.alpha.getValue()), this.customOutline.getValue(), this.colorSync.getValue() != false ? getCurrentColor() : new Color(this.cRed.getValue(), this.cGreen.getValue(), this.cBlue.getValue(), this.cAlpha.getValue()), this.lineWidth.getValue().floatValue(), this.outline.getValue(), this.box.getValue(), this.boxAlpha.getValue(), false);
             if (this.text.getValue().booleanValue()) {
                 RenderUtil.drawText(this.renderPos, (Math.floor(this.renderDamage) == this.renderDamage ? Integer.valueOf((int) this.renderDamage) : String.format("%.1f", this.renderDamage)) + "");
             }
@@ -455,24 +445,7 @@ public class AutoCrystal
     }
 
     @SubscribeEvent
-    public void onKeyInput(InputEvent.KeyInputEvent event) {
-        if (Keyboard.getEventKeyState() && !(AutoCrystal.mc.currentScreen instanceof ClickGuiScreen) && this.switchBind.getValue().getKey() == Keyboard.getEventKey()) {
-            if (this.switchBack.getValue().booleanValue() && this.offhandSwitch.getValue().booleanValue() && this.offHand) {
-                AutoTotem module = Bopis.moduleManager.getModuleByClass(AutoTotem.class);
-                if (module.isOff()) {
-                    Command.sendMessage("<" + this.getDisplayName() + "> " + "\u00a7c" + "Switch failed. Enable the AutoTotem module.");
-                } else {
-                    module.setMode(AutoTotem.Mode2.TOTEMS);
-                    module.doSwitch();
-                }
-                return;
-            }
-            this.switching = !this.switching;
-        }
-    }
-
-    @SubscribeEvent
-    public void onSettingChange( ClientEvent event) {
+    public void onSettingChange(ClientEvent event) {
         if (event.getStage() == 2 && event.getSetting() != null && event.getSetting().getFeature() != null && event.getSetting().getFeature().equals(this) && this.isEnabled() && (event.getSetting().equals(this.threadDelay) || event.getSetting().equals(this.threadMode))) {
             if (this.executor != null) {
                 this.executor.shutdown();
@@ -499,8 +472,6 @@ public class AutoCrystal
             }
         }
     }
-
-
 
     private void postProcessBreak() {
         while (!this.packetUseEntities.isEmpty()) {
@@ -626,9 +597,6 @@ public class AutoCrystal
             target = null;
             this.rotating = false;
             return false;
-        }
-        if (this.mineSwitch.getValue().booleanValue() && Mouse.isButtonDown(0) && (this.switching || this.autoSwitch.getValue() == AutoSwitch.ALWAYS) && Mouse.isButtonDown(1) && AutoCrystal.mc.player.getHeldItemMainhand().getItem() instanceof ItemPickaxe) {
-            this.switchItem();
         }
         this.mapCrystals();
         if (!this.posConfirmed && this.damageSync.getValue() != DamageSync.NONE && this.syncTimer.passedMs(this.confirm.getValue().intValue())) {
@@ -758,6 +726,9 @@ public class AutoCrystal
     }
 
     private void placeCrystal() {
+        if (autoSwitch.getValue()) {
+            InventoryUtil.switchToHotbarSlot(ItemEndCrystal.class, false);
+        }
         int crystalLimit = this.wasteAmount.getValue();
         if (this.placeTimer.passedMs(this.placeDelay.getValue().intValue()) && this.place.getValue().booleanValue() && (this.offHand || this.mainHand || this.switchMode.getValue() == Switch.ALWAYS || this.switchMode.getValue() == Switch.CALC || this.switchMode.getValue() == Switch.BREAKSLOT && this.switching)) {
             if (!(!this.offHand && !this.mainHand && (this.switchMode.getValue() == Switch.ALWAYS || this.switching) || this.crystalCount < crystalLimit || this.antiSurround.getValue().booleanValue() && this.lastPos != null && this.lastPos.equals(this.placePos))) {
@@ -765,13 +736,13 @@ public class AutoCrystal
             }
             this.calculateDamage(this.getTarget(this.targetMode.getValue() == Target.UNSAFE));
             if (target != null && this.placePos != null) {
-                if (!this.offHand && !this.mainHand && this.autoSwitch.getValue() != AutoSwitch.NONE && (this.currentDamage > (double) this.minDamage.getValue().floatValue() || this.lethalSwitch.getValue().booleanValue() && EntityUtil.getHealth(target) <= this.facePlace.getValue().floatValue()) && !this.switchItem()) {
+                if (!this.offHand && !this.mainHand && this.autoSwitch.getValue() && (this.currentDamage > (double) this.minDamage.getValue().floatValue() || this.lethalSwitch.getValue().booleanValue() && EntityUtil.getHealth(target) <= this.facePlace.getValue().floatValue())) {
                     return;
                 }
                 if (this.currentDamage < (double) this.minDamage.getValue().floatValue() && this.limitFacePlace.getValue().booleanValue()) {
                     crystalLimit = 1;
                 }
-                if (this.currentDamage >= (double) this.minMinDmg.getValue().floatValue() && (this.offHand || this.mainHand || this.autoSwitch.getValue() != AutoSwitch.NONE) && (this.crystalCount < crystalLimit || this.antiSurround.getValue().booleanValue() && this.lastPos != null && this.lastPos.equals(this.placePos)) && (this.currentDamage > (double) this.minDamage.getValue().floatValue() || this.minDmgCount < crystalLimit) && this.currentDamage >= 1.0 && (DamageUtil.isArmorLow(target, this.minArmor.getValue()) || EntityUtil.getHealth(target) <= this.facePlace.getValue().floatValue() || this.currentDamage > (double) this.minDamage.getValue().floatValue() || this.shouldHoldFacePlace())) {
+                if (this.currentDamage >= (double) this.minMinDmg.getValue().floatValue() && (this.offHand || this.mainHand || this.autoSwitch.getValue()) && (this.crystalCount < crystalLimit || this.antiSurround.getValue().booleanValue() && this.lastPos != null && this.lastPos.equals(this.placePos)) && (this.currentDamage > (double) this.minDamage.getValue().floatValue() || this.minDmgCount < crystalLimit) && this.currentDamage >= 1.0 && (DamageUtil.isArmorLow(target, this.minArmor.getValue()) || EntityUtil.getHealth(target) <= this.facePlace.getValue().floatValue() || this.currentDamage > (double) this.minDamage.getValue().floatValue() || this.shouldHoldFacePlace())) {
                     float damageOffset = this.damageSync.getValue() == DamageSync.BREAK ? this.dropOff.getValue().floatValue() - 5.0f : 0.0f;
                     boolean syncflag = false;
                     if (this.syncedFeetPlace.getValue().booleanValue() && this.placePos.equals(this.lastPos) && this.isEligableForFeetSync(target, this.placePos) && !this.syncTimer.passedMs(this.damageSyncTime.getValue().intValue()) && target.equals(this.currentSyncTarget) && target.getPosition().equals(this.syncedPlayerPos) && this.damageSync.getValue() != DamageSync.NONE) {
@@ -788,31 +759,29 @@ public class AutoCrystal
                         }
                         this.renderPos = this.placePos;
                         this.renderDamage = this.currentDamage;
-                        if (this.switchItem()) {
-                            this.currentSyncTarget = target;
-                            this.syncedPlayerPos = target.getPosition();
-                            if (this.foundDoublePop) {
-                                this.totemPops.put(target, new me.bopis.king.util.Timer ().reset());
+                        this.currentSyncTarget = target;
+                        this.syncedPlayerPos = target.getPosition();
+                        if (this.foundDoublePop) {
+                            this.totemPops.put(target, new me.bopis.king.util.Timer().reset());
+                        }
+                        this.rotateToPos(this.placePos);
+                        if (this.addTolowDmg || this.actualSlowBreak.getValue().booleanValue() && this.currentDamage < (double) this.minDamage.getValue().floatValue()) {
+                            lowDmgPos.add(this.placePos);
+                        }
+                        placedPos.add(this.placePos);
+                        if (!this.justRender.getValue().booleanValue()) {
+                            if (this.eventMode.getValue() == 2 && this.threadMode.getValue() == ThreadMode.NONE && this.rotateFirst.getValue().booleanValue() && this.rotate.getValue() != Rotate.OFF) {
+                                this.placeInfo = new PlaceInfo(this.placePos, this.offHand, this.placeSwing.getValue(), this.exactHand.getValue());
+                            } else {
+                                BlockUtil.placeCrystalOnBlock(this.placePos, this.offHand ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND, this.placeSwing.getValue(), this.exactHand.getValue());
                             }
-                            this.rotateToPos(this.placePos);
-                            if (this.addTolowDmg || this.actualSlowBreak.getValue().booleanValue() && this.currentDamage < (double) this.minDamage.getValue().floatValue()) {
-                                lowDmgPos.add(this.placePos);
-                            }
-                            placedPos.add(this.placePos);
-                            if (!this.justRender.getValue().booleanValue()) {
-                                if (this.eventMode.getValue() == 2 && this.threadMode.getValue() == ThreadMode.NONE && this.rotateFirst.getValue().booleanValue() && this.rotate.getValue() != Rotate.OFF) {
-                                    this.placeInfo = new PlaceInfo(this.placePos, this.offHand, this.placeSwing.getValue(), this.exactHand.getValue());
-                                } else {
-                                    BlockUtil.placeCrystalOnBlock(this.placePos, this.offHand ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND, this.placeSwing.getValue(), this.exactHand.getValue());
-                                }
-                            }
-                            this.lastPos = this.placePos;
-                            this.placeTimer.reset();
-                            this.posConfirmed = false;
-                            if (this.syncTimer.passedMs(this.damageSyncTime.getValue().intValue())) {
-                                this.syncedCrystalPos = null;
-                                this.syncTimer.reset();
-                            }
+                        }
+                        this.lastPos = this.placePos;
+                        this.placeTimer.reset();
+                        this.posConfirmed = false;
+                        if (this.syncTimer.passedMs(this.damageSyncTime.getValue().intValue())) {
+                            this.syncedCrystalPos = null;
+                            this.syncTimer.reset();
                         }
                     }
                 }
@@ -829,52 +798,6 @@ public class AutoCrystal
             return true;
         }
         return false;
-    }
-
-    private boolean switchItem() {
-        if (this.offHand || this.mainHand) {
-            return true;
-        }
-        switch (this.autoSwitch.getValue()) {
-            case NONE: {
-                return false;
-            }
-            case TOGGLE: {
-                if (!this.switching) {
-                    return false;
-                }
-            }
-            case ALWAYS: {
-                if (!this.doSwitch()) break;
-                return true;
-            }
-            case SILENT: {
-                EntityUtil.switchToHotbarSlot(EntityUtil.findHotbarBlock(BlockObsidian.class), true);
-            }
-        }
-        return false;
-    }
-
-    private boolean doSwitch() {
-        if (this.offhandSwitch.getValue().booleanValue()) {
-            AutoTotem module = Bopis.moduleManager.getModuleByClass(AutoTotem.class);
-            if (module.isOff()) {
-                Command.sendMessage("<" + this.getDisplayName() + "> " + "\u00a7c" + "Switch failed. Enable the AutoTotem module.");
-                this.switching = false;
-                return false;
-            }
-            this.switching = false;
-            return true;
-        } else {
-            if (AutoCrystal.mc.player.getHeldItemOffhand().getItem() == Items.END_CRYSTAL) {
-                this.mainHand = false;
-            } else {
-                InventoryUtil.switchToHotbarSlot(ItemEndCrystal.class, false);
-                this.mainHand = true;
-            }
-            this.switching = false;
-            return true;
-        }
     }
 
     private void calculateDamage(EntityPlayer targettedPlayer) {
@@ -1185,16 +1108,8 @@ public class AutoCrystal
 
     public enum ThreadMode {
         NONE,
-        POOL,
         SOUND,
         WHILE
-    }
-
-    public enum AutoSwitch {
-        NONE,
-        TOGGLE,
-        ALWAYS,
-        SILENT
     }
 
     public enum Raytrace {
@@ -1216,7 +1131,6 @@ public class AutoCrystal
     }
 
     public enum Target {
-        CLOSEST,
         UNSAFE,
         DAMAGE
     }

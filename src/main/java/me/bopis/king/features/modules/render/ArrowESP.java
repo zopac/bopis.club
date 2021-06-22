@@ -22,7 +22,7 @@ import java.util.Map;
 //ARROW ESP
 //ARROW ESP
 public class ArrowESP extends Module {
-    private final Setting <Integer> red = register(new Setting<Integer>("Red", 255, 0, 255));
+    private final Setting<Integer> red = register(new Setting<Integer>("Red", 255, 0, 255));
     private final Setting<Integer> green = register(new Setting<Integer>("Green", 255, 0, 255));
     private final Setting<Integer> blue = register(new Setting<Integer>("Blue", 255, 0, 255));
     private final Setting<Integer> radius = register(new Setting<Integer>("Placement", 45, 10, 200));
@@ -44,7 +44,7 @@ public class ArrowESP extends Module {
             if (o instanceof EntityPlayer && isValid((EntityPlayer) o)) {
                 EntityPlayer entity = (EntityPlayer) o;
                 Vec3d pos = entityListener.getEntityLowerBounds().get(entity);
-                if (pos != null && !isOnScreen(pos) && ! RenderUtil.isInViewFrustrum(entity)) {
+                if (pos != null && !isOnScreen(pos) && !RenderUtil.isInViewFrustrum(entity)) {
                     Color color = EntityUtil.getColor(entity, red.getValue(), green.getValue(), blue.getValue(), (int) MathHelper.clamp(255.0f - 255.0f / (float) fadeDistance.getValue().intValue() * ArrowESP.mc.player.getDistance(entity), 100.0f, 255.0f), true);
                     int x = Display.getWidth() / 2 / (ArrowESP.mc.gameSettings.guiScale == 0 ? 1 : ArrowESP.mc.gameSettings.guiScale);
                     int y = Display.getHeight() / 2 / (ArrowESP.mc.gameSettings.guiScale == 0 ? 1 : ArrowESP.mc.gameSettings.guiScale);

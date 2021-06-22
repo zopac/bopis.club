@@ -1,8 +1,5 @@
 package me.bopis.king.features.modules.render;
 
-import java.awt.Color;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import me.bopis.king.event.events.PacketEvent;
 import me.bopis.king.event.events.RenderEntityModelEvent;
 import me.bopis.king.features.modules.Module;
@@ -16,8 +13,12 @@ import net.minecraft.network.play.server.SPacketDestroyEntities;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.opengl.GL11;
 
+import java.awt.*;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 public class CrystalModifier extends Module {
-    public Setting <Boolean> animateScale = this.register(new Setting<Boolean>("AnimateScale", false));
+    public Setting<Boolean> animateScale = this.register(new Setting<Boolean>("AnimateScale", false));
     public Setting<Boolean> chams = this.register(new Setting<Boolean>("Chams", false));
     public Setting<Boolean> throughWalls = this.register(new Setting<Boolean>("ThroughWalls", true));
     public Setting<Boolean> wireframeThroughWalls = this.register(new Setting<Boolean>("WireThroughWalls", true));
@@ -52,9 +53,9 @@ public class CrystalModifier extends Module {
         for (Entity crystal : CrystalModifier.mc.world.loadedEntityList) {
             if (!(crystal instanceof EntityEnderCrystal)) continue;
             if (!this.scaleMap.containsKey(crystal)) {
-                this.scaleMap.put((EntityEnderCrystal)crystal, Float.valueOf(3.125E-4f));
+                this.scaleMap.put((EntityEnderCrystal) crystal, Float.valueOf(3.125E-4f));
             } else {
-                this.scaleMap.put((EntityEnderCrystal)crystal, Float.valueOf(this.scaleMap.get(crystal).floatValue() + 3.125E-4f));
+                this.scaleMap.put((EntityEnderCrystal) crystal, Float.valueOf(this.scaleMap.get(crystal).floatValue() + 3.125E-4f));
             }
             if (!(this.scaleMap.get(crystal).floatValue() >= 0.0625f * this.scale.getValue().floatValue())) continue;
             this.scaleMap.remove(crystal);
@@ -62,9 +63,9 @@ public class CrystalModifier extends Module {
     }
 
     @SubscribeEvent
-    public void onReceivePacket( PacketEvent.Receive event) {
+    public void onReceivePacket(PacketEvent.Receive event) {
         if (event.getPacket() instanceof SPacketDestroyEntities) {
-            SPacketDestroyEntities packet = (SPacketDestroyEntities)event.getPacket();
+            SPacketDestroyEntities packet = event.getPacket();
             for (int id : packet.getEntityIDs()) {
                 Entity entity = CrystalModifier.mc.world.getEntityByID(id);
                 if (!(entity instanceof EntityEnderCrystal)) continue;
@@ -73,7 +74,7 @@ public class CrystalModifier extends Module {
         }
     }
 
-    public void onRenderModel( RenderEntityModelEvent event) {
+    public void onRenderModel(RenderEntityModelEvent event) {
         if (event.getStage() != 0 || !(event.entity instanceof EntityEnderCrystal) || !this.wireframe.getValue().booleanValue()) {
             return;
         }
@@ -83,18 +84,18 @@ public class CrystalModifier extends Module {
         float gamma = CrystalModifier.mc.gameSettings.gammaSetting;
         CrystalModifier.mc.gameSettings.gammaSetting = 10000.0f;
         GL11.glPushMatrix();
-        GL11.glPushAttrib((int)1048575);
-        GL11.glPolygonMode((int)1032, (int)6913);
-        GL11.glDisable((int)3553);
-        GL11.glDisable((int)2896);
+        GL11.glPushAttrib(1048575);
+        GL11.glPolygonMode(1032, 6913);
+        GL11.glDisable(3553);
+        GL11.glDisable(2896);
         if (this.wireframeThroughWalls.getValue().booleanValue()) {
-            GL11.glDisable((int)2929);
+            GL11.glDisable(2929);
         }
-        GL11.glEnable((int)2848);
-        GL11.glEnable((int)3042);
-        GlStateManager.blendFunc((int)770, (int)771);
-        GlStateManager.color((float)((float)color.getRed() / 255.0f), (float)((float)color.getGreen() / 255.0f), (float)((float)color.getBlue() / 255.0f), (float)((float)color.getAlpha() / 255.0f));
-        GlStateManager.glLineWidth((float)this.lineWidth.getValue().floatValue());
+        GL11.glEnable(2848);
+        GL11.glEnable(3042);
+        GlStateManager.blendFunc(770, 771);
+        GlStateManager.color((float) color.getRed() / 255.0f, (float) color.getGreen() / 255.0f, (float) color.getBlue() / 255.0f, (float) color.getAlpha() / 255.0f);
+        GlStateManager.glLineWidth(this.lineWidth.getValue().floatValue());
         event.modelBase.render(event.entity, event.limbSwing, event.limbSwingAmount, event.age, event.headYaw, event.headPitch, event.scale);
         GL11.glPopAttrib();
         GL11.glPopMatrix();

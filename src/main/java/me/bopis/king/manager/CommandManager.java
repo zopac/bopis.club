@@ -10,17 +10,17 @@ import java.util.LinkedList;
 
 public class CommandManager
         extends Feature {
-    private final ArrayList< Command > commands = new ArrayList<>();
-    private String clientMessage = "<bopis>";
+    private final ArrayList<Command> commands = new ArrayList<>();
+    private String clientMessage = "bopis";
     private String prefix = "-";
 
     public CommandManager() {
         super("Command");
-        this.commands.add(new BindCommand ());
-        this.commands.add(new ModuleCommand ());
-        this.commands.add(new PrefixCommand ());
-        this.commands.add(new ConfigCommand ());
-        this.commands.add(new FriendCommand ());
+        this.commands.add(new BindCommand());
+        this.commands.add(new ModuleCommand());
+        this.commands.add(new PrefixCommand());
+        this.commands.add(new ConfigCommand());
+        this.commands.add(new FriendCommand());
         this.commands.add(new HelpCommand());
         this.commands.add(new ReloadCommand());
         this.commands.add(new UnloadCommand());

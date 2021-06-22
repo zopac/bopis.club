@@ -1,248 +1,165 @@
 package me.bopis.king.features.modules.combat;
 
-import me.bopis.king.event.events.PacketEvent;
-import me.bopis.king.event.events.ProcessRightClickBlockEvent;
-import me.bopis.king.features.modules.Module;
-import me.bopis.king.features.setting.Setting;
-import me.bopis.king.util.EntityUtil;
-import me.bopis.king.util.InventoryUtil;
-import me.bopis.king.util.Timer;
-import net.minecraft.block.BlockObsidian;
-import net.minecraft.block.BlockWeb;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.gui.inventory.GuiInventory;
-import net.minecraft.init.Items;
-import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
-import net.minecraft.network.play.client.CPacketPlayerTryUseItem;
-import net.minecraft.network.play.client.CPacketPlayerTryUseItemOnBlock;
+import me.bopis.king.features.modules.*;
+import me.bopis.king.features.setting.*;
+import net.minecraft.init.*;
+import net.minecraft.entity.*;
+import net.minecraft.entity.item.*;
+import java.util.*;
+import net.minecraft.item.*;
+import java.util.function.*;
+import net.minecraft.client.gui.inventory.*;
+import me.bopis.king.util.*;
+import net.minecraft.inventory.*;
+import net.minecraft.entity.player.*;
 import net.minecraft.util.EnumHand;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import org.lwjgl.input.Mouse;
-
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class AutoTotem extends Module {
-    private static AutoTotem instance;
-    private final Queue< InventoryUtil.Task > taskList = new ConcurrentLinkedQueue<InventoryUtil.Task>();
-    private final Timer timer = new Timer();
-    private final Timer secondTimer = new Timer();
-    public Setting <Boolean> crystal = register(new Setting<>("Crystal", true));
-    public Setting<Float> crystalHealth = register(new Setting<>("CrystalHP", Float.valueOf(13.0f), Float.valueOf(0.1f), Float.valueOf(36.0f)));
-    public Setting<Float> crystalHoleHealth = register(new Setting<>("CrystalHoleHP", Float.valueOf(3.5f), Float.valueOf(0.1f), Float.valueOf(36.0f)));
-    public Setting<Boolean> gapple = register(new Setting<>("Gapple", true));
-    public Setting<Boolean> armorCheck = register(new Setting<>("ArmorCheck", true));
-    public Setting<Integer> actions = register(new Setting<>("Packets", 4, 1, 4));
-    public Mode2 currentMode = Mode2.TOTEMS;
-    public int totems = 0;
-    public int crystals = 0;
-    public int gapples = 0;
-    public int lastTotemSlot = -1;
-    public int lastGappleSlot = -1;
-    public int lastCrystalSlot = -1;
-    public int lastObbySlot = -1;
-    public int lastWebSlot = -1;
-    public boolean holdingCrystal = false;
-    public boolean holdingTotem = false;
-    public boolean holdingGapple = false;
-    public boolean didSwitchThisTick = false;
-    private boolean second = false;
-    private boolean switchedForHealthReason = false;
+    public Setting<AutoTotemItem> mode;
+    public Setting<Float> health;
+    public Setting<Float> holeHealth;
+    public Setting<Boolean> swordGap;
+    public Setting<Float> swordGapHealth;
+    public Setting<Boolean> totemOnLethalCrystal;
+    public Item offhandItem;
+    public Item holdingItem;
+    public Item lastItem;
+    public int crystals;
+    public int gapples;
+    public int totems;
 
     public AutoTotem() {
-        super("AutoTotem", "Allows you to switch up your AutoTotem.", Module.Category.COMBAT, true, false, false);
-        instance = this;
-    }
-
-    public static AutoTotem getInstance() {
-        if (instance == null) {
-            instance = new AutoTotem();
-        }
-        return instance;
-    }
-
-    @SubscribeEvent
-    public void onUpdateWalkingPlayer(ProcessRightClickBlockEvent event) {
-        if (event.hand == EnumHand.MAIN_HAND && event.stack.getItem() == Items.END_CRYSTAL && AutoTotem.mc.player.getHeldItemOffhand().getItem() == Items.GOLDEN_APPLE && AutoTotem.mc.objectMouseOver != null && event.pos == AutoTotem.mc.objectMouseOver.getBlockPos()) {
-            event.setCanceled(true);
-            AutoTotem.mc.player.setActiveHand(EnumHand.OFF_HAND);
-            AutoTotem.mc.playerController.processRightClick(AutoTotem.mc.player, AutoTotem.mc.world, EnumHand.OFF_HAND);
-        }
+        super("AutoTotem", "Automatically puts items into your offhand", Category.COMBAT, true, false, false);
+        this.mode = (Setting<AutoTotemItem>)this.register(new Setting("Mode", AutoTotemItem.TOTEM));
+        this.health = (Setting<Float>)this.register(new Setting("Health", 16.0f, 0.0f, 36.0f));
+        this.holeHealth = (Setting<Float>)this.register(new Setting("HoleHealth", 6.0f, 0.1f, 36.0f));
+        this.swordGap = (Setting<Boolean>)this.register(new Setting("SwordGap", true));
+        this.swordGapHealth = (Setting<Float>)this.register(new Setting("SwordGapMinHealth", 6.0f, 0.1f, 36.0f, v -> this.swordGap.getValue()));
+        this.totemOnLethalCrystal = (Setting<Boolean>)this.register(new Setting("LethalCrystalSwitch", true));
     }
 
     @Override
     public void onUpdate() {
-        if (timer.passedMs(50L)) {
-            if (AutoTotem.mc.player != null && AutoTotem.mc.player.getHeldItemOffhand().getItem() == Items.GOLDEN_APPLE && AutoTotem.mc.player.getHeldItemMainhand().getItem() == Items.END_CRYSTAL && Mouse.isButtonDown(1)) {
-                AutoTotem.mc.player.setActiveHand(EnumHand.OFF_HAND);
-                AutoTotem.mc.gameSettings.keyBindUseItem.pressed = Mouse.isButtonDown(1);
+        final float currentHealth = AutoTotem.mc.player.getHealth() + AutoTotem.mc.player.getAbsorptionAmount();
+        if (this.isLethalCrystal(currentHealth) && this.totemOnLethalCrystal.getValue()) {
+            this.lastItem = this.offhandItem;
+            this.offhandItem = Items.TOTEM_OF_UNDYING;
+        }
+        else if (AutoTotem.mc.player.getHeldItemMainhand().getItem() instanceof ItemSword && AutoTotem.mc.gameSettings.keyBindUseItem.isKeyDown() && currentHealth > this.swordGapHealth.getValue()) {
+            this.lastItem = this.offhandItem;
+            this.offhandItem = Items.GOLDEN_APPLE;
+        }
+        else if (EntityUtil.isSafe((Entity)AutoTotem.mc.player)) {
+            if (currentHealth <= this.holeHealth.getValue()) {
+                this.offhandItem = Items.TOTEM_OF_UNDYING;
             }
-        } else if (AutoTotem.mc.player.getHeldItemOffhand().getItem() == Items.GOLDEN_APPLE && AutoTotem.mc.player.getHeldItemMainhand().getItem() == Items.END_CRYSTAL) {
-            AutoTotem.mc.gameSettings.keyBindUseItem.pressed = false;
-        }
-        if (AutoTotem.nullCheck()) {
-            return;
-        }
-        doOffhand();
-        if (secondTimer.passedMs(50L) && second) {
-            second = false;
-            timer.reset();
-        }
-    }
-
-    @SubscribeEvent
-    public void onPacketSend(PacketEvent.Send event) {
-        if (!AutoTotem.fullNullCheck() && AutoTotem.mc.player.getHeldItemOffhand().getItem() == Items.GOLDEN_APPLE && AutoTotem.mc.player.getHeldItemMainhand().getItem() == Items.END_CRYSTAL && AutoTotem.mc.gameSettings.keyBindUseItem.isKeyDown()) {
-            CPacketPlayerTryUseItem packet;
-            if (event.getPacket() instanceof CPacketPlayerTryUseItemOnBlock) {
-                CPacketPlayerTryUseItemOnBlock packet2 = event.getPacket();
-                if (packet2.getHand() == EnumHand.MAIN_HAND) {
-                    if (timer.passedMs(50L)) {
-                        AutoTotem.mc.player.setActiveHand(EnumHand.OFF_HAND);
-                        AutoTotem.mc.player.connection.sendPacket(new CPacketPlayerTryUseItem(EnumHand.OFF_HAND));
+            else {
+                final String lowerCase = this.mode.currentEnumName().toLowerCase();
+                switch (lowerCase) {
+                    case "totem": {
+                        this.offhandItem = Items.TOTEM_OF_UNDYING;
+                        break;
                     }
-                    event.setCanceled(true);
+                    case "crystal": {
+                        this.offhandItem = Items.END_CRYSTAL;
+                        break;
+                    }
+                    case "gapple": {
+                        this.offhandItem = Items.GOLDEN_APPLE;
+                        break;
+                    }
                 }
-            } else if (event.getPacket() instanceof CPacketPlayerTryUseItem && (packet = event.getPacket()).getHand() == EnumHand.OFF_HAND && !timer.passedMs(50L)) {
-                event.setCanceled(true);
             }
         }
-    }
-
-    @Override
-    public String getDisplayInfo() {
-        if (AutoTotem.mc.player.getHeldItemOffhand().getItem() == Items.END_CRYSTAL) {
-            return "Crystal";
+        else if (currentHealth <= this.health.getValue()) {
+            this.offhandItem = Items.TOTEM_OF_UNDYING;
         }
-        if (AutoTotem.mc.player.getHeldItemOffhand().getItem() == Items.TOTEM_OF_UNDYING) {
-            return "Totem";
-        }
-        if (AutoTotem.mc.player.getHeldItemOffhand().getItem() == Items.GOLDEN_APPLE) {
-            return "Gapple";
-        }
-        return null;
-    }
-
-    public void doOffhand() {
-        didSwitchThisTick = false;
-        holdingCrystal = AutoTotem.mc.player.getHeldItemOffhand().getItem() == Items.END_CRYSTAL;
-        holdingTotem = AutoTotem.mc.player.getHeldItemOffhand().getItem() == Items.TOTEM_OF_UNDYING;
-        holdingGapple = AutoTotem.mc.player.getHeldItemOffhand().getItem() == Items.GOLDEN_APPLE;
-        totems = AutoTotem.mc.player.inventory.mainInventory.stream().filter(itemStack -> itemStack.getItem() == Items.TOTEM_OF_UNDYING).mapToInt(ItemStack::getCount).sum();
-        if (holdingTotem) {
-            totems += AutoTotem.mc.player.inventory.offHandInventory.stream().filter(itemStack -> itemStack.getItem() == Items.TOTEM_OF_UNDYING).mapToInt(ItemStack::getCount).sum();
-        }
-        crystals = AutoTotem.mc.player.inventory.mainInventory.stream().filter(itemStack -> itemStack.getItem() == Items.END_CRYSTAL).mapToInt(ItemStack::getCount).sum();
-        if (holdingCrystal) {
-            crystals += AutoTotem.mc.player.inventory.offHandInventory.stream().filter(itemStack -> itemStack.getItem() == Items.END_CRYSTAL).mapToInt(ItemStack::getCount).sum();
-        }
-        gapples = AutoTotem.mc.player.inventory.mainInventory.stream().filter(itemStack -> itemStack.getItem() == Items.GOLDEN_APPLE).mapToInt(ItemStack::getCount).sum();
-        if (holdingGapple) {
-            gapples += AutoTotem.mc.player.inventory.offHandInventory.stream().filter(itemStack -> itemStack.getItem() == Items.GOLDEN_APPLE).mapToInt(ItemStack::getCount).sum();
-        }
-        doSwitch();
-    }
-
-    public void doSwitch() {
-        currentMode = Mode2.TOTEMS;
-        if (gapple.getValue() && AutoTotem.mc.player.getHeldItemMainhand().getItem() instanceof ItemSword && AutoTotem.mc.gameSettings.keyBindUseItem.isKeyDown()) {
-            currentMode = Mode2.GAPPLES;
-        } else if (currentMode != Mode2.CRYSTALS && crystal.getValue() && ( EntityUtil.isSafe(AutoTotem.mc.player) && EntityUtil.getHealth(AutoTotem.mc.player, true) > crystalHoleHealth.getValue() || EntityUtil.getHealth(AutoTotem.mc.player, true) > crystalHealth.getValue())) {
-            currentMode = Mode2.CRYSTALS;
-        }
-        if (currentMode == Mode2.CRYSTALS && crystals == 0) {
-            setMode(Mode2.TOTEMS);
-        }
-        if (currentMode == Mode2.CRYSTALS && (!EntityUtil.isSafe(AutoTotem.mc.player) && EntityUtil.getHealth(AutoTotem.mc.player, true) <= crystalHealth.getValue() || EntityUtil.getHealth(AutoTotem.mc.player, true) <= crystalHoleHealth.getValue())) {
-            if (currentMode == Mode2.CRYSTALS) {
-                switchedForHealthReason = true;
+        else {
+            final String lowerCase2 = this.mode.currentEnumName().toLowerCase();
+            switch (lowerCase2) {
+                case "totem": {
+                    this.offhandItem = Items.TOTEM_OF_UNDYING;
+                    break;
+                }
+                case "crystal": {
+                    this.offhandItem = Items.END_CRYSTAL;
+                    break;
+                }
+                case "gapple": {
+                    this.offhandItem = Items.GOLDEN_APPLE;
+                    break;
+                }
             }
-            setMode(Mode2.TOTEMS);
         }
-        if (switchedForHealthReason && (EntityUtil.isSafe(AutoTotem.mc.player) && EntityUtil.getHealth(AutoTotem.mc.player, true) > crystalHoleHealth.getValue() || EntityUtil.getHealth(AutoTotem.mc.player, true) > crystalHealth.getValue())) {
-            setMode(Mode2.CRYSTALS);
-            switchedForHealthReason = false;
+        this.doSwitch();
+    }
+
+    private boolean isLethalCrystal(final float health) {
+        for (final Entity e : AutoTotem.mc.world.loadedEntityList) {
+            if (e instanceof EntityEnderCrystal && health <= DamageUtil.calculateDamage(e, (Entity)AutoTotem.mc.player)) {
+                return true;
+            }
         }
-        if (currentMode == Mode2.CRYSTALS && armorCheck.getValue() && (AutoTotem.mc.player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == Items.AIR || AutoTotem.mc.player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == Items.AIR || AutoTotem.mc.player.getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem() == Items.AIR || AutoTotem.mc.player.getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() == Items.AIR)) {
-            setMode(Mode2.TOTEMS);
+        return false;
+    }
+
+    private void doSwitch() {
+        this.holdingItem = AutoTotem.mc.player.getHeldItem(EnumHand.OFF_HAND).getItem();
+        this.crystals = AutoTotem.mc.player.inventory.mainInventory.stream().filter(itemStack -> itemStack.getItem() == Items.END_CRYSTAL).mapToInt(ItemStack::getCount).sum();
+        this.gapples = AutoTotem.mc.player.inventory.mainInventory.stream().filter(itemStack -> itemStack.getItem() == Items.GOLDEN_APPLE).mapToInt(ItemStack::getCount).sum();
+        this.totems = AutoTotem.mc.player.inventory.mainInventory.stream().filter(itemStack -> itemStack.getItem() == Items.TOTEM_OF_UNDYING).mapToInt(ItemStack::getCount).sum();
+        if (this.holdingItem.equals(Items.END_CRYSTAL)) {
+            this.crystals += AutoTotem.mc.player.inventory.offHandInventory.stream().filter(itemStack -> itemStack.getItem() == Items.END_CRYSTAL).mapToInt(ItemStack::getCount).sum();
         }
-        if (AutoTotem.mc.currentScreen instanceof GuiContainer && !(AutoTotem.mc.currentScreen instanceof GuiInventory)) {
+        else if (this.holdingItem.equals(Items.GOLDEN_APPLE)) {
+            this.gapples += AutoTotem.mc.player.inventory.offHandInventory.stream().filter(itemStack -> itemStack.getItem() == Items.GOLDEN_APPLE).mapToInt(ItemStack::getCount).sum();
+        }
+        else if (this.holdingItem.equals(Items.TOTEM_OF_UNDYING)) {
+            this.totems += AutoTotem.mc.player.inventory.offHandInventory.stream().filter(itemStack -> itemStack.getItem() == Items.TOTEM_OF_UNDYING).mapToInt(ItemStack::getCount).sum();
+        }
+        if (AutoTotem.mc.currentScreen instanceof GuiContainer) {
             return;
         }
-        Item currentOffhandItem = AutoTotem.mc.player.getHeldItemOffhand().getItem();
-        switch (currentMode) {
-            case TOTEMS: {
-                if (totems <= 0 || holdingTotem) break;
-                lastTotemSlot = InventoryUtil.findItemInventorySlot(Items.TOTEM_OF_UNDYING, false);
-                int lastSlot = getLastSlot(currentOffhandItem, lastTotemSlot);
-                putItemInOffhand(lastTotemSlot, lastSlot);
+        final int slot = InventoryUtil.findItemInventorySlot(this.offhandItem, false);
+        if (slot != -1) {
+            if (this.holdingItem == this.offhandItem) {
+                return;
+            }
+            if (this.offhandItem.equals(Items.END_CRYSTAL) && this.crystals > 0) {
+                this.switchItem(slot);
+            }
+            if (this.offhandItem.equals(Items.GOLDEN_APPLE) && this.gapples > 0) {
+                this.switchItem(slot);
+            }
+            if (this.offhandItem.equals(Items.TOTEM_OF_UNDYING) && this.totems > 0) {
+                this.switchItem(slot);
+            }
+        }
+    }
+
+    private void switchItem(final int slot) {
+        int returnSlot = -1;
+        if (slot == -1) {
+            return;
+        }
+        AutoTotem.mc.playerController.windowClick(0, (slot < 9) ? (slot + 36) : slot, 0, ClickType.PICKUP, (EntityPlayer)AutoTotem.mc.player);
+        AutoTotem.mc.playerController.windowClick(0, 45, 0, ClickType.PICKUP, (EntityPlayer)AutoTotem.mc.player);
+        for (int i = 0; i < 45; ++i) {
+            if (AutoTotem.mc.player.inventory.getStackInSlot(i).isEmpty()) {
+                returnSlot = i;
                 break;
             }
-            case GAPPLES: {
-                if (gapples <= 0 || holdingGapple) break;
-                lastGappleSlot = InventoryUtil.findItemInventorySlot(Items.GOLDEN_APPLE, false);
-                int lastSlot = getLastSlot(currentOffhandItem, lastGappleSlot);
-                putItemInOffhand(lastGappleSlot, lastSlot);
-                break;
-            }
-            default: {
-                if (crystals <= 0 || holdingCrystal) break;
-                lastCrystalSlot = InventoryUtil.findItemInventorySlot(Items.END_CRYSTAL, false);
-                int lastSlot = getLastSlot(currentOffhandItem, lastCrystalSlot);
-                putItemInOffhand(lastCrystalSlot, lastSlot);
-            }
         }
-        for (int i = 0; i < actions.getValue(); ++i) {
-            InventoryUtil.Task task = taskList.poll();
-            if (task == null) continue;
-            task.run();
-            if (!task.isSwitching()) continue;
-            didSwitchThisTick = true;
+        if (returnSlot != -1) {
+            AutoTotem.mc.playerController.windowClick(0, (returnSlot < 9) ? (returnSlot + 36) : returnSlot, 0, ClickType.PICKUP, (EntityPlayer)AutoTotem.mc.player);
         }
+        AutoTotem.mc.playerController.updateController();
     }
 
-    private int getLastSlot(Item item, int slotIn) {
-        if (item == Items.END_CRYSTAL) {
-            return lastCrystalSlot;
-        }
-        if (item == Items.GOLDEN_APPLE) {
-            return lastGappleSlot;
-        }
-        if (item == Items.TOTEM_OF_UNDYING) {
-            return lastTotemSlot;
-        }
-        if (InventoryUtil.isBlock(item, BlockObsidian.class)) {
-            return lastObbySlot;
-        }
-        if (InventoryUtil.isBlock(item, BlockWeb.class)) {
-            return lastWebSlot;
-        }
-        if (item == Items.AIR) {
-            return -1;
-        }
-        return slotIn;
-    }
-
-    private void putItemInOffhand(int slotIn, int slotOut) {
-        if (slotIn != -1 && taskList.isEmpty()) {
-            taskList.add(new InventoryUtil.Task(slotIn));
-            taskList.add(new InventoryUtil.Task(45));
-            taskList.add(new InventoryUtil.Task(slotOut));
-            taskList.add(new InventoryUtil.Task());
-        }
-    }
-
-    public void setMode(Mode2 mode) {
-        currentMode = currentMode == mode ? Mode2.TOTEMS : mode;
-    }
-
-    public enum Mode2 {
-        TOTEMS,
-        GAPPLES,
-        CRYSTALS
+    public enum AutoTotemItem
+    {
+        TOTEM,
+        CRYSTAL,
+        GAPPLE;
     }
 }
-

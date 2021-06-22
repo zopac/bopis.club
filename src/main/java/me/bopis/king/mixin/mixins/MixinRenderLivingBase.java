@@ -103,7 +103,7 @@ public abstract class MixinRenderLivingBase<T extends EntityLivingBase> extends 
                     if (flag1)
                         unsetScoreTeamColor();
                 } else {
-                    if ( Chams.getInstance().isOn() && (Chams.getInstance()).players.getValue().booleanValue() && entity instanceof EntityPlayer && (Chams.getInstance()).mode.getValue().equals(Chams.RenderMode.SOLID)) {
+                    if (Chams.getInstance().isOn() && (Chams.getInstance()).players.getValue().booleanValue() && entity instanceof EntityPlayer && (Chams.getInstance()).mode.getValue().equals(Chams.RenderMode.SOLID)) {
                         this.red = (Chams.getInstance().red.getValue()) / 255.0F;
                         this.green = (Chams.getInstance().green.getValue()) / 255.0F;
                         this.blue = (Chams.getInstance().blue.getValue()) / 255.0F;
@@ -116,10 +116,10 @@ public abstract class MixinRenderLivingBase<T extends EntityLivingBase> extends 
                         GL11.glBlendFunc(770, 771);
                         GL11.glDisable(2929);
                         GL11.glDepthMask(false);
-                        if ( Bopis.friendManager.isFriend(entity.getName()) || entity == (Minecraft.getMinecraft()).player) {
+                        if (Bopis.friendManager.isFriend(entity.getName()) || entity == (Minecraft.getMinecraft()).player) {
                             GL11.glColor4f(0.0F, 191.0F, 255.0F, (Chams.getInstance()).alpha.getValue().floatValue() / 255.0F);
                         } else {
-                            GL11.glColor4f((Chams.getInstance()).rainbow.getValue().booleanValue() ? ( ColorUtil.rainbow((Chams.getInstance()).rainbowHue.getValue().intValue()).getRed() / 255.0F) : this.red, (Chams.getInstance()).rainbow.getValue().booleanValue() ? (ColorUtil.rainbow((Chams.getInstance()).rainbowHue.getValue().intValue()).getGreen() / 255.0F) : this.green, (Chams.getInstance()).rainbow.getValue().booleanValue() ? (ColorUtil.rainbow((Chams.getInstance()).rainbowHue.getValue().intValue()).getBlue() / 255.0F) : this.blue, (Chams.getInstance()).alpha.getValue().floatValue() / 255.0F);
+                            GL11.glColor4f((Chams.getInstance()).rainbow.getValue().booleanValue() ? (ColorUtil.rainbow((Chams.getInstance()).rainbowHue.getValue().intValue()).getRed() / 255.0F) : this.red, (Chams.getInstance()).rainbow.getValue().booleanValue() ? (ColorUtil.rainbow((Chams.getInstance()).rainbowHue.getValue().intValue()).getGreen() / 255.0F) : this.green, (Chams.getInstance()).rainbow.getValue().booleanValue() ? (ColorUtil.rainbow((Chams.getInstance()).rainbowHue.getValue().intValue()).getBlue() / 255.0F) : this.blue, (Chams.getInstance()).alpha.getValue().floatValue() / 255.0F);
                         }
                         renderModel(entity, f6, f5, f8, f2, f7, f4);
                         GL11.glDisable(2896);

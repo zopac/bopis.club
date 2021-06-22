@@ -27,7 +27,7 @@ public class NoSoundLag
         BLACKLIST = Sets.newHashSet(SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, SoundEvents.ITEM_ARMOR_EQIIP_ELYTRA, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, SoundEvents.ITEM_ARMOR_EQUIP_IRON, SoundEvents.ITEM_ARMOR_EQUIP_GOLD, SoundEvents.ITEM_ARMOR_EQUIP_CHAIN, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER);
     }
 
-    public Setting <Boolean> crystals = this.register(new Setting<Boolean>("Crystals", true));
+    public Setting<Boolean> crystals = this.register(new Setting<Boolean>("Crystals", true));
     public Setting<Boolean> armor = this.register(new Setting<Boolean>("Armor", true));
     public Setting<Float> soundRange = this.register(new Setting<Float>("SoundRange", Float.valueOf(12.0f), Float.valueOf(0.0f), Float.valueOf(12.0f)));
 
@@ -60,7 +60,7 @@ public class NoSoundLag
     public void onPacketReceived(PacketEvent.Receive event) {
         if (event != null && event.getPacket() != null && NoSoundLag.mc.player != null && NoSoundLag.mc.world != null && event.getPacket() instanceof SPacketSoundEffect) {
             SPacketSoundEffect packet = event.getPacket();
-            if (this.crystals.getValue().booleanValue() && packet.getCategory() == SoundCategory.BLOCKS && packet.getSound() == SoundEvents.ENTITY_GENERIC_EXPLODE && ( AutoCrystal.getInstance().isOff() || !AutoCrystal.getInstance().sound.getValue().booleanValue() && AutoCrystal.getInstance().threadMode.getValue() != AutoCrystal.ThreadMode.SOUND)) {
+            if (this.crystals.getValue().booleanValue() && packet.getCategory() == SoundCategory.BLOCKS && packet.getSound() == SoundEvents.ENTITY_GENERIC_EXPLODE && (AutoCrystal.getInstance().isOff() || !AutoCrystal.getInstance().sound.getValue().booleanValue() && AutoCrystal.getInstance().threadMode.getValue() != AutoCrystal.ThreadMode.SOUND)) {
                 NoSoundLag.removeEntities(packet, this.soundRange.getValue().floatValue());
             }
             if (BLACKLIST.contains(packet.getSound()) && this.armor.getValue().booleanValue()) {

@@ -14,7 +14,7 @@ public class FriendCommand
     @Override
     public void execute(String[] commands) {
         if (commands.length == 1) {
-            if ( Bopis.friendManager.getFriends().isEmpty()) {
+            if (Bopis.friendManager.getFriends().isEmpty()) {
                 FriendCommand.sendMessage("Friend list empty D:.");
             } else {
                 String f = "Friends: ";

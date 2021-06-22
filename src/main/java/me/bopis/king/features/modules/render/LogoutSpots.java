@@ -23,7 +23,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class LogoutSpots
         extends Module {
-    private final Setting <Boolean> colorSync = this.register(new Setting<Boolean>("Sync", false));
+    private final Setting<Boolean> colorSync = this.register(new Setting<Boolean>("Sync", false));
     private final Setting<Integer> red = this.register(new Setting<Integer>("Red", 255, 0, 255));
     private final Setting<Integer> green = this.register(new Setting<Integer>("Green", 0, 0, 255));
     private final Setting<Integer> blue = this.register(new Setting<Integer>("Blue", 0, 0, 255));

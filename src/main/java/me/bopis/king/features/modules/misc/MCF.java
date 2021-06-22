@@ -32,7 +32,7 @@ public class MCF extends Module {
         Entity entity;
         RayTraceResult result = MCF.mc.objectMouseOver;
         if (result != null && result.typeOfHit == RayTraceResult.Type.ENTITY && (entity = result.entityHit) instanceof EntityPlayer) {
-            if ( Bopis.friendManager.isFriend(entity.getName())) {
+            if (Bopis.friendManager.isFriend(entity.getName())) {
                 Bopis.friendManager.removeFriend(entity.getName());
                 Command.sendMessage(ChatFormatting.RED + entity.getName() + ChatFormatting.RED + " has been unfriended.");
             } else {

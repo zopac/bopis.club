@@ -12,7 +12,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemEndCrystal;
 import net.minecraft.item.ItemExpBottle;
 import net.minecraft.item.ItemMinecart;
-import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.CPacketPlayerTryUseItemOnBlock;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -22,7 +21,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class FastPlace
         extends Module {
-    private final Setting <Boolean> all = this.register(new Setting<Boolean>("All", false));
+    private final Setting<Boolean> all = this.register(new Setting<Boolean>("All", false));
     private final Setting<Boolean> obby = this.register(new Setting<Object>("Obsidian", Boolean.valueOf(false), v -> this.all.getValue() == false));
     private final Setting<Boolean> enderChests = this.register(new Setting<Object>("EnderChests", Boolean.valueOf(false), v -> this.all.getValue() == false));
     private final Setting<Boolean> crystals = this.register(new Setting<Object>("Crystals", Boolean.valueOf(false), v -> this.all.getValue() == false));
@@ -53,7 +52,7 @@ public class FastPlace
         if (FastPlace.fullNullCheck()) {
             return;
         }
-        if ( InventoryUtil.holdingItem(ItemExpBottle.class) && this.exp.getValue().booleanValue()) {
+        if (InventoryUtil.holdingItem(ItemExpBottle.class) && this.exp.getValue().booleanValue()) {
             FastPlace.mc.rightClickDelayTimer = 0;
         }
         if (InventoryUtil.holdingItem(BlockObsidian.class) && this.obby.getValue().booleanValue()) {

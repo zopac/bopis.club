@@ -23,7 +23,7 @@ import java.util.Map;
 public class HoleFill extends Module {
     private static HoleFill INSTANCE = new HoleFill();
 
-    private final Setting <Integer> range;
+    private final Setting<Integer> range;
     private final Setting<Integer> delay;
     private final Setting<Boolean> rotate;
     private final Setting<Integer> blocksPerTick;
@@ -31,13 +31,13 @@ public class HoleFill extends Module {
     private final Timer offTimer;
     private final Timer timer;
     private boolean isSneaking;
-    private boolean hasOffhand = false;
+    private final boolean hasOffhand = false;
     private final Map<BlockPos, Integer> retries;
     private final Timer retryTimer;
     private int blocksThisTick;
     private ArrayList<BlockPos> holes;
 
-	public HoleFill() {
+    public HoleFill() {
         super("HoleFill", "Fills holes around you.", Category.COMBAT, true, false, true);
         range = register(new Setting<>("PlaceRange", 8, 0, 10));
         delay = register(new Setting<>("Delay", 50, 0, 250));
@@ -74,7 +74,7 @@ public class HoleFill extends Module {
 
     @Override
     public void onTick() {
-        if(isOn() && !(blocksPerTick.getValue() == 1 && rotate.getValue())) {
+        if (isOn() && !(blocksPerTick.getValue() == 1 && rotate.getValue())) {
             doHoleFill();
         }
     }

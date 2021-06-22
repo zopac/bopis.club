@@ -82,16 +82,15 @@ public class InventoryUtil
         return -1;
     }
 
-    public static List<Integer> getItemInventory(Item item){
+    public static List<Integer> getItemInventory(Item item) {
         List<Integer> ints = new ArrayList<>();
-        for (int i = 9; i < 36; i++)
-        {
+        for (int i = 9; i < 36; i++) {
             Item target = mc.player.inventory.getStackInSlot(i).getItem();
 
             if (item instanceof ItemBlock && ((ItemBlock) item).getBlock().equals(item)) ints.add(i);
         }
 
-        if(ints.size() == 0) ints.add(-1);
+        if (ints.size() == 0) ints.add(-1);
 
         return ints;
     }

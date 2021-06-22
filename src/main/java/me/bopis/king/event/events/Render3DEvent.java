@@ -2,9 +2,8 @@ package me.bopis.king.event.events;
 
 import me.bopis.king.event.EventStage;
 
-public class Render3DEvent extends EventStage
-{
-    private float partialTicks;
+public class Render3DEvent extends EventStage {
+    private final float partialTicks;
 
     public Render3DEvent(final float partialTicks) {
         this.partialTicks = partialTicks;

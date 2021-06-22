@@ -2,8 +2,8 @@ package me.bopis.king.features.gui.components.items.buttons;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
 import me.bopis.king.Bopis;
-import me.bopis.king.features.modules.client.ClickGui;
 import me.bopis.king.features.gui.ClickGuiScreen;
+import me.bopis.king.features.modules.client.ClickGui;
 import me.bopis.king.features.setting.Bind;
 import me.bopis.king.features.setting.Setting;
 import me.bopis.king.util.ColorUtil;
@@ -24,7 +24,7 @@ public class BindButton
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        int color = ColorUtil.toARGB( ClickGui.getInstance().red.getValue(), ClickGui.getInstance().green.getValue(), ClickGui.getInstance().blue.getValue(), 255);
+        int color = ColorUtil.toARGB(ClickGui.getInstance().red.getValue(), ClickGui.getInstance().green.getValue(), ClickGui.getInstance().blue.getValue(), 255);
         RenderUtil.drawRect(this.x, this.y, this.x + (float) this.width + 7.4f, this.y + (float) this.height - 0.5f, this.getState() ? (!this.isHovering(mouseX, mouseY) ? 0x11555555 : -2007673515) : (!this.isHovering(mouseX, mouseY) ? Bopis.colorManager.getColorWithAlpha(Bopis.moduleManager.getModuleByClass(ClickGui.class).hoverAlpha.getValue()) : Bopis.colorManager.getColorWithAlpha(Bopis.moduleManager.getModuleByClass(ClickGui.class).alpha.getValue())));
         if (this.isListening) {
             Bopis.textManager.drawStringWithShadow("Press a Key...", this.x + 2.3f, this.y - 1.7f - (float) ClickGuiScreen.getClickGui().getTextOffset(), -1);

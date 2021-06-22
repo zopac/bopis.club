@@ -38,7 +38,7 @@ public class BindCommand
             BindCommand.sendMessage("Unknown key '" + rkey + "'!");
             return;
         }
-        module.bind.setValue(new Bind (key));
+        module.bind.setValue(new Bind(key));
         BindCommand.sendMessage("Bind for " + ChatFormatting.GREEN + module.getName() + ChatFormatting.WHITE + " set to " + ChatFormatting.GRAY + rkey.toUpperCase());
     }
 }

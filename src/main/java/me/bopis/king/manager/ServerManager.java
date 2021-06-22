@@ -23,7 +23,7 @@ public class ServerManager
     }
 
     public boolean isServerNotResponding() {
-        return this.timer.passedMs( HUD.getInstance().lagTime.getValue().intValue());
+        return this.timer.passedMs(HUD.getInstance().lagTime.getValue().intValue());
     }
 
     public long serverRespondingTime() {
@@ -85,7 +85,7 @@ public class ServerManager
             return 0;
         }
         try {
-            return Objects.requireNonNull( Util.mc.getConnection()).getPlayerInfo( Util.mc.getConnection().getGameProfile().getId()).getResponseTime();
+            return Objects.requireNonNull(Util.mc.getConnection()).getPlayerInfo(Util.mc.getConnection().getGameProfile().getId()).getResponseTime();
         } catch (Exception e) {
             return 0;
         }

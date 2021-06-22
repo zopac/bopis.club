@@ -1,48 +1,43 @@
 package me.bopis.king.util;
 
 import me.bopis.king.Bopis;
-import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.EXTFramebufferObject;
-import net.minecraft.client.shader.Framebuffer;
-import net.minecraft.client.renderer.OpenGlHelper;
-import org.lwjgl.opengl.Display;
-import org.lwjgl.util.glu.GLU;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.culling.Frustum;
+import net.minecraft.client.renderer.culling.ICamera;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.shader.Framebuffer;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec2f;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.EXTFramebufferObject;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.glu.Disk;
+import org.lwjgl.util.glu.GLU;
+import org.lwjgl.util.glu.Sphere;
+
+import java.awt.*;
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import org.lwjgl.util.glu.Disk;
-import org.lwjgl.util.glu.Sphere;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.RenderGlobal;
 import java.util.Objects;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.world.World;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.client.renderer.GlStateManager;
-import java.awt.Color;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.Minecraft;
-import org.lwjgl.opengl.GL11;
-import java.nio.IntBuffer;
-import java.nio.FloatBuffer;
-import net.minecraft.client.renderer.culling.Frustum;
-import net.minecraft.client.renderer.culling.ICamera;
-import net.minecraft.client.renderer.RenderItem;
 
-public class RenderUtil implements Util
-{
+public class RenderUtil implements Util {
     public static RenderItem itemRender;
     public static ICamera camera;
     private static final Frustum frustrum;
@@ -76,10 +71,10 @@ public class RenderUtil implements Util
         final Tessellator tessellator = Tessellator.getInstance();
         final BufferBuilder BufferBuilder2 = tessellator.getBuffer();
         BufferBuilder2.begin(7, DefaultVertexFormats.POSITION_TEX);
-        BufferBuilder2.pos((double)(x + 0), (double)(y + height), (double)zLevel).tex((double)((textureX + 0) * 0.00390625f), (double)((textureY + height) * 0.00390625f)).endVertex();
-        BufferBuilder2.pos((double)(x + width), (double)(y + height), (double)zLevel).tex((double)((textureX + width) * 0.00390625f), (double)((textureY + height) * 0.00390625f)).endVertex();
-        BufferBuilder2.pos((double)(x + width), (double)(y + 0), (double)zLevel).tex((double)((textureX + width) * 0.00390625f), (double)((textureY + 0) * 0.00390625f)).endVertex();
-        BufferBuilder2.pos((double)(x + 0), (double)(y + 0), (double)zLevel).tex((double)((textureX + 0) * 0.00390625f), (double)((textureY + 0) * 0.00390625f)).endVertex();
+        BufferBuilder2.pos(x + 0, y + height, zLevel).tex((textureX + 0) * 0.00390625f, (textureY + height) * 0.00390625f).endVertex();
+        BufferBuilder2.pos(x + width, y + height, zLevel).tex((textureX + width) * 0.00390625f, (textureY + height) * 0.00390625f).endVertex();
+        BufferBuilder2.pos(x + width, y + 0, zLevel).tex((textureX + width) * 0.00390625f, (textureY + 0) * 0.00390625f).endVertex();
+        BufferBuilder2.pos(x + 0, y + 0, zLevel).tex((textureX + 0) * 0.00390625f, (textureY + 0) * 0.00390625f).endVertex();
         tessellator.draw();
     }
 
@@ -114,8 +109,8 @@ public class RenderUtil implements Util
         final Tessellator tessellator = Tessellator.getInstance();
         final BufferBuilder builder = tessellator.getBuffer();
         final IBlockState iblockstate = mc.world.getBlockState(pos);
-        final Vec3d interp = EntityUtil.interpolateEntity((Entity) mc.player, mc.getRenderPartialTicks());
-        final AxisAlignedBB bb = iblockstate.getSelectedBoundingBox((World) mc.world, pos).grow(0.0020000000949949026).offset(-interp.x, -interp.y, -interp.z);
+        final Vec3d interp = EntityUtil.interpolateEntity(mc.player, mc.getRenderPartialTicks());
+        final AxisAlignedBB bb = iblockstate.getSelectedBoundingBox(mc.world, pos).grow(0.0020000000949949026).offset(-interp.x, -interp.y, -interp.z);
         final float red = startColor.getRed() / 255.0f;
         final float green = startColor.getGreen() / 255.0f;
         final float blue = startColor.getBlue() / 255.0f;
@@ -137,40 +132,35 @@ public class RenderUtil implements Util
             y2 = bb.minY + (top ? 0.5 : 0.0);
             z1 = bb.minZ;
             z2 = bb.maxZ;
-        }
-        else if (face == EnumFacing.UP) {
+        } else if (face == EnumFacing.UP) {
             x1 = bb.minX;
             x2 = bb.maxX;
             y1 = bb.maxY / (half ? 2 : 1);
             y2 = bb.maxY / (half ? 2 : 1);
             z1 = bb.minZ;
             z2 = bb.maxZ;
-        }
-        else if (face == EnumFacing.EAST) {
+        } else if (face == EnumFacing.EAST) {
             x1 = bb.maxX;
             x2 = bb.maxX;
             y1 = bb.minY + (top ? 0.5 : 0.0);
             y2 = bb.maxY / (half ? 2 : 1);
             z1 = bb.minZ;
             z2 = bb.maxZ;
-        }
-        else if (face == EnumFacing.WEST) {
+        } else if (face == EnumFacing.WEST) {
             x1 = bb.minX;
             x2 = bb.minX;
             y1 = bb.minY + (top ? 0.5 : 0.0);
             y2 = bb.maxY / (half ? 2 : 1);
             z1 = bb.minZ;
             z2 = bb.maxZ;
-        }
-        else if (face == EnumFacing.SOUTH) {
+        } else if (face == EnumFacing.SOUTH) {
             x1 = bb.minX;
             x2 = bb.maxX;
             y1 = bb.minY + (top ? 0.5 : 0.0);
             y2 = bb.maxY / (half ? 2 : 1);
             z1 = bb.maxZ;
             z2 = bb.maxZ;
-        }
-        else if (face == EnumFacing.NORTH) {
+        } else if (face == EnumFacing.NORTH) {
             x1 = bb.minX;
             x2 = bb.maxX;
             y1 = bb.minY + (top ? 0.5 : 0.0);
@@ -216,8 +206,7 @@ public class RenderUtil implements Util
             builder.pos(x2, y2, z2).color(red2, green2, blue2, alpha2).endVertex();
             builder.pos(x2, y2, z2).color(red2, green2, blue2, alpha2).endVertex();
             builder.pos(x2, y2, z2).color(red2, green2, blue2, alpha2).endVertex();
-        }
-        else if (face == EnumFacing.UP) {
+        } else if (face == EnumFacing.UP) {
             builder.pos(x1, y1, z1).color(red2, green2, blue2, alpha2).endVertex();
             builder.pos(x1, y1, z1).color(red2, green2, blue2, alpha2).endVertex();
             builder.pos(x1, y1, z1).color(red2, green2, blue2, alpha2).endVertex();
@@ -248,8 +237,7 @@ public class RenderUtil implements Util
             builder.pos(x2, y2, z2).color(red2, green2, blue2, alpha2).endVertex();
             builder.pos(x2, y2, z2).color(red2, green2, blue2, alpha2).endVertex();
             builder.pos(x2, y2, z2).color(red2, green2, blue2, alpha2).endVertex();
-        }
-        else if (face == EnumFacing.DOWN) {
+        } else if (face == EnumFacing.DOWN) {
             builder.pos(x1, y1, z1).color(red, green, blue, alpha).endVertex();
             builder.pos(x1, y1, z1).color(red, green, blue, alpha).endVertex();
             builder.pos(x1, y1, z1).color(red, green, blue, alpha).endVertex();
@@ -294,8 +282,8 @@ public class RenderUtil implements Util
         final Tessellator tessellator = Tessellator.getInstance();
         final BufferBuilder builder = tessellator.getBuffer();
         final IBlockState iblockstate = mc.world.getBlockState(pos);
-        final Vec3d interp = EntityUtil.interpolateEntity((Entity) mc.player, mc.getRenderPartialTicks());
-        final AxisAlignedBB bb = iblockstate.getSelectedBoundingBox((World) mc.world, pos).grow(0.0020000000949949026).offset(-interp.x, -interp.y, -interp.z).expand(0.0, height, 0.0);
+        final Vec3d interp = EntityUtil.interpolateEntity(mc.player, mc.getRenderPartialTicks());
+        final AxisAlignedBB bb = iblockstate.getSelectedBoundingBox(mc.world, pos).grow(0.0020000000949949026).offset(-interp.x, -interp.y, -interp.z).expand(0.0, height, 0.0);
         final float red = startColor.getRed() / 255.0f;
         final float green = startColor.getGreen() / 255.0f;
         final float blue = startColor.getBlue() / 255.0f;
@@ -317,40 +305,35 @@ public class RenderUtil implements Util
             y2 = bb.minY;
             z1 = bb.minZ;
             z2 = bb.maxZ;
-        }
-        else if (face == EnumFacing.UP) {
+        } else if (face == EnumFacing.UP) {
             x1 = bb.minX;
             x2 = bb.maxX;
             y1 = bb.maxY;
             y2 = bb.maxY;
             z1 = bb.minZ;
             z2 = bb.maxZ;
-        }
-        else if (face == EnumFacing.EAST) {
+        } else if (face == EnumFacing.EAST) {
             x1 = bb.maxX;
             x2 = bb.maxX;
             y1 = bb.minY;
             y2 = bb.maxY;
             z1 = bb.minZ;
             z2 = bb.maxZ;
-        }
-        else if (face == EnumFacing.WEST) {
+        } else if (face == EnumFacing.WEST) {
             x1 = bb.minX;
             x2 = bb.minX;
             y1 = bb.minY;
             y2 = bb.maxY;
             z1 = bb.minZ;
             z2 = bb.maxZ;
-        }
-        else if (face == EnumFacing.SOUTH) {
+        } else if (face == EnumFacing.SOUTH) {
             x1 = bb.minX;
             x2 = bb.maxX;
             y1 = bb.minY;
             y2 = bb.maxY;
             z1 = bb.maxZ;
             z2 = bb.maxZ;
-        }
-        else if (face == EnumFacing.NORTH) {
+        } else if (face == EnumFacing.NORTH) {
             x1 = bb.minX;
             x2 = bb.maxX;
             y1 = bb.minY;
@@ -396,8 +379,7 @@ public class RenderUtil implements Util
             builder.pos(x2, y2, z2).color(red2, green2, blue2, alpha2).endVertex();
             builder.pos(x2, y2, z2).color(red2, green2, blue2, alpha2).endVertex();
             builder.pos(x2, y2, z2).color(red2, green2, blue2, alpha2).endVertex();
-        }
-        else if (face == EnumFacing.UP) {
+        } else if (face == EnumFacing.UP) {
             builder.pos(x1, y1, z1).color(red2, green2, blue2, alpha2).endVertex();
             builder.pos(x1, y1, z1).color(red2, green2, blue2, alpha2).endVertex();
             builder.pos(x1, y1, z1).color(red2, green2, blue2, alpha2).endVertex();
@@ -428,8 +410,7 @@ public class RenderUtil implements Util
             builder.pos(x2, y2, z2).color(red2, green2, blue2, alpha2).endVertex();
             builder.pos(x2, y2, z2).color(red2, green2, blue2, alpha2).endVertex();
             builder.pos(x2, y2, z2).color(red2, green2, blue2, alpha2).endVertex();
-        }
-        else if (face == EnumFacing.DOWN) {
+        } else if (face == EnumFacing.DOWN) {
             builder.pos(x1, y1, z1).color(red, green, blue, alpha).endVertex();
             builder.pos(x1, y1, z1).color(red, green, blue, alpha).endVertex();
             builder.pos(x1, y1, z1).color(red, green, blue, alpha).endVertex();
@@ -487,10 +468,10 @@ public class RenderUtil implements Util
         final Tessellator tessellator = Tessellator.getInstance();
         final BufferBuilder vertexbuffer = tessellator.getBuffer();
         vertexbuffer.begin(7, DefaultVertexFormats.POSITION_COLOR);
-        vertexbuffer.pos(x + (double)w, (double)y, 0.0).color(f2, f3, f4, f).endVertex();
-        vertexbuffer.pos((double)x, (double)y, 0.0).color(f2, f3, f4, f).endVertex();
-        vertexbuffer.pos((double)x, y + (double)h, 0.0).color(f6, f7, f8, f5).endVertex();
-        vertexbuffer.pos(x + (double)w, y + (double)h, 0.0).color(f6, f7, f8, f5).endVertex();
+        vertexbuffer.pos(x + (double) w, y, 0.0).color(f2, f3, f4, f).endVertex();
+        vertexbuffer.pos(x, y, 0.0).color(f2, f3, f4, f).endVertex();
+        vertexbuffer.pos(x, y + (double) h, 0.0).color(f6, f7, f8, f5).endVertex();
+        vertexbuffer.pos(x + (double) w, y + (double) h, 0.0).color(f6, f7, f8, f5).endVertex();
         tessellator.draw();
         GlStateManager.shadeModel(7424);
         GlStateManager.disableBlend();
@@ -500,14 +481,14 @@ public class RenderUtil implements Util
 
     public static void drawGradientBlockOutline(final BlockPos pos, final Color startColor, final Color endColor, final float linewidth, final double height) {
         final IBlockState iblockstate = mc.world.getBlockState(pos);
-        final Vec3d interp = EntityUtil.interpolateEntity((Entity) mc.player, mc.getRenderPartialTicks());
-        drawGradientBlockOutline(iblockstate.getSelectedBoundingBox((World) mc.world, pos).grow(0.0020000000949949026).offset(-interp.x, -interp.y, -interp.z).expand(0.0, height, 0.0), startColor, endColor, linewidth);
+        final Vec3d interp = EntityUtil.interpolateEntity(mc.player, mc.getRenderPartialTicks());
+        drawGradientBlockOutline(iblockstate.getSelectedBoundingBox(mc.world, pos).grow(0.0020000000949949026).offset(-interp.x, -interp.y, -interp.z).expand(0.0, height, 0.0), startColor, endColor, linewidth);
     }
 
     public static void drawProperGradientBlockOutline(final BlockPos pos, final Color startColor, final Color midColor, final Color endColor, final float linewidth) {
         final IBlockState iblockstate = mc.world.getBlockState(pos);
-        final Vec3d interp = EntityUtil.interpolateEntity((Entity) mc.player, mc.getRenderPartialTicks());
-        drawProperGradientBlockOutline(iblockstate.getSelectedBoundingBox((World) mc.world, pos).grow(0.0020000000949949026).offset(-interp.x, -interp.y, -interp.z), startColor, midColor, endColor, linewidth);
+        final Vec3d interp = EntityUtil.interpolateEntity(mc.player, mc.getRenderPartialTicks());
+        drawProperGradientBlockOutline(iblockstate.getSelectedBoundingBox(mc.world, pos).grow(0.0020000000949949026).offset(-interp.x, -interp.y, -interp.z), startColor, midColor, endColor, linewidth);
     }
 
     public static void drawProperGradientBlockOutline(final AxisAlignedBB bb, final Color startColor, final Color midColor, final Color endColor, final float linewidth) {
@@ -534,7 +515,7 @@ public class RenderUtil implements Util
         GL11.glHint(3154, 4354);
         GL11.glLineWidth(linewidth);
         GL11.glBegin(1);
-        GL11.glColor4d((double)red, (double)green, (double)blue, (double)alpha);
+        GL11.glColor4d(red, green, blue, alpha);
         GL11.glVertex3d(bb.minX, bb.minY, bb.minZ);
         GL11.glVertex3d(bb.maxX, bb.minY, bb.minZ);
         GL11.glVertex3d(bb.maxX, bb.minY, bb.minZ);
@@ -544,33 +525,33 @@ public class RenderUtil implements Util
         GL11.glVertex3d(bb.minX, bb.minY, bb.maxZ);
         GL11.glVertex3d(bb.minX, bb.minY, bb.minZ);
         GL11.glVertex3d(bb.minX, bb.minY, bb.minZ);
-        GL11.glColor4d((double)red2, (double)green2, (double)blue2, (double)alpha2);
+        GL11.glColor4d(red2, green2, blue2, alpha2);
         GL11.glVertex3d(bb.minX, bb.minY + dif, bb.minZ);
         GL11.glVertex3d(bb.minX, bb.minY + dif, bb.minZ);
         GL11.glColor4f(red3, green3, blue3, alpha3);
         GL11.glVertex3d(bb.minX, bb.maxY, bb.minZ);
-        GL11.glColor4d((double)red, (double)green, (double)blue, (double)alpha);
+        GL11.glColor4d(red, green, blue, alpha);
         GL11.glVertex3d(bb.minX, bb.minY, bb.maxZ);
-        GL11.glColor4d((double)red2, (double)green2, (double)blue2, (double)alpha2);
+        GL11.glColor4d(red2, green2, blue2, alpha2);
         GL11.glVertex3d(bb.minX, bb.minY + dif, bb.maxZ);
         GL11.glVertex3d(bb.minX, bb.minY + dif, bb.maxZ);
-        GL11.glColor4d((double)red3, (double)green3, (double)blue3, (double)alpha3);
+        GL11.glColor4d(red3, green3, blue3, alpha3);
         GL11.glVertex3d(bb.minX, bb.maxY, bb.maxZ);
-        GL11.glColor4d((double)red, (double)green, (double)blue, (double)alpha);
+        GL11.glColor4d(red, green, blue, alpha);
         GL11.glVertex3d(bb.maxX, bb.minY, bb.maxZ);
-        GL11.glColor4d((double)red2, (double)green2, (double)blue2, (double)alpha2);
+        GL11.glColor4d(red2, green2, blue2, alpha2);
         GL11.glVertex3d(bb.maxX, bb.minY + dif, bb.maxZ);
         GL11.glVertex3d(bb.maxX, bb.minY + dif, bb.maxZ);
-        GL11.glColor4d((double)red3, (double)green3, (double)blue3, (double)alpha3);
+        GL11.glColor4d(red3, green3, blue3, alpha3);
         GL11.glVertex3d(bb.maxX, bb.maxY, bb.maxZ);
-        GL11.glColor4d((double)red, (double)green, (double)blue, (double)alpha);
+        GL11.glColor4d(red, green, blue, alpha);
         GL11.glVertex3d(bb.maxX, bb.minY, bb.minZ);
-        GL11.glColor4d((double)red2, (double)green2, (double)blue2, (double)alpha2);
+        GL11.glColor4d(red2, green2, blue2, alpha2);
         GL11.glVertex3d(bb.maxX, bb.minY + dif, bb.minZ);
         GL11.glVertex3d(bb.maxX, bb.minY + dif, bb.minZ);
-        GL11.glColor4d((double)red3, (double)green3, (double)blue3, (double)alpha3);
+        GL11.glColor4d(red3, green3, blue3, alpha3);
         GL11.glVertex3d(bb.maxX, bb.maxY, bb.minZ);
-        GL11.glColor4d((double)red3, (double)green3, (double)blue3, (double)alpha3);
+        GL11.glColor4d(red3, green3, blue3, alpha3);
         GL11.glVertex3d(bb.minX, bb.maxY, bb.minZ);
         GL11.glVertex3d(bb.maxX, bb.maxY, bb.minZ);
         GL11.glVertex3d(bb.maxX, bb.maxY, bb.minZ);
@@ -637,8 +618,8 @@ public class RenderUtil implements Util
 
     public static void drawGradientFilledBox(final BlockPos pos, final Color startColor, final Color endColor) {
         final IBlockState iblockstate = mc.world.getBlockState(pos);
-        final Vec3d interp = EntityUtil.interpolateEntity((Entity) mc.player, mc.getRenderPartialTicks());
-        drawGradientFilledBox(iblockstate.getSelectedBoundingBox((World) mc.world, pos).grow(0.0020000000949949026).offset(-interp.x, -interp.y, -interp.z), startColor, endColor);
+        final Vec3d interp = EntityUtil.interpolateEntity(mc.player, mc.getRenderPartialTicks());
+        drawGradientFilledBox(iblockstate.getSelectedBoundingBox(mc.world, pos).grow(0.0020000000949949026).offset(-interp.x, -interp.y, -interp.z), startColor, endColor);
     }
 
     public static void drawGradientFilledBox(final AxisAlignedBB bb, final Color startColor, final Color endColor) {
@@ -708,10 +689,10 @@ public class RenderUtil implements Util
         final Tessellator tessellator = Tessellator.getInstance();
         final BufferBuilder vertexbuffer = tessellator.getBuffer();
         vertexbuffer.begin(7, DefaultVertexFormats.POSITION_COLOR);
-        vertexbuffer.pos(x + (double)w, (double)y, 0.0).color(f2, f3, f4, f).endVertex();
-        vertexbuffer.pos((double)x, (double)y, 0.0).color(f2, f3, f4, f).endVertex();
-        vertexbuffer.pos((double)x, y + (double)h, 0.0).color(f6, f7, f8, f5).endVertex();
-        vertexbuffer.pos(x + (double)w, y + (double)h, 0.0).color(f6, f7, f8, f5).endVertex();
+        vertexbuffer.pos(x + (double) w, y, 0.0).color(f2, f3, f4, f).endVertex();
+        vertexbuffer.pos(x, y, 0.0).color(f2, f3, f4, f).endVertex();
+        vertexbuffer.pos(x, y + (double) h, 0.0).color(f6, f7, f8, f5).endVertex();
+        vertexbuffer.pos(x + (double) w, y + (double) h, 0.0).color(f6, f7, f8, f5).endVertex();
         tessellator.draw();
         GlStateManager.shadeModel(7424);
         GlStateManager.disableBlend();
@@ -751,7 +732,7 @@ public class RenderUtil implements Util
     }
 
     public static void glScissor(final float x, final float y, final float x1, final float y1, final ScaledResolution sr) {
-        GL11.glScissor((int)(x * sr.getScaleFactor()), (int)( mc.displayHeight - y1 * sr.getScaleFactor()), (int)((x1 - x) * sr.getScaleFactor()), (int)((y1 - y) * sr.getScaleFactor()));
+        GL11.glScissor((int) (x * sr.getScaleFactor()), (int) (mc.displayHeight - y1 * sr.getScaleFactor()), (int) ((x1 - x) * sr.getScaleFactor()), (int) ((y1 - y) * sr.getScaleFactor()));
     }
 
     public static void drawLine(final float x, final float y, final float x1, final float y1, final float thickness, final int hex) {
@@ -771,8 +752,8 @@ public class RenderUtil implements Util
         final Tessellator tessellator = Tessellator.getInstance();
         final BufferBuilder bufferbuilder = tessellator.getBuffer();
         bufferbuilder.begin(3, DefaultVertexFormats.POSITION_COLOR);
-        bufferbuilder.pos((double)x, (double)y, 0.0).color(red, green, blue, alpha).endVertex();
-        bufferbuilder.pos((double)x1, (double)y1, 0.0).color(red, green, blue, alpha).endVertex();
+        bufferbuilder.pos(x, y, 0.0).color(red, green, blue, alpha).endVertex();
+        bufferbuilder.pos(x1, y1, 0.0).color(red, green, blue, alpha).endVertex();
         tessellator.draw();
         GlStateManager.shadeModel(7424);
         GL11.glDisable(2848);
@@ -784,7 +765,7 @@ public class RenderUtil implements Util
 
     public static void drawBox(final BlockPos pos, final Color color) {
         final AxisAlignedBB bb = new AxisAlignedBB(pos.getX() - mc.getRenderManager().viewerPosX, pos.getY() - mc.getRenderManager().viewerPosY, pos.getZ() - mc.getRenderManager().viewerPosZ, pos.getX() + 1 - mc.getRenderManager().viewerPosX, pos.getY() + 1 - mc.getRenderManager().viewerPosY, pos.getZ() + 1 - mc.getRenderManager().viewerPosZ);
-        RenderUtil.camera.setPosition(Objects.requireNonNull( mc.getRenderViewEntity()).posX, mc.getRenderViewEntity().posY, mc.getRenderViewEntity().posZ);
+        RenderUtil.camera.setPosition(Objects.requireNonNull(mc.getRenderViewEntity()).posX, mc.getRenderViewEntity().posY, mc.getRenderViewEntity().posZ);
         if (RenderUtil.camera.isBoundingBoxInFrustum(new AxisAlignedBB(bb.minX + mc.getRenderManager().viewerPosX, bb.minY + mc.getRenderManager().viewerPosY, bb.minZ + mc.getRenderManager().viewerPosZ, bb.maxX + mc.getRenderManager().viewerPosX, bb.maxY + mc.getRenderManager().viewerPosY, bb.maxZ + mc.getRenderManager().viewerPosZ))) {
             GlStateManager.pushMatrix();
             GlStateManager.enableBlend();
@@ -985,7 +966,7 @@ public class RenderUtil implements Util
             return;
         }
         final AxisAlignedBB bb = new AxisAlignedBB(pos.getX() - mc.getRenderManager().viewerPosX, pos.getY() - mc.getRenderManager().viewerPosY, pos.getZ() - mc.getRenderManager().viewerPosZ, pos.getX() + 1 - mc.getRenderManager().viewerPosX, pos.getY() + 1 - mc.getRenderManager().viewerPosY + height, pos.getZ() + 1 - mc.getRenderManager().viewerPosZ);
-        RenderUtil.camera.setPosition(Objects.requireNonNull( mc.getRenderViewEntity()).posX, mc.getRenderViewEntity().posY, mc.getRenderViewEntity().posZ);
+        RenderUtil.camera.setPosition(Objects.requireNonNull(mc.getRenderViewEntity()).posX, mc.getRenderViewEntity().posY, mc.getRenderViewEntity().posZ);
         if (RenderUtil.camera.isBoundingBoxInFrustum(new AxisAlignedBB(bb.minX + mc.getRenderManager().viewerPosX, bb.minY + mc.getRenderManager().viewerPosY, bb.minZ + mc.getRenderManager().viewerPosZ, bb.maxX + mc.getRenderManager().viewerPosX, bb.maxY + mc.getRenderManager().viewerPosY, bb.maxZ + mc.getRenderManager().viewerPosZ))) {
             GlStateManager.pushMatrix();
             GlStateManager.enableBlend();
@@ -1008,8 +989,8 @@ public class RenderUtil implements Util
     public static void drawBlockOutline(final BlockPos pos, final Color color, final float linewidth, final boolean air) {
         final IBlockState iblockstate = mc.world.getBlockState(pos);
         if ((air || iblockstate.getMaterial() != Material.AIR) && mc.world.getWorldBorder().contains(pos)) {
-            final Vec3d interp = EntityUtil.interpolateEntity((Entity) mc.player, mc.getRenderPartialTicks());
-            drawBlockOutline(iblockstate.getSelectedBoundingBox((World) mc.world, pos).grow(0.0020000000949949026).offset(-interp.x, -interp.y, -interp.z), color, linewidth);
+            final Vec3d interp = EntityUtil.interpolateEntity(mc.player, mc.getRenderPartialTicks());
+            drawBlockOutline(iblockstate.getSelectedBoundingBox(mc.world, pos).grow(0.0020000000949949026).offset(-interp.x, -interp.y, -interp.z), color, linewidth);
         }
     }
 
@@ -1070,7 +1051,7 @@ public class RenderUtil implements Util
 
     public static void drawBoxESP(final BlockPos pos, final Color color, final float lineWidth, final boolean outline, final boolean box, final int boxAlpha) {
         final AxisAlignedBB bb = new AxisAlignedBB(pos.getX() - mc.getRenderManager().viewerPosX, pos.getY() - mc.getRenderManager().viewerPosY, pos.getZ() - mc.getRenderManager().viewerPosZ, pos.getX() + 1 - mc.getRenderManager().viewerPosX, pos.getY() + 1 - mc.getRenderManager().viewerPosY, pos.getZ() + 1 - mc.getRenderManager().viewerPosZ);
-        RenderUtil.camera.setPosition(Objects.requireNonNull( mc.getRenderViewEntity()).posX, mc.getRenderViewEntity().posY, mc.getRenderViewEntity().posZ);
+        RenderUtil.camera.setPosition(Objects.requireNonNull(mc.getRenderViewEntity()).posX, mc.getRenderViewEntity().posY, mc.getRenderViewEntity().posZ);
         if (RenderUtil.camera.isBoundingBoxInFrustum(new AxisAlignedBB(bb.minX + mc.getRenderManager().viewerPosX, bb.minY + mc.getRenderManager().viewerPosY, bb.minZ + mc.getRenderManager().viewerPosZ, bb.maxX + mc.getRenderManager().viewerPosX, bb.maxY + mc.getRenderManager().viewerPosY, bb.maxZ + mc.getRenderManager().viewerPosZ))) {
             GlStateManager.pushMatrix();
             GlStateManager.enableBlend();
@@ -1081,7 +1062,7 @@ public class RenderUtil implements Util
             GL11.glEnable(2848);
             GL11.glHint(3154, 4354);
             GL11.glLineWidth(lineWidth);
-            final double dist = mc.player.getDistance((double)(pos.getX() + 0.5f), (double)(pos.getY() + 0.5f), (double)(pos.getZ() + 0.5f)) * 0.75;
+            final double dist = mc.player.getDistance(pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f) * 0.75;
             if (box) {
                 RenderGlobal.renderFilledBox(bb, color.getRed() / 255.0f, color.getGreen() / 255.0f, color.getBlue() / 255.0f, boxAlpha / 255.0f);
             }
@@ -1102,7 +1083,7 @@ public class RenderUtil implements Util
             return;
         }
         GlStateManager.pushMatrix();
-        glBillboardDistanceScaled(pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f, (EntityPlayer) mc.player, 1.0f);
+        glBillboardDistanceScaled(pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f, mc.player, 1.0f);
         GlStateManager.disableDepth();
         GlStateManager.translate(-(Bopis.textManager.getStringWidth(text) / 2.0), 0.0, 0.0);
         Bopis.textManager.drawStringWithShadow(text, 0.0f, 0.0f, -5592406);
@@ -1111,8 +1092,8 @@ public class RenderUtil implements Util
 
     public static void drawOutlinedBlockESP(final BlockPos pos, final Color color, final float linewidth) {
         final IBlockState iblockstate = mc.world.getBlockState(pos);
-        final Vec3d interp = EntityUtil.interpolateEntity((Entity) mc.player, mc.getRenderPartialTicks());
-        drawBoundingBox(iblockstate.getSelectedBoundingBox((World) mc.world, pos).grow(0.0020000000949949026).offset(-interp.x, -interp.y, -interp.z), linewidth, ColorUtil.toRGBA(color));
+        final Vec3d interp = EntityUtil.interpolateEntity(mc.player, mc.getRenderPartialTicks());
+        drawBoundingBox(iblockstate.getSelectedBoundingBox(mc.world, pos).grow(0.0020000000949949026).offset(-interp.x, -interp.y, -interp.z), linewidth, ColorUtil.toRGBA(color));
     }
 
     public static void blockEsp(final BlockPos blockPos, final Color c, final double length, final double length2) {
@@ -1126,7 +1107,7 @@ public class RenderUtil implements Util
         GL11.glDisable(3553);
         GL11.glDisable(2929);
         GL11.glDepthMask(false);
-        GL11.glColor4d((double)(c.getRed() / 255.0f), (double)(c.getGreen() / 255.0f), (double)(c.getBlue() / 255.0f), 0.25);
+        GL11.glColor4d(c.getRed() / 255.0f, c.getGreen() / 255.0f, c.getBlue() / 255.0f, 0.25);
         drawColorBox(new AxisAlignedBB(x, y, z, x + length2, y + 1.0, z + length), 0.0f, 0.0f, 0.0f, 0.0f);
         GL11.glColor4d(0.0, 0.0, 0.0, 0.5);
         drawSelectionBoundingBox(new AxisAlignedBB(x, y, z, x + length2, y + 1.0, z + length));
@@ -1150,10 +1131,10 @@ public class RenderUtil implements Util
         GlStateManager.disableTexture2D();
         GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
         bufferbuilder.begin(7, DefaultVertexFormats.POSITION_COLOR);
-        bufferbuilder.pos((double)x, (double)h, 0.0).color(red, green, blue, alpha).endVertex();
-        bufferbuilder.pos((double)w, (double)h, 0.0).color(red, green, blue, alpha).endVertex();
-        bufferbuilder.pos((double)w, (double)y, 0.0).color(red, green, blue, alpha).endVertex();
-        bufferbuilder.pos((double)x, (double)y, 0.0).color(red, green, blue, alpha).endVertex();
+        bufferbuilder.pos(x, h, 0.0).color(red, green, blue, alpha).endVertex();
+        bufferbuilder.pos(w, h, 0.0).color(red, green, blue, alpha).endVertex();
+        bufferbuilder.pos(w, y, 0.0).color(red, green, blue, alpha).endVertex();
+        bufferbuilder.pos(x, y, 0.0).color(red, green, blue, alpha).endVertex();
         tessellator.draw();
         GlStateManager.enableTexture2D();
         GlStateManager.disableBlend();
@@ -1283,7 +1264,7 @@ public class RenderUtil implements Util
     }
 
     public static AxisAlignedBB getBoundingBox(final BlockPos blockPos) {
-        return mc.world.getBlockState(blockPos).getBoundingBox((IBlockAccess) mc.world, blockPos).offset(blockPos);
+        return mc.world.getBlockState(blockPos).getBoundingBox(mc.world, blockPos).offset(blockPos);
     }
 
     public static void drawOutlinedBox(final AxisAlignedBB axisAlignedBB) {
@@ -1413,14 +1394,14 @@ public class RenderUtil implements Util
         final float scale = 0.02666667f;
         GlStateManager.translate(x - mc.getRenderManager().renderPosX, y - mc.getRenderManager().renderPosY, z - mc.getRenderManager().renderPosZ);
         GlStateManager.glNormal3f(0.0f, 1.0f, 0.0f);
-        GlStateManager.rotate(- mc.player.rotationYaw, 0.0f, 1.0f, 0.0f);
-        GlStateManager.rotate( mc.player.rotationPitch, ( mc.gameSettings.thirdPersonView == 2) ? -1.0f : 1.0f, 0.0f, 0.0f);
+        GlStateManager.rotate(-mc.player.rotationYaw, 0.0f, 1.0f, 0.0f);
+        GlStateManager.rotate(mc.player.rotationPitch, (mc.gameSettings.thirdPersonView == 2) ? -1.0f : 1.0f, 0.0f, 0.0f);
         GlStateManager.scale(-scale, -scale, scale);
     }
 
     public static void glBillboardDistanceScaled(final float x, final float y, final float z, final EntityPlayer player, final float scale) {
         glBillboard(x, y, z);
-        final int distance = (int)player.getDistance((double)x, (double)y, (double)z);
+        final int distance = (int) player.getDistance(x, y, z);
         float scaleDistance = distance / 2.0f / (2.0f + (2.0f - scale));
         if (scaleDistance < 1.0f) {
             scaleDistance = 1.0f;
@@ -1517,10 +1498,10 @@ public class RenderUtil implements Util
         GlStateManager.glLineWidth(1.0f);
         GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
         bufferbuilder.begin(2, DefaultVertexFormats.POSITION_COLOR);
-        bufferbuilder.pos((double)x, (double)h, 0.0).color(red, green, blue, alpha).endVertex();
-        bufferbuilder.pos((double)w, (double)h, 0.0).color(red, green, blue, alpha).endVertex();
-        bufferbuilder.pos((double)w, (double)y, 0.0).color(red, green, blue, alpha).endVertex();
-        bufferbuilder.pos((double)x, (double)y, 0.0).color(red, green, blue, alpha).endVertex();
+        bufferbuilder.pos(x, h, 0.0).color(red, green, blue, alpha).endVertex();
+        bufferbuilder.pos(w, h, 0.0).color(red, green, blue, alpha).endVertex();
+        bufferbuilder.pos(w, y, 0.0).color(red, green, blue, alpha).endVertex();
+        bufferbuilder.pos(x, y, 0.0).color(red, green, blue, alpha).endVertex();
         tessellator.draw();
         GlStateManager.enableTexture2D();
         GlStateManager.disableBlend();
@@ -1542,10 +1523,10 @@ public class RenderUtil implements Util
         GlStateManager.glLineWidth(lineWidth);
         GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
         bufferbuilder.begin(7, DefaultVertexFormats.POSITION_COLOR);
-        bufferbuilder.pos((double)x, (double)h, 0.0).color(red, green, blue, alpha).endVertex();
-        bufferbuilder.pos((double)w, (double)h, 0.0).color(red, green, blue, alpha).endVertex();
-        bufferbuilder.pos((double)w, (double)y, 0.0).color(red, green, blue, alpha).endVertex();
-        bufferbuilder.pos((double)x, (double)y, 0.0).color(red, green, blue, alpha).endVertex();
+        bufferbuilder.pos(x, h, 0.0).color(red, green, blue, alpha).endVertex();
+        bufferbuilder.pos(w, h, 0.0).color(red, green, blue, alpha).endVertex();
+        bufferbuilder.pos(w, y, 0.0).color(red, green, blue, alpha).endVertex();
+        bufferbuilder.pos(x, y, 0.0).color(red, green, blue, alpha).endVertex();
         tessellator.draw();
         GlStateManager.enableTexture2D();
         GlStateManager.disableBlend();
@@ -1568,13 +1549,12 @@ public class RenderUtil implements Util
             GL11.glDisable(3553);
             disk.setOrientation(100020);
             disk.setDrawStyle(100012);
-            GL11.glTranslated((double)x, (double)y, 0.0);
+            GL11.glTranslated(x, y, 0.0);
             disk.draw(0.0f, radius, slices, loops);
             GL11.glEnable(3553);
             GL11.glDisable(3042);
             GL11.glPopMatrix();
-        }
-        else {
+        } else {
             GL11.glPushMatrix();
             GL11.glColor4f(color.getRed() / 255.0f, color.getGreen() / 255.0f, color.getBlue() / 255.0f, color.getAlpha() / 255.0f);
             GL11.glEnable(3042);
@@ -1584,14 +1564,14 @@ public class RenderUtil implements Util
             final ArrayList<Vec2f> hVectors = new ArrayList<Vec2f>();
             float hue = System.currentTimeMillis() % 7200L / 7200.0f;
             for (int i = 0; i <= 360; ++i) {
-                final Vec2f vec = new Vec2f(x + (float)Math.sin(i * 3.141592653589793 / 180.0) * radius, y + (float)Math.cos(i * 3.141592653589793 / 180.0) * radius);
+                final Vec2f vec = new Vec2f(x + (float) Math.sin(i * 3.141592653589793 / 180.0) * radius, y + (float) Math.cos(i * 3.141592653589793 / 180.0) * radius);
                 hVectors.add(vec);
             }
             Color color2 = new Color(Color.HSBtoRGB(hue, 1.0f, 1.0f));
             for (int j = 0; j < hVectors.size() - 1; ++j) {
                 GL11.glColor4f(color2.getRed() / 255.0f, color2.getGreen() / 255.0f, color2.getBlue() / 255.0f, color2.getAlpha() / 255.0f);
-                GL11.glVertex3d((double)hVectors.get(j).x, (double)hVectors.get(j).y, 0.0);
-                GL11.glVertex3d((double)hVectors.get(j + 1).x, (double)hVectors.get(j + 1).y, 0.0);
+                GL11.glVertex3d(hVectors.get(j).x, hVectors.get(j).y, 0.0);
+                GL11.glVertex3d(hVectors.get(j + 1).x, hVectors.get(j + 1).y, 0.0);
                 color2 = new Color(Color.HSBtoRGB(hue += 0.0027777778f, 1.0f, 1.0f));
             }
             GL11.glEnd();
@@ -1599,9 +1579,9 @@ public class RenderUtil implements Util
             GL11.glDisable(3042);
             GL11.glPopMatrix();
         }
-        drawLine(x, y, x + (float)Math.sin(hourAngle * 3.141592653589793 / 180.0) * (radius / 2.0f), y + (float)Math.cos(hourAngle * 3.141592653589793 / 180.0) * (radius / 2.0f), 1.0f, Color.WHITE.getRGB());
-        drawLine(x, y, x + (float)Math.sin(minuteAngle * 3.141592653589793 / 180.0) * (radius - radius / 10.0f), y + (float)Math.cos(minuteAngle * 3.141592653589793 / 180.0) * (radius - radius / 10.0f), 1.0f, Color.WHITE.getRGB());
-        drawLine(x, y, x + (float)Math.sin(secondAngle * 3.141592653589793 / 180.0) * (radius - radius / 10.0f), y + (float)Math.cos(secondAngle * 3.141592653589793 / 180.0) * (radius - radius / 10.0f), 1.0f, Color.RED.getRGB());
+        drawLine(x, y, x + (float) Math.sin(hourAngle * 3.141592653589793 / 180.0) * (radius / 2.0f), y + (float) Math.cos(hourAngle * 3.141592653589793 / 180.0) * (radius / 2.0f), 1.0f, Color.WHITE.getRGB());
+        drawLine(x, y, x + (float) Math.sin(minuteAngle * 3.141592653589793 / 180.0) * (radius - radius / 10.0f), y + (float) Math.cos(minuteAngle * 3.141592653589793 / 180.0) * (radius - radius / 10.0f), 1.0f, Color.WHITE.getRGB());
+        drawLine(x, y, x + (float) Math.sin(secondAngle * 3.141592653589793 / 180.0) * (radius - radius / 10.0f), y + (float) Math.cos(secondAngle * 3.141592653589793 / 180.0) * (radius - radius / 10.0f), 1.0f, Color.RED.getRGB());
     }
 
     public static void GLPre(final float lineWidth) {
@@ -1641,15 +1621,15 @@ public class RenderUtil implements Util
 
     public static float[][] getBipedRotations(final ModelBiped biped) {
         final float[][] rotations = new float[5][];
-        final float[] headRotation = { biped.bipedHead.rotateAngleX, biped.bipedHead.rotateAngleY, biped.bipedHead.rotateAngleZ };
+        final float[] headRotation = {biped.bipedHead.rotateAngleX, biped.bipedHead.rotateAngleY, biped.bipedHead.rotateAngleZ};
         rotations[0] = headRotation;
-        final float[] rightArmRotation = { biped.bipedRightArm.rotateAngleX, biped.bipedRightArm.rotateAngleY, biped.bipedRightArm.rotateAngleZ };
+        final float[] rightArmRotation = {biped.bipedRightArm.rotateAngleX, biped.bipedRightArm.rotateAngleY, biped.bipedRightArm.rotateAngleZ};
         rotations[1] = rightArmRotation;
-        final float[] leftArmRotation = { biped.bipedLeftArm.rotateAngleX, biped.bipedLeftArm.rotateAngleY, biped.bipedLeftArm.rotateAngleZ };
+        final float[] leftArmRotation = {biped.bipedLeftArm.rotateAngleX, biped.bipedLeftArm.rotateAngleY, biped.bipedLeftArm.rotateAngleZ};
         rotations[2] = leftArmRotation;
-        final float[] rightLegRotation = { biped.bipedRightLeg.rotateAngleX, biped.bipedRightLeg.rotateAngleY, biped.bipedRightLeg.rotateAngleZ };
+        final float[] rightLegRotation = {biped.bipedRightLeg.rotateAngleX, biped.bipedRightLeg.rotateAngleY, biped.bipedRightLeg.rotateAngleZ};
         rotations[3] = rightLegRotation;
-        final float[] leftLegRotation = { biped.bipedLeftLeg.rotateAngleX, biped.bipedLeftLeg.rotateAngleY, biped.bipedLeftLeg.rotateAngleZ };
+        final float[] leftLegRotation = {biped.bipedLeftLeg.rotateAngleX, biped.bipedLeftLeg.rotateAngleY, biped.bipedLeftLeg.rotateAngleZ};
         rotations[4] = leftLegRotation;
         return rotations;
     }
@@ -1675,10 +1655,10 @@ public class RenderUtil implements Util
 
     public static void drawArc(final float cx, final float cy, final float r, final float start_angle, final float end_angle, final int num_segments) {
         GL11.glBegin(4);
-        for (int i = (int)(num_segments / (360.0f / start_angle)) + 1; i <= num_segments / (360.0f / end_angle); ++i) {
+        for (int i = (int) (num_segments / (360.0f / start_angle)) + 1; i <= num_segments / (360.0f / end_angle); ++i) {
             final double previousangle = 6.283185307179586 * (i - 1) / num_segments;
             final double angle = 6.283185307179586 * i / num_segments;
-            GL11.glVertex2d((double)cx, (double)cy);
+            GL11.glVertex2d(cx, cy);
             GL11.glVertex2d(cx + Math.cos(angle) * r, cy + Math.sin(angle) * r);
             GL11.glVertex2d(cx + Math.cos(previousangle) * r, cy + Math.sin(previousangle) * r);
         }
@@ -1687,7 +1667,7 @@ public class RenderUtil implements Util
 
     public static void drawArcOutline(final float cx, final float cy, final float r, final float start_angle, final float end_angle, final int num_segments) {
         GL11.glBegin(2);
-        for (int i = (int)(num_segments / (360.0f / start_angle)) + 1; i <= num_segments / (360.0f / end_angle); ++i) {
+        for (int i = (int) (num_segments / (360.0f / start_angle)) + 1; i <= num_segments / (360.0f / end_angle); ++i) {
             final double angle = 6.283185307179586 * i / num_segments;
             GL11.glVertex2d(cx + Math.cos(angle) * r, cy + Math.sin(angle) * r);
         }
@@ -1699,7 +1679,7 @@ public class RenderUtil implements Util
     }
 
     public static void drawCircleOutline(final float x, final float y, final float radius, final int start, final int end, final int segments) {
-        drawArcOutline(x, y, radius, (float)start, (float)end, segments);
+        drawArcOutline(x, y, radius, (float) start, (float) end, segments);
     }
 
     public static void drawCircle(final float x, final float y, final float radius) {
@@ -1707,11 +1687,11 @@ public class RenderUtil implements Util
     }
 
     public static void drawCircle(final float x, final float y, final float radius, final int start, final int end, final int segments) {
-        drawArc(x, y, radius, (float)start, (float)end, segments);
+        drawArc(x, y, radius, (float) start, (float) end, segments);
     }
 
     public static void drawOutlinedRoundedRectangle(final int x, final int y, final int width, final int height, final float radius, final float dR, final float dG, final float dB, final float dA, final float outlineWidth) {
-        drawRoundedRectangle((float)x, (float)y, (float)width, (float)height, radius);
+        drawRoundedRectangle((float) x, (float) y, (float) width, (float) height, radius);
         GL11.glColor4f(dR, dG, dB, dA);
         drawRoundedRectangle(x + outlineWidth, y + outlineWidth, width - outlineWidth * 2.0f, height - outlineWidth * 2.0f, radius);
     }
@@ -1720,10 +1700,10 @@ public class RenderUtil implements Util
         GL11.glEnable(3042);
         GL11.glBlendFunc(770, 771);
         GL11.glBegin(2);
-        GL11.glVertex2d((double)width, 0.0);
+        GL11.glVertex2d(width, 0.0);
         GL11.glVertex2d(0.0, 0.0);
-        GL11.glVertex2d(0.0, (double)height);
-        GL11.glVertex2d((double)width, (double)height);
+        GL11.glVertex2d(0.0, height);
+        GL11.glVertex2d(width, height);
         glEnd();
     }
 
@@ -1731,10 +1711,10 @@ public class RenderUtil implements Util
         GL11.glEnable(3042);
         GL11.glBlendFunc(770, 771);
         GL11.glBegin(2);
-        GL11.glVertex2d((double)(x + width), (double)y);
-        GL11.glVertex2d((double)x, (double)y);
-        GL11.glVertex2d((double)x, (double)(y + height));
-        GL11.glVertex2d((double)(x + width), (double)(y + height));
+        GL11.glVertex2d(x + width, y);
+        GL11.glVertex2d(x, y);
+        GL11.glVertex2d(x, y + height);
+        GL11.glVertex2d(x + width, y + height);
         glEnd();
     }
 
@@ -1742,10 +1722,10 @@ public class RenderUtil implements Util
         GL11.glEnable(3042);
         GL11.glBlendFunc(770, 771);
         GL11.glBegin(7);
-        GL11.glVertex2d((double)(x + width), (double)y);
-        GL11.glVertex2d((double)x, (double)y);
-        GL11.glVertex2d((double)x, (double)(y + height));
-        GL11.glVertex2d((double)(x + width), (double)(y + height));
+        GL11.glVertex2d(x + width, y);
+        GL11.glVertex2d(x, y);
+        GL11.glVertex2d(x, y + height);
+        GL11.glVertex2d(x + width, y + height);
         glEnd();
     }
 
@@ -1753,9 +1733,9 @@ public class RenderUtil implements Util
         GL11.glGetFloat(2982, RenderUtil.modelView);
         GL11.glGetFloat(2983, RenderUtil.projection);
         GL11.glGetInteger(2978, RenderUtil.viewport);
-        final boolean result = GLU.gluProject((float)x, (float)y, (float)z, RenderUtil.modelView, RenderUtil.projection, RenderUtil.viewport, RenderUtil.screenCoords);
+        final boolean result = GLU.gluProject((float) x, (float) y, (float) z, RenderUtil.modelView, RenderUtil.projection, RenderUtil.viewport, RenderUtil.screenCoords);
         if (result) {
-            return new Vec3d((double)RenderUtil.screenCoords.get(0), (double)(Display.getHeight() - RenderUtil.screenCoords.get(1)), (double)RenderUtil.screenCoords.get(2));
+            return new Vec3d(RenderUtil.screenCoords.get(0), Display.getHeight() - RenderUtil.screenCoords.get(1), RenderUtil.screenCoords.get(2));
         }
         return null;
     }
@@ -1770,21 +1750,21 @@ public class RenderUtil implements Util
         GL11.glPushMatrix();
         hexColor(color);
         GL11.glBegin(7);
-        GL11.glVertex2d((double)x, (double)y);
-        GL11.glVertex2d((double)(x - size / widthDiv), (double)(y + size));
-        GL11.glVertex2d((double)x, (double)(y + size / heightDiv));
-        GL11.glVertex2d((double)(x + size / widthDiv), (double)(y + size));
-        GL11.glVertex2d((double)x, (double)y);
+        GL11.glVertex2d(x, y);
+        GL11.glVertex2d(x - size / widthDiv, y + size);
+        GL11.glVertex2d(x, y + size / heightDiv);
+        GL11.glVertex2d(x + size / widthDiv, y + size);
+        GL11.glVertex2d(x, y);
         GL11.glEnd();
         if (outline) {
             GL11.glLineWidth(outlineWidth);
             GL11.glColor4f(0.0f, 0.0f, 0.0f, alpha);
             GL11.glBegin(2);
-            GL11.glVertex2d((double)x, (double)y);
-            GL11.glVertex2d((double)(x - size / widthDiv), (double)(y + size));
-            GL11.glVertex2d((double)x, (double)(y + size / heightDiv));
-            GL11.glVertex2d((double)(x + size / widthDiv), (double)(y + size));
-            GL11.glVertex2d((double)x, (double)y);
+            GL11.glVertex2d(x, y);
+            GL11.glVertex2d(x - size / widthDiv, y + size);
+            GL11.glVertex2d(x, y + size / heightDiv);
+            GL11.glVertex2d(x + size / widthDiv, y + size);
+            GL11.glVertex2d(x, y);
             GL11.glEnd();
         }
         GL11.glPopMatrix();
@@ -1796,7 +1776,7 @@ public class RenderUtil implements Util
     }
 
     public static int getRainbow(final int speed, final int offset, final float s, final float b) {
-        float hue = (float)((System.currentTimeMillis() + offset) % speed);
+        float hue = (float) ((System.currentTimeMillis() + offset) % speed);
         return Color.getHSBColor(hue /= speed, s, b).getRGB();
     }
 
@@ -1825,24 +1805,24 @@ public class RenderUtil implements Util
         drawArc(x + radius, y + radius, radius, 180.0f, 270.0f, 16);
         drawArc(x + width - radius, y + radius, radius, 270.0f, 360.0f, 16);
         GL11.glBegin(4);
-        GL11.glVertex2d((double)(x + width - radius), (double)y);
-        GL11.glVertex2d((double)(x + radius), (double)y);
-        GL11.glVertex2d((double)(x + width - radius), (double)(y + radius));
-        GL11.glVertex2d((double)(x + width - radius), (double)(y + radius));
-        GL11.glVertex2d((double)(x + radius), (double)y);
-        GL11.glVertex2d((double)(x + radius), (double)(y + radius));
-        GL11.glVertex2d((double)(x + width), (double)(y + radius));
-        GL11.glVertex2d((double)x, (double)(y + radius));
-        GL11.glVertex2d((double)x, (double)(y + height - radius));
-        GL11.glVertex2d((double)(x + width), (double)(y + radius));
-        GL11.glVertex2d((double)x, (double)(y + height - radius));
-        GL11.glVertex2d((double)(x + width), (double)(y + height - radius));
-        GL11.glVertex2d((double)(x + width - radius), (double)(y + height - radius));
-        GL11.glVertex2d((double)(x + radius), (double)(y + height - radius));
-        GL11.glVertex2d((double)(x + width - radius), (double)(y + height));
-        GL11.glVertex2d((double)(x + width - radius), (double)(y + height));
-        GL11.glVertex2d((double)(x + radius), (double)(y + height - radius));
-        GL11.glVertex2d((double)(x + radius), (double)(y + height));
+        GL11.glVertex2d(x + width - radius, y);
+        GL11.glVertex2d(x + radius, y);
+        GL11.glVertex2d(x + width - radius, y + radius);
+        GL11.glVertex2d(x + width - radius, y + radius);
+        GL11.glVertex2d(x + radius, y);
+        GL11.glVertex2d(x + radius, y + radius);
+        GL11.glVertex2d(x + width, y + radius);
+        GL11.glVertex2d(x, y + radius);
+        GL11.glVertex2d(x, y + height - radius);
+        GL11.glVertex2d(x + width, y + radius);
+        GL11.glVertex2d(x, y + height - radius);
+        GL11.glVertex2d(x + width, y + height - radius);
+        GL11.glVertex2d(x + width - radius, y + height - radius);
+        GL11.glVertex2d(x + radius, y + height - radius);
+        GL11.glVertex2d(x + width - radius, y + height);
+        GL11.glVertex2d(x + width - radius, y + height);
+        GL11.glVertex2d(x + radius, y + height - radius);
+        GL11.glVertex2d(x + radius, y + height);
         glEnd();
     }
 
@@ -1923,7 +1903,7 @@ public class RenderUtil implements Util
 
     static {
         RenderUtil.itemRender = mc.getRenderItem();
-        RenderUtil.camera = (ICamera)new Frustum();
+        RenderUtil.camera = new Frustum();
         frustrum = new Frustum();
         RenderUtil.depth = GL11.glIsEnabled(2896);
         RenderUtil.texture = GL11.glIsEnabled(3042);

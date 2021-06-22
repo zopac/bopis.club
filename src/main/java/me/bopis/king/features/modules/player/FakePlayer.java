@@ -15,12 +15,11 @@ public class FakePlayer extends Module {
     private static FakePlayer INSTANCE = new FakePlayer();
     private final List<EntityOtherPlayerMP> fakeEntities = new ArrayList<EntityOtherPlayerMP>();
     public Setting<Boolean> multi = this.register(new Setting<Boolean>("Multi", false));
-    public Setting<String> name = register(new Setting("Name", "3911"));
     public List<Integer> fakePlayerIdList = new ArrayList<Integer>();
     private final Setting<Boolean> copyInv = this.register(new Setting<Boolean>("CopyInv", true));
     private final Setting<Integer> players = this.register(new Setting<Object>("Players", 1, 1, 9, v -> this.multi.getValue()));
-    public static final String[][] multiPlayer = new String[][]{{"4538d5ab-ff77-407c-9a1e-1b713ef99a0d", FakePlayer.getInstance().name.getValue(), "3", "0"}, {"4538d5ab-ff77-407c-9a1e-1b713ef99a0d", FakePlayer.getInstance().name.getValue(), "-3", "0"}, {"4538d5ab-ff77-407c-9a1e-1b713ef99a0d", FakePlayer.getInstance().name.getValue(), "0", "-3"}, {"4538d5ab-ff77-407c-9a1e-1b713ef99a0d", FakePlayer.getInstance().name.getValue(), "0", "3"}, {"4538d5ab-ff77-407c-9a1e-1b713ef99a0d", FakePlayer.getInstance().name.getValue(), "6", "0"}, {"4538d5ab-ff77-407c-9a1e-1b713ef99a0d", FakePlayer.getInstance().name.getValue(), "-6", "0"}, {"4538d5ab-ff77-407c-9a1e-1b713ef99a0d", FakePlayer.getInstance().name.getValue(), "0", "-6"}, {"4538d5ab-ff77-407c-9a1e-1b713ef99a0d", FakePlayer.getInstance().name.getValue(), "0", "6"}, {"4538d5ab-ff77-407c-9a1e-1b713ef99a0d", FakePlayer.getInstance().name.getValue(), "0", "9"}, {"4538d5ab-ff77-407c-9a1e-1b713ef99a0d", FakePlayer.getInstance().name.getValue(), "0", "-9"}};
-    private static final String[] singlePlayer = new String[]{"4538d5ab-ff77-407c-9a1e-1b713ef99a0d", FakePlayer.getInstance().name.getValue()};
+    public static final String[][] multiPlayer = new String[][]{{"4538d5ab-ff77-407c-9a1e-1b713ef99a0d", "joe", "3", "0"}, {"4538d5ab-ff77-407c-9a1e-1b713ef99a0d", "joe", "-3", "0"}, {"4538d5ab-ff77-407c-9a1e-1b713ef99a0d", "joe", "0", "-3"}, {"4538d5ab-ff77-407c-9a1e-1b713ef99a0d", "joe", "0", "3"}, {"4538d5ab-ff77-407c-9a1e-1b713ef99a0d", "joe", "6", "0"}, {"4538d5ab-ff77-407c-9a1e-1b713ef99a0d", "joe", "-6", "0"}, {"4538d5ab-ff77-407c-9a1e-1b713ef99a0d", "joe", "0", "-6"}, {"4538d5ab-ff77-407c-9a1e-1b713ef99a0d", "joe", "0", "6"}, {"4538d5ab-ff77-407c-9a1e-1b713ef99a0d", "joe", "0", "9"}, {"4538d5ab-ff77-407c-9a1e-1b713ef99a0d", "joe", "0", "-9"}};
+    private static final String[] singlePlayer = new String[]{"4538d5ab-ff77-407c-9a1e-1b713ef99a0d", "joe"};
 
     public FakePlayer() {
         super("FakePlayer", "Spawns in a fake player", Module.Category.PLAYER, true, false, false);

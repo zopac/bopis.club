@@ -7,19 +7,14 @@ import me.bopis.king.features.setting.Setting;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.network.play.client.CPacketConfirmTeleport;
 import net.minecraft.network.play.client.CPacketInput;
 import net.minecraft.network.play.client.CPacketPlayer;
-import net.minecraft.network.play.server.SPacketPlayerPosLook;
-import net.minecraft.network.play.server.SPacketSetPassengers;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.client.event.PlayerSPPushOutOfBlocksEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class Freecam extends Module {
     private static Freecam INSTANCE = new Freecam();
-    public Setting <Double> speed = register(new Setting("Speed", Double.valueOf(0.5D), Double.valueOf(0.1D), Double.valueOf(5.0D)));
+    public Setting<Double> speed = register(new Setting("Speed", Double.valueOf(0.5D), Double.valueOf(0.1D), Double.valueOf(5.0D)));
     public Setting<Boolean> packet = register(new Setting("Cancel Packets", Boolean.valueOf(true)));
 
     private double posX, posY, posZ;
@@ -102,9 +97,9 @@ public class Freecam extends Module {
     }
 
     @SubscribeEvent
-    public void onMove( MoveEvent event) {
+    public void onMove(MoveEvent event) {
         mc.player.noClip = true;
-    };
+    }
 
     @SubscribeEvent
     public void onPlayerPushOutOfBlock(PlayerSPPushOutOfBlocksEvent event) {
@@ -116,5 +111,6 @@ public class Freecam extends Module {
         if ((event.getPacket() instanceof CPacketPlayer || event.getPacket() instanceof CPacketInput) && packet.getValue()) {
             event.setCanceled(true);
         }
-    };
+    }
+
 }

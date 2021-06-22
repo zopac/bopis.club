@@ -99,7 +99,7 @@ public class CustomFont extends CFont {
                         int colorcode = this.colorCode[colorIndex];
                         GlStateManager.color((colorcode >> 16 & 0xFF) / 255.0F, (colorcode >> 8 & 0xFF) / 255.0F, (colorcode & 0xFF) / 255.0F, alpha);
                     } else if (colorIndex == 16) {
-					} else if (colorIndex == 17) {
+                    } else if (colorIndex == 17) {
                         bold = true;
                         if (italic) {
                             GlStateManager.bindTexture(texItalicBold.getGlTextureId());
