@@ -235,17 +235,6 @@ public class AutoCrystal
         }
     }
 
-    public int silentSwapCrystal() {
-        for (int i = 0; i < 9; ) {
-            if (mc.player.inventory.getStackInSlot(i).getItem() != Items.END_CRYSTAL) {
-                i++;
-                continue;
-            }
-            return i;
-        }
-        return -1;
-    }
-
     @SubscribeEvent
     public void onUpdateWalkingPlayer(UpdateWalkingPlayerEvent event) {
         if (event.getStage() == 1) {
@@ -740,10 +729,10 @@ public class AutoCrystal
     }
 
     private void placeCrystal() {
-        if (target != null) {
-            if (autoSwitch.getValue()) {
-                InventoryUtil.switchToHotbarSlot(ItemEndCrystal.class, false);
-            }
+        if (AutoCrystal.mc.player.getHeldItemOffhand().getItem() == Items.END_CRYSTAL) {
+            switching = false;
+        } else if (autoSwitch.getValue()) {
+            InventoryUtil.switchToHotbarSlot(ItemEndCrystal.class, false);
         }
         int crystalLimit = this.wasteAmount.getValue();
         if (this.placeTimer.passedMs(this.placeDelay.getValue().intValue()) && this.place.getValue().booleanValue() && (this.offHand || this.mainHand || this.switchMode.getValue() == Switch.ALWAYS || this.switchMode.getValue() == Switch.CALC || this.switchMode.getValue() == Switch.BREAKSLOT && this.switching)) {

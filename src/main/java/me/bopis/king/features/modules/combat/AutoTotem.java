@@ -1,6 +1,5 @@
 package me.bopis.king.features.modules.combat;
 
-import com.mojang.realmsclient.gui.ChatFormatting;
 import me.bopis.king.event.events.PacketEvent;
 import me.bopis.king.event.events.ProcessRightClickBlockEvent;
 import me.bopis.king.features.modules.Module;
@@ -32,12 +31,8 @@ public class AutoTotem extends Module {
     private final Timer timer = new Timer();
     private final Timer secondTimer = new Timer();
     private final Setting<Mode2> currentMode = this.register(new Setting<Mode2>("Mode", Mode2.TOTEMS));
-    public Setting<Boolean> crystal = register(new Setting<Boolean>("Crystal", true));
-    public Setting<Float> crystalHealth = register(new Setting<Float>("CrystalHP", Float.valueOf(13.0f), Float.valueOf(0.1f), Float.valueOf(36.0f)));
-    public Setting<Float> crystalHoleHealth = register(new Setting<Float>("CrystalHoleHP", Float.valueOf(3.5f), Float.valueOf(0.1f), Float.valueOf(36.0f)));
-    public Setting<Boolean> gapple = register(new Setting<Boolean>("Gapple", true));
+    public Setting<Boolean> swordGap = register(new Setting<Boolean>("SwordGap", true));
     public Setting<Boolean> armorCheck = register(new Setting<Boolean>("ArmorCheck", true));
-    public Setting<Integer> actions = register(new Setting<Integer>("Packets", 4, 1, 4));
     public int totems = 0;
     public int crystals = 0;
     public int gapples = 0;
@@ -117,13 +112,13 @@ public class AutoTotem extends Module {
     @Override
     public String getDisplayInfo() {
         if (AutoTotem.mc.player.getHeldItemOffhand().getItem() == Items.END_CRYSTAL) {
-            return ChatFormatting.LIGHT_PURPLE + "[" + ChatFormatting.DARK_AQUA + "Crystal" + ChatFormatting.LIGHT_PURPLE + "]";
+            return "Crystal";
         }
         if (AutoTotem.mc.player.getHeldItemOffhand().getItem() == Items.TOTEM_OF_UNDYING) {
-            return ChatFormatting.LIGHT_PURPLE + "[" + ChatFormatting.DARK_AQUA + "Totem" + ChatFormatting.LIGHT_PURPLE + "]";
+            return "Totem";
         }
         if (AutoTotem.mc.player.getHeldItemOffhand().getItem() == Items.GOLDEN_APPLE) {
-            return ChatFormatting.LIGHT_PURPLE + "[" + ChatFormatting.DARK_AQUA + "Gapple" + ChatFormatting.LIGHT_PURPLE + "]";
+            return "Gapple";
         }
         return null;
     }
@@ -149,26 +144,30 @@ public class AutoTotem extends Module {
     }
 
     public void doSwitch() {
-        currentMode.setValue(Mode2.TOTEMS);
-        if (gapple.getValue().booleanValue() && AutoTotem.mc.player.getHeldItemMainhand().getItem() instanceof ItemSword && AutoTotem.mc.gameSettings.keyBindUseItem.isKeyDown()) {
+        if (currentMode.getValue().equals(Mode2.TOTEMS)) {
+            currentMode.setValue(Mode2.TOTEMS);
+        }
+        if (currentMode.getValue().equals(Mode2.GAPPLES) || swordGap.getValue().booleanValue() && AutoTotem.mc.player.getHeldItemMainhand().getItem() instanceof ItemSword && AutoTotem.mc.gameSettings.keyBindUseItem.isKeyDown()) {
             currentMode.setValue(Mode2.GAPPLES);
-        } else if (currentMode.getValue() != Mode2.CRYSTALS && crystal.getValue().booleanValue() && (EntityUtil.isSafe(AutoTotem.mc.player) && EntityUtil.getHealth(AutoTotem.mc.player, true) > crystalHoleHealth.getValue().floatValue() || EntityUtil.getHealth(AutoTotem.mc.player, true) > crystalHealth.getValue().floatValue())) {
+        } else if (currentMode.getValue() != Mode2.CRYSTALS && currentMode.getValue().equals(Mode2.CRYSTALS)) {
             currentMode.setValue(Mode2.CRYSTALS);
         }
         if (currentMode.getValue() == Mode2.CRYSTALS && crystals == 0) {
             currentMode.setValue(Mode2.TOTEMS);
         }
-        if (currentMode.getValue() == Mode2.CRYSTALS && (!EntityUtil.isSafe(AutoTotem.mc.player) && EntityUtil.getHealth(AutoTotem.mc.player, true) <= crystalHealth.getValue().floatValue() || EntityUtil.getHealth(AutoTotem.mc.player, true) <= crystalHoleHealth.getValue().floatValue())) {
-            if (currentMode.getValue() == Mode2.CRYSTALS) {
+        if (currentMode.getValue().equals(Mode2.CRYSTALS)) {
+            if (currentMode.getValue().equals(Mode2.CRYSTALS)) {
                 switchedForHealthReason = true;
             }
-            currentMode.setValue(Mode2.TOTEMS);
+            if (currentMode.getValue().equals(Mode2.TOTEMS)) {
+                currentMode.setValue(Mode2.TOTEMS);
+            }
         }
-        if (switchedForHealthReason && (EntityUtil.isSafe(AutoTotem.mc.player) && EntityUtil.getHealth(AutoTotem.mc.player, true) > crystalHoleHealth.getValue().floatValue() || EntityUtil.getHealth(AutoTotem.mc.player, true) > crystalHealth.getValue().floatValue())) {
+        if (switchedForHealthReason) {
             currentMode.setValue(Mode2.CRYSTALS);
             switchedForHealthReason = false;
         }
-        if (currentMode.getValue() == Mode2.CRYSTALS && armorCheck.getValue().booleanValue() && (AutoTotem.mc.player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == Items.AIR || AutoTotem.mc.player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == Items.AIR || AutoTotem.mc.player.getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem() == Items.AIR || AutoTotem.mc.player.getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() == Items.AIR)) {
+        if (currentMode.getValue().equals(Mode2.CRYSTALS) && armorCheck.getValue().booleanValue() && (AutoTotem.mc.player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == Items.AIR || AutoTotem.mc.player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == Items.AIR || AutoTotem.mc.player.getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem() == Items.AIR || AutoTotem.mc.player.getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() == Items.AIR)) {
             currentMode.setValue(Mode2.TOTEMS);
         }
         if (AutoTotem.mc.currentScreen instanceof GuiContainer && !(AutoTotem.mc.currentScreen instanceof GuiInventory)) {
