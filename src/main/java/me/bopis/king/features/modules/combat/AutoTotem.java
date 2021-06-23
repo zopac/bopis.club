@@ -31,6 +31,7 @@ public class AutoTotem extends Module {
     private final Timer timer = new Timer();
     private final Timer secondTimer = new Timer();
     private final Setting<Mode2> currentMode = this.register(new Setting<Mode2>("Mode", Mode2.TOTEMS));
+    public Setting<Integer> health = register(new Setting<Integer>("Health", 13, 0, 36));
     public Setting<Boolean> swordGap = register(new Setting<Boolean>("SwordGap", true));
     public Setting<Boolean> armorCheck = register(new Setting<Boolean>("ArmorCheck", true));
     public int totems = 0;
@@ -72,6 +73,9 @@ public class AutoTotem extends Module {
 
     @Override
     public void onUpdate() {
+        if (currentMode.equals(Mode2.GAPPLES) && swordGap.getValue()) {
+            currentMode.setValue(Mode2.TOTEMS);
+        }
         if (timer.passedMs(50L)) {
             if (AutoTotem.mc.player != null && AutoTotem.mc.player.getHeldItemOffhand().getItem() == Items.GOLDEN_APPLE && AutoTotem.mc.player.getHeldItemMainhand().getItem() == Items.END_CRYSTAL && Mouse.isButtonDown(1)) {
                 AutoTotem.mc.player.setActiveHand(EnumHand.OFF_HAND);
@@ -144,30 +148,25 @@ public class AutoTotem extends Module {
     }
 
     public void doSwitch() {
-        if (currentMode.getValue().equals(Mode2.TOTEMS)) {
-            currentMode.setValue(Mode2.TOTEMS);
-        }
-        if (currentMode.getValue().equals(Mode2.GAPPLES) || swordGap.getValue().booleanValue() && AutoTotem.mc.player.getHeldItemMainhand().getItem() instanceof ItemSword && AutoTotem.mc.gameSettings.keyBindUseItem.isKeyDown()) {
+        if (currentMode.equals(Mode2.GAPPLES) || swordGap.getValue().booleanValue() && AutoTotem.mc.player.getHeldItemMainhand().getItem() instanceof ItemSword && AutoTotem.mc.gameSettings.keyBindUseItem.isKeyDown()) {
             currentMode.setValue(Mode2.GAPPLES);
-        } else if (currentMode.getValue() != Mode2.CRYSTALS && currentMode.getValue().equals(Mode2.CRYSTALS)) {
+        } else if (currentMode.getValue() != Mode2.CRYSTALS && currentMode.equals(Mode2.CRYSTALS) && EntityUtil.getHealth(AutoTotem.mc.player, true) > health.getValue().floatValue()) {
             currentMode.setValue(Mode2.CRYSTALS);
         }
         if (currentMode.getValue() == Mode2.CRYSTALS && crystals == 0) {
             currentMode.setValue(Mode2.TOTEMS);
         }
-        if (currentMode.getValue().equals(Mode2.CRYSTALS)) {
-            if (currentMode.getValue().equals(Mode2.CRYSTALS)) {
+        if (currentMode.getValue() == Mode2.CRYSTALS && (EntityUtil.getHealth(AutoTotem.mc.player, true) <= health.getValue().floatValue())) {
+            if (currentMode.getValue() == Mode2.CRYSTALS) {
                 switchedForHealthReason = true;
             }
-            if (currentMode.getValue().equals(Mode2.TOTEMS)) {
-                currentMode.setValue(Mode2.TOTEMS);
-            }
+            currentMode.setValue(Mode2.TOTEMS);
         }
-        if (switchedForHealthReason) {
+        if (switchedForHealthReason && (EntityUtil.isSafe(AutoTotem.mc.player) && EntityUtil.getHealth(AutoTotem.mc.player, true) > health.getValue().floatValue())) {
             currentMode.setValue(Mode2.CRYSTALS);
             switchedForHealthReason = false;
         }
-        if (currentMode.getValue().equals(Mode2.CRYSTALS) && armorCheck.getValue().booleanValue() && (AutoTotem.mc.player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == Items.AIR || AutoTotem.mc.player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == Items.AIR || AutoTotem.mc.player.getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem() == Items.AIR || AutoTotem.mc.player.getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() == Items.AIR)) {
+        if (currentMode.getValue() == Mode2.CRYSTALS && armorCheck.getValue().booleanValue() && (AutoTotem.mc.player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == Items.AIR || AutoTotem.mc.player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == Items.AIR || AutoTotem.mc.player.getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem() == Items.AIR || AutoTotem.mc.player.getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() == Items.AIR)) {
             currentMode.setValue(Mode2.TOTEMS);
         }
         if (AutoTotem.mc.currentScreen instanceof GuiContainer && !(AutoTotem.mc.currentScreen instanceof GuiInventory)) {

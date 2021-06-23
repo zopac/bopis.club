@@ -23,7 +23,7 @@ import java.nio.ByteBuffer;
 public class Bopis {
     public static final String MODID = "bopis";
     public static final String MODNAME = "bopis";
-    public static final String MODVER = "1.2.0";
+    public static final String MODVER = "1.3.0";
     public static final Logger LOGGER = LogManager.getLogger("bopis");
     public static TimerManager timerManager;
     public static CommandManager commandManager;
